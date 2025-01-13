@@ -18,7 +18,7 @@ type TasksStateType = {
 function App() {
   function addTask(title: string, todoListId: string) {
     let newTask = { id: v1(), title: title, isDone: false };
-    let task = tasksObj[todoListId] || [];
+    let task = tasksObj[todoListId];
     let newTasks = [newTask, ...task];
     tasksObj[todoListId] = newTasks;
     setTasksObj({ ...tasksObj });
@@ -50,14 +50,26 @@ function App() {
     }
   }
 
-  let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-    { id: v1(), title: 'What to learn', filter: 'All' },
-    { id: v1(), title: 'What to buy', filter: 'All' },
-  ]);
-
+  function changeTaskTitle(
+    taskId: string,
+    newTitle: string,
+    todoListId: string
+  ) {
+    let tasks = tasksObj[todoListId];
+    let task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.title = newTitle;
+      setTasksObj({ ...tasksObj });
+    }
+  }
   const todoListId1 = v1();
 
   const todoListId2 = v1();
+
+  let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+    { id: todoListId1, title: 'What to learn', filter: 'All' },
+    { id: todoListId2, title: 'What to buy', filter: 'All' },
+  ]);
 
   let [tasksObj, setTasksObj] = useState<TasksStateType>({
     [todoListId1]: [
@@ -80,6 +92,14 @@ function App() {
     setTasksObj({ ...tasksObj });
   };
 
+  const changeTodoListTitle = (taskId: string, newTitle: string) => {
+    const todoList = todoLists.find((tl) => tl.id === taskId);
+    if (todoList) {
+      todoList.title = newTitle;
+      setTodoLists([...todoLists]);
+    }
+  };
+
   const addTodoList = (title: string) => {
     let todoList: TodoListType = {
       id: v1(),
@@ -95,7 +115,8 @@ function App() {
     <div className="App">
       <AddItemForm addItem={addTodoList} />
       {todoLists.map((tl) => {
-        let taskForTodoList = tasksObj[tl.id] || [];
+        let taskForTodoList = tasksObj[tl.id];
+        console.log(taskForTodoList);
 
         if (tl.filter === 'Completed') {
           taskForTodoList = taskForTodoList.filter((t) => t.isDone === true);
@@ -116,6 +137,8 @@ function App() {
             tasks={taskForTodoList}
             filter={tl.filter}
             removeTodoList={removeTodoList}
+            changeTaskTitle={changeTaskTitle}
+            changeTodoListTitle={changeTodoListTitle}
           />
         );
       })}
