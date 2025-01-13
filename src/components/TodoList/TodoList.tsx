@@ -1,6 +1,8 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { FilteredValuesType } from '../../App';
+import AddItemForm from '../AddItemForm/AddItemForm';
+import { title } from 'process';
 
 export type TaskType = {
   id: string;
@@ -21,34 +23,6 @@ type PropsType = {
 };
 
 export function TodoList(props: PropsType) {
-  const [newTaskTitle, setNewTaskTitle] = useState(' ');
-  const [error, setError] = useState<string | null>(null);
-
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
-  };
-
-  const onKeyDownHendler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (e.key === 'Enter') {
-      if (newTaskTitle.trim() !== '') {
-        props.addTask(newTaskTitle, props.id);
-        setNewTaskTitle('');
-      } else {
-        setError('Field is required');
-      }
-    }
-  };
-
-  const onAddTaskHandler = () => {
-    if (newTaskTitle.trim() !== '') {
-      props.addTask(newTaskTitle, props.id);
-      setNewTaskTitle('');
-    } else {
-      setError('Field is required');
-    }
-  };
-
   const onAllClickHandler = () => props.changeFilter('All', props.id);
 
   const onActiveClickHandler = () => props.changeFilter('Active', props.id);
@@ -59,22 +33,16 @@ export function TodoList(props: PropsType) {
     props.removeTodoList(props.id);
   };
 
+  const addTask = (title: string) => {
+    props.addTask(title, props.id);
+  };
+
   return (
     <div>
       <h3>
         {props.title} <button onClick={deleteTodoListHandler}>X</button>
       </h3>
-      <div>
-        <input
-          className={error ? styles.error : ''}
-          value={newTaskTitle}
-          onChange={onNewTitleChangeHandler}
-          onKeyDown={onKeyDownHendler}
-          type="text"
-        />
-        <button onClick={onAddTaskHandler}>+</button>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-      </div>
+      <AddItemForm addItem={addTask} />
       <ul>
         {props.tasks.map((task) => {
           const onRemoveHandler = () => props.removeTask(task.id, props.id);
