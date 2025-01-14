@@ -1,5 +1,6 @@
 .label {
   display: flex;
+  align-items: center;
   justify-content: start;
   gap: 5px;
 }
@@ -18,4 +19,9 @@
 
 .isDone {
   opacity: 0.5;
+}
+.noDots {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }

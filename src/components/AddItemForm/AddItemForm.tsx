@@ -1,5 +1,12 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './styles.module.css';
+import { Button, IconButton, TextField } from '@mui/material';
+import {
+  AddCircleOutlineOutlined,
+  AddSharp,
+  AddTask,
+  ControlPoint,
+} from '@mui/icons-material';
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -34,15 +41,19 @@ function AddItemForm(props: AddItemFormPropsType) {
 
   return (
     <div>
-      <input
+      <TextField
         className={error ? styles.error : ''}
         value={newTaskTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onKeyDownHendler}
-        type="text"
+        label={'Type value'}
+        variant="outlined"
+        error={!!error}
+        helperText={error}
       />
-      <button onClick={onAddTaskHandler}>+</button>
-      {error && <div className={styles.errorMessage}>{error}</div>}
+      <IconButton onClick={onAddTaskHandler} color={'primary'}>
+        <ControlPoint />
+      </IconButton>
     </div>
   );
 }
