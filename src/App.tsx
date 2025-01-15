@@ -15,7 +15,7 @@ import { Menu } from '@mui/icons-material';
 import Grid from '@mui/material/Grid2';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilteredValuesType;
