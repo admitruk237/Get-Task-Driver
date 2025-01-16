@@ -21,57 +21,11 @@ export type TodoListType = {
   filter: FilteredValuesType;
 };
 
-type TasksStateType = {
+export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
 function App() {
-  function addTask(title: string, todoListId: string) {
-    let newTask = { id: v1(), title: title, isDone: false };
-    let task = tasksObj[todoListId];
-    let newTasks = [newTask, ...task];
-    tasksObj[todoListId] = newTasks;
-    setTasksObj({ ...tasksObj });
-  }
-
-  function changeFilter(value: FilteredValuesType, todoListId: string) {
-    let todoList = todoLists.find((t) => t.id === todoListId);
-    if (todoList) {
-      todoList.filter = value;
-      setTodoLists([...todoLists]);
-    }
-  }
-
-  function removeTask(id: string, todoListId: string) {
-    let task = tasksObj[todoListId];
-
-    let filterredtTask = task.filter((t) => t.id !== id);
-    tasksObj[todoListId] = filterredtTask;
-
-    setTasksObj({ ...tasksObj });
-  }
-
-  function changeStatus(taskId: string, isDone: boolean, todoListId: string) {
-    let tasks = tasksObj[todoListId];
-    let task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      task.isDone = isDone;
-      setTasksObj({ ...tasksObj });
-    }
-  }
-
-  function changeTaskTitle(
-    taskId: string,
-    newTitle: string,
-    todoListId: string
-  ) {
-    let tasks = tasksObj[todoListId];
-    let task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      task.title = newTitle;
-      setTasksObj({ ...tasksObj });
-    }
-  }
   const todoListId1 = v1();
 
   const todoListId2 = v1();
@@ -94,6 +48,57 @@ function App() {
       { id: v1(), title: 'Milk', isDone: false },
     ],
   });
+
+  function addTask(title: string, todoListId: string) {
+    let newTask = { id: v1(), title: title, isDone: false };
+    let task = tasksObj[todoListId];
+    let newTasks = [newTask, ...task];
+    tasksObj[todoListId] = newTasks;
+    setTasksObj({ ...tasksObj });
+  }
+
+  function removeTask(id: string, todoListId: string) {
+    let task = tasksObj[todoListId];
+
+    let filterredtTask = task.filter((t) => t.id !== id);
+    tasksObj[todoListId] = filterredtTask;
+
+    setTasksObj({ ...tasksObj });
+  }
+
+  function changeTaskTitle(
+    taskId: string,
+    newTitle: string,
+    todoListId: string
+  ) {
+    let tasks = tasksObj[todoListId];
+    let task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.title = newTitle;
+      setTasksObj({ ...tasksObj });
+    }
+  }
+
+  function changeTaskStatus(
+    taskId: string,
+    isDone: boolean,
+    todoListId: string
+  ) {
+    let tasks = tasksObj[todoListId];
+    let task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.isDone = isDone;
+      setTasksObj({ ...tasksObj });
+    }
+  }
+
+  function changeFilter(value: FilteredValuesType, todoListId: string) {
+    let todoList = todoLists.find((t) => t.id === todoListId);
+    if (todoList) {
+      todoList.filter = value;
+      setTodoLists([...todoLists]);
+    }
+  }
 
   let removeTodoList = (todoListId: string) => {
     let filteredTodoList = todoLists.filter((tl) => tl.id !== todoListId);
@@ -163,7 +168,7 @@ function App() {
                   <TodoList
                     id={tl.id}
                     key={tl.id}
-                    changeStatus={changeStatus}
+                    changeStatus={changeTaskStatus}
                     addTask={addTask}
                     changeFilter={changeFilter}
                     removeTask={removeTask}
