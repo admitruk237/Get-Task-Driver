@@ -40,12 +40,12 @@ export const todoListReducer = (
     }
     case 'ADD-TODOLIST': {
       return [
-        ...state,
         {
           id: action.id,
           filter: 'All',
           title: action.title,
         },
+        ...state,
       ];
     }
     case 'CHANGE-TODOLIST-TITLE': {

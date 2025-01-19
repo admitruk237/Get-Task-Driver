@@ -46,8 +46,8 @@ function AddItemForm(props: AddItemFormPropsType) {
         value={newTaskTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onKeyDownHendler}
-        label={'Type value'}
-        variant="outlined"
+        label={'Title'}
+        variant="filled"
         error={!!error}
         helperText={error}
       />
