@@ -30,13 +30,22 @@ type ActionsType =
   | ChangeTodolistTitleActionType
   | ChangeTodolistFilterActionType;
 
+export const todoListId1 = v1();
+
+export const todoListId2 = v1();
+
+const initialState: Array<TodoListType> = [
+  { id: todoListId1, title: 'What to learn', filter: 'All' },
+  { id: todoListId2, title: 'What to buy', filter: 'All' },
+];
+
 export const todoListReducer = (
-  state: Array<TodoListType>,
+  state: Array<TodoListType> = initialState,
   action: ActionsType
 ): Array<TodoListType> => {
   switch (action.type) {
     case 'REMOVE-TODOLIST': {
-      return state.filter((tl) => tl.id !== action.id);
+      return [...state.filter((tl) => tl.id !== action.id)];
     }
     case 'ADD-TODOLIST': {
       return [
@@ -49,21 +58,29 @@ export const todoListReducer = (
       ];
     }
     case 'CHANGE-TODOLIST-TITLE': {
-      const todoList = state.find((tl) => tl.id === action.id);
-      if (todoList) {
-        todoList.title = action.title;
-      }
-      return [...state];
+      return [
+        ...state.map((tl) => {
+          if (tl.id === action.id) {
+            return { ...tl, title: action.title };
+          } else {
+            return tl;
+          }
+        }),
+      ];
     }
     case 'CHANGE-TODOLIST-FILTER': {
-      let todoList = state.find((t) => t.id === action.id);
-      if (todoList) {
-        todoList.filter = action.filter;
-      }
-      return [...state];
+      return [
+        ...state.map((tl) => {
+          if (tl.id === action.id) {
+            return { ...tl, filter: action.filter };
+          } else {
+            return tl;
+          }
+        }),
+      ];
     }
     default:
-      throw new Error("I don't understand this action type");
+      return state;
   }
 };
 
