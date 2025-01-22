@@ -1,17 +1,14 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './styles.module.css';
-import { Button, IconButton, TextField } from '@mui/material';
-import {
-  AddCircleOutlineOutlined,
-  AddSharp,
-  AddTask,
-  ControlPoint,
-} from '@mui/icons-material';
+import { IconButton, TextField } from '@mui/material';
+import { ControlPoint } from '@mui/icons-material';
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
 };
-function AddItemForm(props: AddItemFormPropsType) {
+const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+  console.log('AddItemForm is called');
+
   const [newTaskTitle, setNewTaskTitle] = useState(' ');
   const [error, setError] = useState<string | null>(null);
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +16,9 @@ function AddItemForm(props: AddItemFormPropsType) {
   };
 
   const onKeyDownHendler = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
+    if (error !== null) {
+      setError(null);
+    }
     if (e.key === 'Enter') {
       if (newTaskTitle.trim() !== '') {
         props.addItem(newTaskTitle);
@@ -56,6 +55,6 @@ function AddItemForm(props: AddItemFormPropsType) {
       </IconButton>
     </div>
   );
-}
+});
 
 export default AddItemForm;

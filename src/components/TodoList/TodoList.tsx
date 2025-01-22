@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import styles from './styles.module.css';
 import { FilteredValuesType } from '../../AppWithRedux';
 import AddItemForm from '../AddItemForm/AddItemForm';
@@ -6,13 +6,9 @@ import EditableSpan from '../EditableSpan/EditableSpan';
 import { Button, IconButton, Checkbox } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
+import { Task } from '../Task/Task';
 import { AppRootStateType } from '../../state/store';
-import {
-  addTaskAC,
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskAC,
-} from '../../state/tasks-reducer';
+import { addTaskAC } from '../../state/tasks-reducer';
 
 export type TaskType = {
   id: string;
@@ -29,30 +25,45 @@ type PropsType = {
   removeTodoList: (todoListId: string) => void;
 };
 
-export function TodoList(props: PropsType) {
+export const TodoList = React.memo((props: PropsType) => {
+  console.log('TodoList is called');
   const dispatch = useDispatch();
 
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     (state) => state.tasks[props.id]
   );
 
-  const onAllClickHandler = () => props.changeFilter('All', props.id);
+  const onAllClickHandler = useCallback(
+    () => props.changeFilter('All', props.id),
+    [props.changeFilter, props.id]
+  );
 
-  const onActiveClickHandler = () => props.changeFilter('Active', props.id);
+  const onActiveClickHandler = useCallback(
+    () => props.changeFilter('Active', props.id),
+    [props.changeFilter, props.id]
+  );
 
-  const onCompletedClickHandler = () =>
-    props.changeFilter('Completed', props.id);
+  const onCompletedClickHandler = useCallback(
+    () => props.changeFilter('Completed', props.id),
+    [props.changeFilter, props.id]
+  );
   const deleteTodoListHandler = () => {
     props.removeTodoList(props.id);
   };
 
-  const changeTodoListTitle = (newTitle: string) => {
-    props.changeTodoListTitle(props.id, newTitle);
-  };
+  const changeTodoListTitle = useCallback(
+    (newTitle: string) => {
+      props.changeTodoListTitle(props.id, newTitle);
+    },
+    [props.changeTodoListTitle, props.id]
+  );
 
-  const addTask = (title: string) => {
-    dispatch(addTaskAC(props.id, title));
-  };
+  const addTask = useCallback(
+    (title: string) => {
+      dispatch(addTaskAC(props.id, title));
+    },
+    [dispatch, props.id]
+  );
 
   let taskForTodoList = tasks;
 
@@ -74,36 +85,9 @@ export function TodoList(props: PropsType) {
       </h3>
       <AddItemForm addItem={addTask} />
       <ul className={styles.noDots}>
-        {taskForTodoList.map((task) => {
-          const onRemoveHandler = () =>
-            dispatch(removeTaskAC(task.id, props.id));
-          const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(
-              changeTaskStatusAC(props.id, task.id, e.currentTarget.checked)
-            );
-          };
-          const onChangeTitleHandler = (newValue: string) => {
-            dispatch(changeTaskTitleAC(props.id, task.id, newValue));
-          };
-          return (
-            <li className={task.isDone ? styles.isDone : ''} key={task.id}>
-              <label className={styles.label}>
-                <Checkbox
-                  onChange={onChangeStatusHandler}
-                  checked={task.isDone}
-                  color={'success'}
-                />
-                <EditableSpan
-                  title={task.title}
-                  onChange={onChangeTitleHandler}
-                />
-                <IconButton aria-label="delete" onClick={onRemoveHandler}>
-                  <Delete />
-                </IconButton>
-              </label>
-            </li>
-          );
-        })}
+        {taskForTodoList.map((task) => (
+          <Task key={task.id} taskId={task.id} todoListId={props.id} />
+        ))}
       </ul>
       <div>
         <Button
@@ -130,4 +114,4 @@ export function TodoList(props: PropsType) {
       </div>
     </div>
   );
-}
+});
