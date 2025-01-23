@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppRootStateType } from '../../state/store';
 import {
@@ -9,7 +9,6 @@ import {
 import { Checkbox, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import styles from './styles.module.css';
-
 import EditableSpan from '../EditableSpan/EditableSpan';
 
 export type TaskPropsType = {
@@ -21,18 +20,38 @@ export const Task = React.memo(({ taskId, todoListId }: TaskPropsType) => {
   const dispatch = useDispatch();
 
   const task = useSelector((state: AppRootStateType) =>
-    state.tasks[todoListId].find((t) => t.id === taskId)
+    state.tasks[todoListId]?.find((t) => t.id === taskId)
   );
 
-  if (!task) return null;
+  const onRemoveHandler = useCallback(() => {
+    if (task) {
+      dispatch(removeTaskAC(task.id, todoListId));
+    }
+  }, [dispatch, task, todoListId]);
 
-  const onRemoveHandler = () => dispatch(removeTaskAC(task.id, todoListId));
-  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeTaskStatusAC(todoListId, task.id, e.currentTarget.checked));
-  };
-  const onChangeTitleHandler = (newValue: string) => {
-    dispatch(changeTaskTitleAC(todoListId, task.id, newValue));
-  };
+  const onChangeStatusHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (task) {
+        dispatch(
+          changeTaskStatusAC(todoListId, task.id, e.currentTarget.checked)
+        );
+      }
+    },
+    [dispatch, task, todoListId]
+  );
+
+  const onChangeTitleHandler = useCallback(
+    (newValue: string) => {
+      if (task) {
+        dispatch(changeTaskTitleAC(todoListId, task.id, newValue));
+      }
+    },
+    [dispatch, task, todoListId]
+  );
+
+  if (!task) {
+    return <div>Task not found</div>;
+  }
 
   return (
     <li className={task.isDone ? styles.isDone : ''}>
