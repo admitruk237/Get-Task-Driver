@@ -8,7 +8,12 @@ import { Delete } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Task } from '../Task/Task';
 import { AppRootStateType } from '../../state/store';
-import { addTaskAC } from '../../state/tasks-reducer';
+import {
+  addTaskAC,
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+} from '../../state/tasks-reducer';
 
 export type TaskType = {
   id: string;
@@ -31,6 +36,8 @@ export const TodoList = React.memo((props: PropsType) => {
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     (state) => state.tasks[props.id]
   );
+
+  const task = tasks.find((t) => t.id === props.id);
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter('All', props.id),
@@ -74,6 +81,27 @@ export const TodoList = React.memo((props: PropsType) => {
     taskForTodoList = taskForTodoList.filter((t) => t.isDone === false);
   }
 
+  const onRemoveHandler = useCallback(
+    (taskId: string, todoListId: string) => {
+      dispatch(removeTaskAC(taskId, todoListId));
+    },
+    [dispatch, task, props.id]
+  );
+  const onChangeStatusHandler = useCallback(
+    (todoListId: string, taskId: string, e: ChangeEvent<HTMLInputElement>) => {
+      dispatch(changeTaskStatusAC(todoListId, taskId, e.currentTarget.checked));
+    },
+    [dispatch]
+  );
+  const onChangeTitleHandler = useCallback(
+    (newValue: string) => {
+      if (task) {
+        dispatch(changeTaskTitleAC(props.id, task.id, newValue));
+      }
+    },
+    [dispatch, task, props.id]
+  );
+
   return (
     <div>
       <h3>
@@ -85,7 +113,14 @@ export const TodoList = React.memo((props: PropsType) => {
       <AddItemForm addItem={addTask} />
       <ul className={styles.noDots}>
         {taskForTodoList.map((task) => (
-          <Task key={task.id} taskId={task.id} todoListId={props.id} />
+          <Task
+            task={task}
+            key={task.id}
+            todoListId={props.id}
+            removeTask={onRemoveHandler}
+            changeTaskStatus={onChangeStatusHandler}
+            changeTaskTitle={onChangeTitleHandler}
+          />
         ))}
       </ul>
       <div>
