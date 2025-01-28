@@ -7,6 +7,6 @@ export default {
   decorators: [ReduxStoreProviderDecorator],
 };
 
-export const EditableSpanBaseExample = () => {
+export const AppWithReduxBaseExample = () => {
   return <AppWithRedux />;
 };
