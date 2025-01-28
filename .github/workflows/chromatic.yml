@@ -19,4 +19,4 @@ jobs:
 
       - run: npm install
       - run: npm run build-storybook
-      - run: npx chromatic --project-token=<your-project-token>
+      - run: npx chromatic --project-token=chpt_fec5b20ef3bd79c
