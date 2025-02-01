@@ -21,6 +21,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './state/store';
+import TestRequest from './components/TestRequest';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -110,6 +111,7 @@ function AppWithRedux() {
           })}
         </Grid>
       </Container>
+      <TestRequest />
     </div>
   );
 }
