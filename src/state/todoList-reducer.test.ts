@@ -13,8 +13,20 @@ test('correct todo-list should be removed', () => {
   let todoListId2 = v1();
 
   const startState: Array<TodoListType> = [
-    { id: todoListId1, title: 'What to learn', filter: 'All' },
-    { id: todoListId2, title: 'What to buy', filter: 'All' },
+    {
+      id: todoListId1,
+      title: 'What to learn',
+      filter: 'All',
+      addedDate: '12.05.24',
+      order: 0,
+    },
+    {
+      id: todoListId2,
+      title: 'What to buy',
+      filter: 'All',
+      addedDate: '11.9.24',
+      order: 1,
+    },
   ];
 
   const endState = todoListReducer(startState, removeTodoListAC(todoListId1));
@@ -30,8 +42,20 @@ test('correct todo-list should be added', () => {
   let newTodoListTitle = 'New Todo List';
 
   const startState: Array<TodoListType> = [
-    { id: todoListId1, title: 'What to learn', filter: 'All' },
-    { id: todoListId2, title: 'What to buy', filter: 'All' },
+    {
+      id: todoListId1,
+      title: 'What to learn',
+      filter: 'All',
+      addedDate: '23.12.24',
+      order: 0,
+    },
+    {
+      id: todoListId2,
+      title: 'What to buy',
+      filter: 'All',
+      addedDate: '23.12.26',
+      order: 1,
+    },
   ];
 
   const endState = todoListReducer(startState, addTodoListAC(newTodoListTitle));
@@ -48,8 +72,20 @@ test('correct todo-list should change its name', () => {
   let newTodoListTitle = 'New Todo List';
 
   const startState: Array<TodoListType> = [
-    { id: todoListId1, title: 'What to learn', filter: 'All' },
-    { id: todoListId2, title: 'What to buy', filter: 'All' },
+    {
+      id: todoListId1,
+      title: 'What to learn',
+      filter: 'All',
+      addedDate: '23.12.24',
+      order: 0,
+    },
+    {
+      id: todoListId2,
+      title: 'What to buy',
+      filter: 'All',
+      addedDate: '23.12.27',
+      order: 1,
+    },
   ];
 
   const endState = todoListReducer(
@@ -68,8 +104,20 @@ test('correct filter of todoList should changed', () => {
   let newFilter: FilteredValuesType = 'Completed';
 
   const startState: Array<TodoListType> = [
-    { id: todoListId1, title: 'What to learn', filter: 'All' },
-    { id: todoListId2, title: 'What to buy', filter: 'All' },
+    {
+      id: todoListId1,
+      title: 'What to learn',
+      filter: 'All',
+      addedDate: '23.12.24',
+      order: 0,
+    },
+    {
+      id: todoListId2,
+      title: 'What to buy',
+      filter: 'All',
+      addedDate: '23.12.27',
+      order: 1,
+    },
   ];
 
   const endState = todoListReducer(

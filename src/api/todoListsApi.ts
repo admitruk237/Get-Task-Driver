@@ -1,20 +1,14 @@
 import axios from 'axios';
+import { TodoListType } from '../AppWithRedux';
 
-const settings = {
+export const settings = {
   withCredentials: true,
   headers: {
     'API-KEY': '649018f5-5484-4c71-abcc-dbbfa2a9bce4',
   },
 };
 
-export type TodoListType = {
-  id: string;
-  title: string;
-  addedDate: string;
-  order: number;
-};
-
-type CreateTypeTodoListResponseType = {
+export type CreateTypeTodoListResponseType = {
   resultCode: number;
   messages: Array<string>;
   data: {
@@ -31,7 +25,7 @@ export const todoListsApi = {
     return promise;
   },
   createTodoList(title: string) {
-    const promise = axios.post(
+    const promise = axios.post<CreateTypeTodoListResponseType>(
       'https://social-network.samuraijs.com/api/1.1/todo-lists',
       { title },
       settings

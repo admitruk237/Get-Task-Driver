@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { todoListsApi, TodoListType } from '../api/todoListsApi';
+import {
+  CreateTypeTodoListResponseType,
+  todoListsApi,
+} from '../api/todoListsApi';
+import { TodoListType } from '../AppWithRedux';
 
 const TestRequest = () => {
   const [data, setData] = useState<TodoListType[]>([]);
@@ -23,9 +27,23 @@ const TestRequest = () => {
       const response = await todoListsApi.createTodoList('New Todo List');
       const newTodo = response.data;
 
-      setData((prevData) => {
-        const exists = prevData.some((todo) => todo.id === newTodo.id);
+      setData((prevData: any[]) => {
+        const exists = prevData.some(
+          (todo) => todo.id === newTodo.data.item.id
+        );
         return exists ? prevData : [...prevData, newTodo]; // Додаємо, якщо ще немає
+      });
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const deleteTodoList = async (todoListId: string) => {
+    try {
+      await todoListsApi.deleteTodoList(todoListId);
+
+      setData((prevData: any[]) => {
+        return prevData.filter((todo) => todo.id !== todoListId); // Видаляємо
       });
     } catch (error: any) {
       setError(error.message);
@@ -37,14 +55,20 @@ const TestRequest = () => {
       <div className="get-todo-lists">
         <h3>Test API Request</h3>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+        <ul>
+          {data.map((todo) => (
+            <li key={todo.id}>
+              {todo.title}
+              <button onClick={() => deleteTodoList(todo.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="create-todo-list">
         <h3>Create Todo</h3>
         <button onClick={createTodoList}>Add New Todo</button>
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
       </div>
     </>
   );

@@ -24,20 +24,23 @@ export type ChangeTodolistFilterActionType = {
   filter: FilteredValuesType;
 };
 
+export type SetTodoListsActionType = {
+  type: 'SET-TODOLISTS';
+  todoLists: Array<TodoListType>;
+};
+
 type ActionsType =
   | RemoveTodolistActionType
   | AddTodolistActionType
   | ChangeTodolistTitleActionType
-  | ChangeTodolistFilterActionType;
+  | ChangeTodolistFilterActionType
+  | SetTodoListsActionType;
 
 export const todoListId1 = v1();
 
 export const todoListId2 = v1();
 
-const initialState: Array<TodoListType> = [
-  /*  { id: todoListId1, title: 'What to learn', filter: 'All' },
-  { id: todoListId2, title: 'What to buy', filter: 'All' }, */
-];
+const initialState: Array<TodoListType> = [];
 
 export const todoListReducer = (
   state: Array<TodoListType> = initialState,
@@ -53,6 +56,8 @@ export const todoListReducer = (
           id: action.id,
           filter: 'All',
           title: action.title,
+          addedDate: new Date().toISOString(),
+          order: 0,
         },
         ...state,
       ];
@@ -78,6 +83,9 @@ export const todoListReducer = (
           }
         }),
       ];
+    }
+    case 'SET-TODOLISTS': {
+      return action.todoLists;
     }
     default:
       return state;
@@ -114,4 +122,10 @@ export const changeTodolistFilterAC = (
     id: todolistId,
     filter: filter,
   };
+};
+
+export const setTodoListsAC = (
+  todoLists: TodoListType[]
+): SetTodoListsActionType => {
+  return { type: 'SET-TODOLISTS', todoLists };
 };

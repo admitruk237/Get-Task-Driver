@@ -28,13 +28,15 @@ type PropsType = {
   changeFilter: (value: FilteredValuesType, todoListId: string) => void;
   filter: FilteredValuesType;
   removeTodoList: (todoListId: string) => void;
+  addedDate: string;
+  order: number;
 };
 
 export const TodoList = React.memo((props: PropsType) => {
   const dispatch = useDispatch();
 
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
-    (state) => state.tasks[props.id]
+    (state) => state.tasks[props.id] || []
   );
 
   const task = tasks.find((t) => t.id === props.id);
