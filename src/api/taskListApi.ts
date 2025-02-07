@@ -1,40 +1,45 @@
-import axios from 'axios';
-import { settings } from './todoListsApi';
+import { instatce } from './todoListsApi';
+import { ResponseType } from './todoListsApi';
+
+type TaskType = {
+  description: string;
+  title: string;
+  completed: boolean;
+  status: number;
+  priority: number;
+  startDate: string;
+  deadline: string;
+  id: string;
+  todoListId: string;
+  order: number;
+  addedDate: string;
+};
+
+type GetTaskListsResponseType = {
+  items: TaskType[];
+  totalCount: number;
+  error: string | null;
+};
 
 export const taskListApi = {
   getTaskLists(todolistId: string) {
-    const promise = axios.get(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
-      settings
+    return instatce.get<GetTaskListsResponseType>(
+      `todo-lists/${todolistId}/tasks`
     );
-    return promise;
   },
   createTask(todolistId: string, title: string) {
-    const promise = axios.post(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
-      { title },
-      settings
-    );
-    return promise;
+    return instatce.post<{ item: TaskType }>(`todo-lists/${todolistId}/tasks`, {
+      title,
+    });
   },
   deleteTask(todolistId: string, taskId: string) {
-    const promise = axios.delete(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-      settings
+    return instatce.delete<ResponseType>(
+      `todo-lists/${todolistId}/tasks/${taskId}`
     );
-    return promise;
   },
   updateTask(todolistId: string, taskId: string, title: string) {
-    const promise = axios.put(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-      { title },
-      settings
-    );
-    return promise;
+    return instatce.put(`todo-lists/${todolistId}/tasks/${taskId}`, {
+      title,
+    });
   },
 };
-
-const createTask = taskListApi.createTask('1', 'New Task');
-
-const tasks = taskListApi.getTaskLists('1');
-console.log(tasks);

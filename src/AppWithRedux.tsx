@@ -160,7 +160,7 @@ function AppWithRedux() {
           })}
         </Grid>
       </Container>
-      {/*      <TestRequest /> */}
+      <TestRequest />
     </div>
   );
 }
