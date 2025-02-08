@@ -1,7 +1,7 @@
 import { instatce } from './todoListsApi';
 import { ResponseType } from './todoListsApi';
 
-type TaskType = {
+export type TaskType = {
   description: string;
   title: string;
   completed: boolean;
@@ -40,6 +40,11 @@ export const taskListApi = {
   updateTask(todolistId: string, taskId: string, title: string) {
     return instatce.put(`todo-lists/${todolistId}/tasks/${taskId}`, {
       title,
+    });
+  },
+  changeTaskStatus(todolistId: string, taskId: string, completed: boolean) {
+    return instatce.put(`todo-lists/${todolistId}/tasks/${taskId}`, {
+      completed,
     });
   },
 };

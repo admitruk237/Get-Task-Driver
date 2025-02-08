@@ -36,10 +36,6 @@ type ActionsType =
   | ChangeTodolistFilterActionType
   | SetTodoListsActionType;
 
-export const todoListId1 = v1();
-
-export const todoListId2 = v1();
-
 const initialState: Array<TodoListType> = [];
 
 export const todoListReducer = (

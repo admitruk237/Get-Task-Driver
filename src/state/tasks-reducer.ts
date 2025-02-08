@@ -3,8 +3,6 @@ import { TasksStateType } from '../AppWithRedux';
 import {
   AddTodolistActionType,
   RemoveTodolistActionType,
-  todoListId1,
-  todoListId2,
 } from './todoList-reducer';
 
 export type RemoveTaskActionType = {
@@ -23,7 +21,7 @@ export type ChangeTaskStatusType = {
   type: 'CHANGE-TASK-STATUS';
   todoListId: string;
   taskId: string;
-  isDone: boolean;
+  completed: boolean;
 };
 
 export type ChangeTaskSTitleType = {
@@ -41,19 +39,7 @@ type ActionsType =
   | RemoveTodolistActionType
   | AddTodolistActionType;
 
-const initialState: TasksStateType = {
-  [todoListId1]: [
-    { id: v1(), title: 'HTML&CSS', isDone: true },
-    { id: v1(), title: 'JS', isDone: true },
-    { id: v1(), title: 'ReactJs', isDone: false },
-    { id: v1(), title: 'Redux', isDone: false },
-    { id: v1(), title: 'GraphQL', isDone: false },
-  ],
-  [todoListId2]: [
-    { id: v1(), title: 'Book', isDone: false },
-    { id: v1(), title: 'Milk', isDone: false },
-  ],
-};
+const initialState: TasksStateType = {};
 
 export const tasksReducer = (
   state: TasksStateType = initialState,
@@ -72,7 +58,19 @@ export const tasksReducer = (
       return {
         ...state,
         [action.todoListId]: [
-          { id: v1(), title: action.title, isDone: false },
+          {
+            id: v1(),
+            title: action.title,
+            completed: false,
+            todoListId: action.todoListId,
+            order: 0,
+            addedDate: new Date().toISOString(),
+            startDate: '',
+            deadline: '',
+            priority: 0,
+            status: 0,
+            description: '',
+          },
           ...state[action.todoListId],
         ],
       };
@@ -83,7 +81,7 @@ export const tasksReducer = (
         ...state,
         [action.todoListId]: state[action.todoListId].map((task) =>
           task.id === action.taskId
-            ? { ...task, isDone: action.isDone } // Створюємо новий об'єкт задачі
+            ? { ...task, completed: action.completed } // Створюємо новий об'єкт задачі
             : task
         ),
       };
@@ -122,17 +120,17 @@ export const removeTaskAC = (
 
 export const addTaskAC = (
   todoListId: string,
-  newTodoListTitle: string
+  newTaskTitle: string
 ): AddTaksActionType => {
-  return { type: 'ADD-TASK', title: newTodoListTitle, todoListId: todoListId };
+  return { type: 'ADD-TASK', title: newTaskTitle, todoListId: todoListId };
 };
 
 export const changeTaskStatusAC = (
   todoListId: string,
   taskId: string,
-  isDone: boolean
+  completed: boolean
 ): ChangeTaskStatusType => {
-  return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, isDone };
+  return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, completed };
 };
 
 export const changeTaskTitleAC = (

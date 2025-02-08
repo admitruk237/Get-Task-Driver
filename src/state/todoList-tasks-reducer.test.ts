@@ -26,15 +26,75 @@ test('property with todoList should be deleted', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-                  { id: '1', title: 'HTML&CSS', isDone: true },
-                  { id: '2', title: 'JS', isDone: true },
-                  { id: '3', title: 'ReactJs', isDone: false },
+                  {
+                    id: '1', title: 'HTML&CSS', completed: true,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
+                  {
+                    id: '2', title: 'JS', completed: true,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
+                  {
+                    id: '3', title: 'ReactJs', completed: false,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
                 ],
     // prettier-ignore
     'todoListId2': [
-                  { id: '1', title: 'Book', isDone: false },
-                  { id: '2', title: 'Milk', isDone: true },
-                  { id: '3', title: 'Tea', isDone: false },
+                  {
+                    id: '1', title: 'Book', completed: false,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
+                  {
+                    id: '2', title: 'Milk', completed: true,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
+                  {
+                    id: '3', title: 'Tea', completed: false,
+                    description: '',
+                    status: 0,
+                    priority: 0,
+                    startDate: '',
+                    deadline: '',
+                    todoListId: '',
+                    order: 0,
+                    addedDate: ''
+                  },
                 ],
   };
 

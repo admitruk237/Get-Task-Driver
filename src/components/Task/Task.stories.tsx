@@ -35,7 +35,19 @@ export const TaskBaseExample = () => {
   return (
     <>
       <Task
-        task={{ id: '1', title: 'HTML', isDone: true }}
+        task={{
+          id: '1',
+          title: 'HTML',
+          completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: '',
+        }}
         todoListId={'todolistId1'}
         removeTask={removeTaskCallBack}
         changeTaskStatus={(todoListId, taskId, e) =>
@@ -46,7 +58,19 @@ export const TaskBaseExample = () => {
         }
       />
       <Task
-        task={{ id: '2', title: 'JS', isDone: false }}
+        task={{
+          id: '2',
+          title: 'JS',
+          completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: '',
+        }}
         todoListId={'todolistId2'}
         removeTask={removeTaskCallBack}
         changeTaskStatus={(todoListId, taskId, e) =>

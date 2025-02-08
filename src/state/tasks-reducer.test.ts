@@ -12,16 +12,76 @@ test('correct task should be deleted from  correct array', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-      { id: '1', title: 'HTML&CSS', isDone: true },
-      { id: '2', title: 'JS', isDone: true },
-      { id: '3', title: 'ReactJs', isDone: false },
-    ],
+        {
+          id: '1', title: 'HTML&CSS', completed: true,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '2', title: 'JS', completed: true,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '3', title: 'ReactJs', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+      ],
     // prettier-ignore
     'todoListId2': [
-      { id: '1', title: 'Book', isDone: false },
-      { id: '2', title: 'Milk', isDone: false },
-      { id: '3', title: 'Tea', isDone: false },
-    ],
+        {
+          id: '1', title: 'Book', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '2', title: 'Milk', completed: true,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '3', title: 'Tea', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+      ],
   };
 
   const action = removeTaskAC('2', 'todoListId2');
@@ -36,15 +96,75 @@ test('correct task should be added to the correct array', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-        { id: '1', title: 'HTML&CSS', isDone: true },
-        { id: '2', title: 'JS', isDone: true },
-        { id: '3', title: 'ReactJs', isDone: false },
+        {
+          id: '1', title: 'HTML&CSS', completed: true,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '2', title: 'JS', completed: true,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '3', title: 'ReactJs', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
       ],
     // prettier-ignore
     'todoListId2': [
-        { id: '1', title: 'Book', isDone: false },
-        { id: '2', title: 'Milk', isDone: false },
-        { id: '3', title: 'Tea', isDone: false },
+        {
+          id: '1', title: 'Book', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '2', title: 'Milk', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
+        {
+          id: '3', title: 'Tea', completed: false,
+          description: '',
+          status: 0,
+          priority: 0,
+          startDate: '',
+          deadline: '',
+          todoListId: '',
+          order: 0,
+          addedDate: ''
+        },
       ],
   };
 
@@ -55,47 +175,167 @@ test('correct task should be added to the correct array', () => {
 
   expect(endState['todoListId1'].length).toBe(3);
   expect(endState['todoListId2'].length).toBe(4);
-  expect(endState['todoListId2'][0].id).toBeDefined;
+  expect(endState['todoListId2'][0].id).toBeDefined();
   expect(endState['todoListId2'][0].title).toBe(newTaskTitle);
-  expect(endState['todoListId2'][0].isDone).toBe(false);
+  expect(endState['todoListId2'][0].completed).toBe(false);
 });
 
 test('status specified task should be changed', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-          { id: '1', title: 'HTML&CSS', isDone: true },
-          { id: '2', title: 'JS', isDone: true },
-          { id: '3', title: 'ReactJs', isDone: false },
+          {
+            id: '1', title: 'HTML&CSS', completed: true,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
+          {
+            id: '2', title: 'JS', completed: true,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
+          {
+            id: '3', title: 'ReactJs', completed: false,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
         ],
     // prettier-ignore
     'todoListId2': [
-          { id: '1', title: 'Book', isDone: false },
-          { id: '2', title: 'Milk', isDone: true },
-          { id: '3', title: 'Tea', isDone: false },
+          {
+            id: '1', title: 'Book', completed: false,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
+          {
+            id: '2', title: 'Milk', completed: true,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
+          {
+            id: '3', title: 'Tea', completed: false,
+            description: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            deadline: '',
+            todoListId: '',
+            order: 0,
+            addedDate: ''
+          },
         ],
   };
 
   const action = changeTaskStatusAC('todoListId1', '2', false);
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][1].isDone).toBe(false);
-  expect(endState['todoListId2'][1].isDone).toBe(true);
+  expect(endState['todoListId1'][1].completed).toBe(false);
+  expect(endState['todoListId2'][1].completed).toBe(true);
 });
 
 test('correct task from  correct array should change its name', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-            { id: '1', title: 'HTML&CSS', isDone: true },
-            { id: '2', title: 'JS', isDone: true },
-            { id: '3', title: 'ReactJs', isDone: false },
+            {
+              id: '1', title: 'HTML&CSS', completed: true,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
+            {
+              id: '2', title: 'JS', completed: true,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
+            {
+              id: '3', title: 'ReactJs', completed: false,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
           ],
     // prettier-ignore
     'todoListId2': [
-            { id: '1', title: 'Book', isDone: false },
-            { id: '2', title: 'Milk', isDone: true },
-            { id: '3', title: 'Tea', isDone: false },
+            {
+              id: '1', title: 'Book', completed: false,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
+            {
+              id: '2', title: 'Milk', completed: true,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
+            {
+              id: '3', title: 'Tea', completed: false,
+              description: '',
+              status: 0,
+              priority: 0,
+              startDate: '',
+              deadline: '',
+              todoListId: '',
+              order: 0,
+              addedDate: ''
+            },
           ],
   };
   const newTaskTitle = 'Pyton';
@@ -110,15 +350,75 @@ test('new array should be added when todo-list was added', () => {
   const startState: TasksStateType = {
     // prettier-ignore
     'todoListId1': [
-              { id: '1', title: 'HTML&CSS', isDone: true },
-              { id: '2', title: 'JS', isDone: true },
-              { id: '3', title: 'ReactJs', isDone: false },
+              {
+                id: '1', title: 'HTML&CSS', completed: true,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
+              {
+                id: '2', title: 'JS', completed: true,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
+              {
+                id: '3', title: 'ReactJs', completed: false,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
             ],
     // prettier-ignore
     'todoListId2': [
-              { id: '1', title: 'Book', isDone: false },
-              { id: '2', title: 'Milk', isDone: true },
-              { id: '3', title: 'Tea', isDone: false },
+              {
+                id: '1', title: 'Book', completed: false,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
+              {
+                id: '2', title: 'Milk', completed: true,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
+              {
+                id: '3', title: 'Tea', completed: false,
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 0,
+                addedDate: ''
+              },
             ],
   };
   const action = addTodoListAC('new Todo list');

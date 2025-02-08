@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import { FilteredValuesType } from '../../AppWithRedux';
 import AddItemForm from '../AddItemForm/AddItemForm';
@@ -14,12 +14,8 @@ import {
   changeTaskTitleAC,
   removeTaskAC,
 } from '../../state/tasks-reducer';
-
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
+import { taskListApi, TaskType } from '../../api/taskListApi';
+import { title } from 'process';
 
 type PropsType = {
   id: string;
@@ -33,7 +29,19 @@ type PropsType = {
 };
 
 export const TodoList = React.memo((props: PropsType) => {
+  const [error, setError] = useState<string | null>(null);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await taskListApi.getTaskLists(props.id);
+      } catch (error: any) {
+        setError(error.message);
+      }
+    };
+  }, [dispatch]);
 
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     (state) => state.tasks[props.id] || []
@@ -60,15 +68,25 @@ export const TodoList = React.memo((props: PropsType) => {
   };
 
   const changeTodoListTitle = useCallback(
-    (newTitle: string) => {
-      props.changeTodoListTitle(props.id, newTitle);
+    async (newTitle: string) => {
+      try {
+        await taskListApi.updateTask(props.id, task?.id || '', newTitle);
+        props.changeTodoListTitle(props.id, newTitle);
+      } catch (error: any) {
+        setError(error.message);
+      }
     },
-    [props.changeTodoListTitle, props.id]
+    [props.id, props.changeTodoListTitle, task]
   );
 
   const addTask = useCallback(
-    (title: string) => {
-      dispatch(addTaskAC(props.id, title));
+    async (title: string) => {
+      try {
+        const response = await taskListApi.createTask(props.id, title);
+        dispatch(addTaskAC(title, props.id));
+      } catch (error: any) {
+        setError(error.message);
+      }
     },
     [dispatch, props.id]
   );
@@ -76,11 +94,11 @@ export const TodoList = React.memo((props: PropsType) => {
   let taskForTodoList = tasks;
 
   if (props.filter === 'Completed') {
-    taskForTodoList = taskForTodoList.filter((t) => t.isDone === true);
+    taskForTodoList = taskForTodoList.filter((t) => t.completed === true);
   }
 
   if (props.filter === 'Active') {
-    taskForTodoList = taskForTodoList.filter((t) => t.isDone === false);
+    taskForTodoList = taskForTodoList.filter((t) => t.completed === false);
   }
 
   const onRemoveHandler = useCallback(
@@ -90,15 +108,33 @@ export const TodoList = React.memo((props: PropsType) => {
     [dispatch, task, props.id]
   );
   const onChangeStatusHandler = useCallback(
-    (todoListId: string, taskId: string, e: ChangeEvent<HTMLInputElement>) => {
-      dispatch(changeTaskStatusAC(todoListId, taskId, e.currentTarget.checked));
+    async (
+      todoListId: string,
+      taskId: string,
+      e: ChangeEvent<HTMLInputElement>
+    ) => {
+      try {
+        await taskListApi.changeTaskStatus(
+          todoListId,
+          taskId,
+          e.currentTarget.checked
+        );
+        dispatch(
+          changeTaskStatusAC(todoListId, taskId, e.currentTarget.checked)
+        );
+      } catch (error: any) {
+        setError(error.message);
+      }
     },
     [dispatch]
   );
   const onChangeTitleHandler = useCallback(
-    (newValue: string) => {
-      if (task) {
-        dispatch(changeTaskTitleAC(props.id, task.id, newValue));
+    async (todoListId: string, taskId: string, newValue: string) => {
+      try {
+        await taskListApi.updateTask(todoListId, taskId, newValue);
+        dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
+      } catch (error: any) {
+        setError(error.message);
       }
     },
     [dispatch, task, props.id]

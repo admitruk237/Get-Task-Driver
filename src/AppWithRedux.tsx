@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import { TodoList, TaskType } from './components/TodoList/TodoList';
+import { TodoList } from './components/TodoList/TodoList';
 import AddItemForm from './components/AddItemForm/AddItemForm';
 import {
   AppBar,
@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './state/store';
 import TestRequest from './components/TestRequest';
 import { todoListsApi } from './api/todoListsApi';
+import { TaskType } from './api/taskListApi';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -160,7 +161,7 @@ function AppWithRedux() {
           })}
         </Grid>
       </Container>
-      <TestRequest />
+      {/*  <TestRequest /> */}
     </div>
   );
 }
