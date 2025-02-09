@@ -168,15 +168,27 @@ test('correct task should be added to the correct array', () => {
       ],
   };
 
-  const newTaskTitle = 'juice';
+  const newTask = {
+    id: '4',
+    title: 'Coffee',
+    completed: false,
+    description: '',
+    status: 0,
+    priority: 0,
+    startDate: '',
+    deadline: '',
+    todoListId: '',
+    order: 0,
+    addedDate: '',
+  };
 
-  const action = addTaskAC('todoListId2', newTaskTitle);
+  const action = addTaskAC('todoListId2', newTask);
   const endState = tasksReducer(startState, action);
 
   expect(endState['todoListId1'].length).toBe(3);
   expect(endState['todoListId2'].length).toBe(4);
   expect(endState['todoListId2'][0].id).toBeDefined();
-  expect(endState['todoListId2'][0].title).toBe(newTaskTitle);
+  expect(endState['todoListId2'][0].title).toBe(newTask.title);
   expect(endState['todoListId2'][0].completed).toBe(false);
 });
 

@@ -4,6 +4,13 @@ import {
   AddTodolistActionType,
   RemoveTodolistActionType,
 } from './todoList-reducer';
+import { TaskType } from '../api/taskListApi';
+
+export type SetTaskActionType = {
+  type: 'SET-TASKS';
+  tasks: TaskType[];
+  todoListId: string;
+};
 
 export type RemoveTaskActionType = {
   type: 'REMOVE-TASK';
@@ -13,7 +20,7 @@ export type RemoveTaskActionType = {
 
 export type AddTaksActionType = {
   type: 'ADD-TASK';
-  title: string;
+  task: TaskType;
   todoListId: string;
 };
 
@@ -32,6 +39,7 @@ export type ChangeTaskSTitleType = {
 };
 
 type ActionsType =
+  | SetTaskActionType
   | RemoveTaskActionType
   | AddTaksActionType
   | ChangeTaskStatusType
@@ -46,6 +54,9 @@ export const tasksReducer = (
   action: ActionsType
 ): TasksStateType => {
   switch (action.type) {
+    case 'SET-TASKS': {
+      return { ...state, [action.todoListId]: action.tasks };
+    }
     case 'REMOVE-TASK': {
       return {
         ...state,
@@ -60,7 +71,7 @@ export const tasksReducer = (
         [action.todoListId]: [
           {
             id: v1(),
-            title: action.title,
+            title: action.task.title,
             completed: false,
             todoListId: action.todoListId,
             order: 0,
@@ -111,18 +122,24 @@ export const tasksReducer = (
   }
 };
 
+export const setTasksAC = (
+  tasks: TaskType[],
+  todoListId: string
+): SetTaskActionType => {
+  return { type: 'SET-TASKS', tasks, todoListId } as const;
+};
+
 export const removeTaskAC = (
   taskId: string,
   todoListId: string
 ): RemoveTaskActionType => {
   return { type: 'REMOVE-TASK', todoListId, taskId };
 };
-
 export const addTaskAC = (
   todoListId: string,
-  newTaskTitle: string
+  task: TaskType
 ): AddTaksActionType => {
-  return { type: 'ADD-TASK', title: newTaskTitle, todoListId: todoListId };
+  return { type: 'ADD-TASK', task, todoListId: todoListId };
 };
 
 export const changeTaskStatusAC = (

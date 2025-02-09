@@ -13,9 +13,9 @@ import {
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
+  setTasksAC,
 } from '../../state/tasks-reducer';
 import { taskListApi, TaskType } from '../../api/taskListApi';
-import { title } from 'process';
 
 type PropsType = {
   id: string;
@@ -37,17 +37,20 @@ export const TodoList = React.memo((props: PropsType) => {
     const fetchData = async () => {
       try {
         const response = await taskListApi.getTaskLists(props.id);
+        dispatch(setTasksAC(response.data.items, props.id));
       } catch (error: any) {
         setError(error.message);
       }
     };
-  }, [dispatch]);
+    fetchData();
+  }, [dispatch, props.id]);
 
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     (state) => state.tasks[props.id] || []
   );
 
   const task = tasks.find((t) => t.id === props.id);
+  //console.log(tasks);
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter('All', props.id),
@@ -83,7 +86,14 @@ export const TodoList = React.memo((props: PropsType) => {
     async (title: string) => {
       try {
         const response = await taskListApi.createTask(props.id, title);
-        dispatch(addTaskAC(title, props.id));
+        console.log('API Response:', response); // Додаємо логування
+
+        if (response.data) {
+          // Перевіряємо, чи є дані у відповіді
+          dispatch(addTaskAC(props.id, response.data.item));
+        } else {
+          setError('Не вдалося додати завдання.');
+        }
       } catch (error: any) {
         setError(error.message);
       }

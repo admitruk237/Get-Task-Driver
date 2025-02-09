@@ -60,8 +60,6 @@ function AppWithRedux() {
     (state) => state.todoList || []
   );
 
-  console.log(todoLists);
-
   const changeFilter = useCallback(
     (value: FilteredValuesType, todoListId: string) => {
       dispatch(changeTodolistFilterAC(todoListId, value));
