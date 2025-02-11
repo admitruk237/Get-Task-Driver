@@ -49,8 +49,7 @@ export const TodoList = React.memo((props: PropsType) => {
     (state) => state.tasks[props.id] || []
   );
 
-  const task = tasks.find((t) => t.id === props.id);
-  //console.log(tasks);
+  console.log(tasks);
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter('All', props.id),
@@ -71,29 +70,38 @@ export const TodoList = React.memo((props: PropsType) => {
   };
 
   const changeTodoListTitle = useCallback(
-    async (newTitle: string) => {
+    async (taskId: string, newTitle: string) => {
       try {
-        await taskListApi.updateTask(props.id, task?.id || '', newTitle);
-        props.changeTodoListTitle(props.id, newTitle);
+        await taskListApi.updateTask(props.id, taskId, newTitle); // Виклик API для ToDo List
+        props.changeTodoListTitle(props.id, newTitle); // Оновлення в Redux або локальному стані
       } catch (error: any) {
         setError(error.message);
       }
     },
-    [props.id, props.changeTodoListTitle, task]
+    [props.id, props.changeTodoListTitle]
   );
 
   const addTask = useCallback(
     async (title: string) => {
+      const newTask = {
+        id: '4',
+        title: title,
+        completed: false,
+        description: '',
+        status: 0,
+        priority: 0,
+        startDate: '',
+        deadline: '',
+        todoListId: '',
+        order: 0,
+        addedDate: '',
+      }; // "temp-id" - це тимчасовий ідентифікатор, якщо API не повертає id одразу.
+      dispatch(addTaskAC(props.id, newTask));
       try {
         const response = await taskListApi.createTask(props.id, title);
-        console.log('API Response:', response); // Додаємо логування
+        //console.log('API Response:', response); // Додаємо логування
 
-        if (response.data) {
-          // Перевіряємо, чи є дані у відповіді
-          dispatch(addTaskAC(props.id, response.data.item));
-        } else {
-          setError('Не вдалося додати завдання.');
-        }
+        dispatch(addTaskAC(props.id, response.data.item));
       } catch (error: any) {
         setError(error.message);
       }
@@ -115,7 +123,7 @@ export const TodoList = React.memo((props: PropsType) => {
     (taskId: string, todoListId: string) => {
       dispatch(removeTaskAC(taskId, todoListId));
     },
-    [dispatch, task, props.id]
+    [dispatch, props.id]
   );
   const onChangeStatusHandler = useCallback(
     async (
@@ -147,29 +155,34 @@ export const TodoList = React.memo((props: PropsType) => {
         setError(error.message);
       }
     },
-    [dispatch, task, props.id]
+    [dispatch, props.id]
   );
 
   return (
     <div>
       <h3>
-        <EditableSpan title={props.title} onChange={changeTodoListTitle} />{' '}
+        <EditableSpan
+          title={props.title}
+          onChange={(newTitle) => changeTodoListTitle(props.id, newTitle)}
+        />{' '}
         <IconButton aria-label="delete" onClick={deleteTodoListHandler}>
           <Delete />
         </IconButton>
       </h3>
       <AddItemForm addItem={addTask} />
       <ul className={styles.noDots}>
-        {taskForTodoList.map((task) => (
-          <Task
-            task={task}
-            key={task.id}
-            todoListId={props.id}
-            removeTask={onRemoveHandler}
-            changeTaskStatus={onChangeStatusHandler}
-            changeTaskTitle={onChangeTitleHandler}
-          />
-        ))}
+        {taskForTodoList?.map((task) =>
+          task && task.id ? (
+            <Task
+              task={task}
+              key={task.id}
+              todoListId={props.id}
+              removeTask={onRemoveHandler}
+              changeTaskStatus={onChangeStatusHandler}
+              changeTaskTitle={onChangeTitleHandler}
+            />
+          ) : null
+        )}
       </ul>
       <div>
         <Button

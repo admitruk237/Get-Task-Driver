@@ -68,22 +68,7 @@ export const tasksReducer = (
     case 'ADD-TASK': {
       return {
         ...state,
-        [action.todoListId]: [
-          {
-            id: v1(),
-            title: action.task.title,
-            completed: false,
-            todoListId: action.todoListId,
-            order: 0,
-            addedDate: new Date().toISOString(),
-            startDate: '',
-            deadline: '',
-            priority: 0,
-            status: 0,
-            description: '',
-          },
-          ...state[action.todoListId],
-        ],
+        [action.todoListId]: [action.task, ...state[action.todoListId]],
       };
     }
 
