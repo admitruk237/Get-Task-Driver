@@ -4,8 +4,8 @@ import { ResponseType } from './todoListsApi';
 export type TaskType = {
   description: string;
   title: string;
-  completed: boolean;
-  status: number;
+
+  status: boolean;
   priority: number;
   startDate: string;
   deadline: string;
@@ -42,9 +42,7 @@ export const taskListApi = {
       title,
     });
   },
-  changeTaskStatus(todolistId: string, taskId: string, completed: boolean) {
-    return instatce.put(`todo-lists/${todolistId}/tasks/${taskId}`, {
-      completed,
-    });
+  changeTaskStatus(todolistId: string, taskId: string, task: TaskType) {
+    return instatce.put(`todo-lists/${todolistId}/tasks/${taskId}`, task);
   },
 };

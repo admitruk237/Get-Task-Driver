@@ -38,9 +38,8 @@ export const TaskBaseExample = () => {
         task={{
           id: '1',
           title: 'HTML',
-          completed: false,
+          status: false,
           description: '',
-          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -61,9 +60,8 @@ export const TaskBaseExample = () => {
         task={{
           id: '2',
           title: 'JS',
-          completed: false,
+          status: false,
           description: '',
-          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',

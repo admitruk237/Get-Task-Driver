@@ -16,6 +16,7 @@ import {
   setTasksAC,
 } from '../../state/tasks-reducer';
 import { taskListApi, TaskType } from '../../api/taskListApi';
+import { v1 } from 'uuid';
 
 type PropsType = {
   id: string;
@@ -48,8 +49,6 @@ export const TodoList = React.memo((props: PropsType) => {
   const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     (state) => state.tasks[props.id] || []
   );
-
-  console.log(tasks);
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter('All', props.id),
@@ -84,22 +83,21 @@ export const TodoList = React.memo((props: PropsType) => {
   const addTask = useCallback(
     async (title: string) => {
       const newTask = {
-        id: '4',
+        id: v1(),
         title: title,
-        completed: false,
+
         description: '',
-        status: 0,
+        status: false,
         priority: 0,
         startDate: '',
         deadline: '',
         todoListId: '',
         order: 0,
         addedDate: '',
-      }; // "temp-id" - це тимчасовий ідентифікатор, якщо API не повертає id одразу.
+      };
       dispatch(addTaskAC(props.id, newTask));
       try {
         const response = await taskListApi.createTask(props.id, title);
-        //console.log('API Response:', response); // Додаємо логування
 
         dispatch(addTaskAC(props.id, response.data.item));
       } catch (error: any) {
@@ -112,19 +110,25 @@ export const TodoList = React.memo((props: PropsType) => {
   let taskForTodoList = tasks;
 
   if (props.filter === 'Completed') {
-    taskForTodoList = taskForTodoList.filter((t) => t.completed === true);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === true);
   }
 
   if (props.filter === 'Active') {
-    taskForTodoList = taskForTodoList.filter((t) => t.completed === false);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === false);
   }
 
   const onRemoveHandler = useCallback(
-    (taskId: string, todoListId: string) => {
-      dispatch(removeTaskAC(taskId, todoListId));
+    async (taskId: string, todolistId: string) => {
+      try {
+        await taskListApi.deleteTask(todolistId, taskId);
+        dispatch(removeTaskAC(taskId, todolistId));
+      } catch (error: any) {
+        setError(error.message);
+      }
     },
-    [dispatch, props.id]
+    [dispatch]
   );
+
   const onChangeStatusHandler = useCallback(
     async (
       todoListId: string,
@@ -132,20 +136,25 @@ export const TodoList = React.memo((props: PropsType) => {
       e: ChangeEvent<HTMLInputElement>
     ) => {
       try {
-        await taskListApi.changeTaskStatus(
-          todoListId,
-          taskId,
-          e.currentTarget.checked
-        );
-        dispatch(
-          changeTaskStatusAC(todoListId, taskId, e.currentTarget.checked)
-        );
+        const currentTask = tasks.find((task) => task.id === taskId);
+        if (!currentTask) return;
+
+        const updateTask = {
+          ...currentTask,
+
+          status: e.currentTarget.checked,
+        };
+
+        await taskListApi.changeTaskStatus(todoListId, taskId, updateTask);
+
+        dispatch(changeTaskStatusAC(todoListId, taskId, updateTask.status));
       } catch (error: any) {
         setError(error.message);
       }
     },
-    [dispatch]
+    [dispatch, tasks]
   );
+
   const onChangeTitleHandler = useCallback(
     async (todoListId: string, taskId: string, newValue: string) => {
       try {

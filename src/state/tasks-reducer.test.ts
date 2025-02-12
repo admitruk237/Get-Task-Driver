@@ -13,9 +13,9 @@ test('correct task should be deleted from  correct array', () => {
     // prettier-ignore
     'todoListId1': [
         {
-          id: '1', title: 'HTML&CSS', completed: true,
+          id: '1', title: 'HTML&CSS', 
           description: '',
-          status: 0,
+          status: true,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -24,9 +24,9 @@ test('correct task should be deleted from  correct array', () => {
           addedDate: ''
         },
         {
-          id: '2', title: 'JS', completed: true,
+          id: '2', title: 'JS', 
           description: '',
-          status: 0,
+          status: true,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -35,9 +35,9 @@ test('correct task should be deleted from  correct array', () => {
           addedDate: ''
         },
         {
-          id: '3', title: 'ReactJs', completed: false,
+          id: '3', title: 'ReactJs',
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -49,9 +49,9 @@ test('correct task should be deleted from  correct array', () => {
     // prettier-ignore
     'todoListId2': [
         {
-          id: '1', title: 'Book', completed: false,
+          id: '1', title: 'Book', 
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -60,9 +60,9 @@ test('correct task should be deleted from  correct array', () => {
           addedDate: ''
         },
         {
-          id: '2', title: 'Milk', completed: true,
+          id: '2', title: 'Milk', 
           description: '',
-          status: 0,
+          status: true,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -71,9 +71,9 @@ test('correct task should be deleted from  correct array', () => {
           addedDate: ''
         },
         {
-          id: '3', title: 'Tea', completed: false,
+          id: '3', title: 'Tea', 
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -97,9 +97,9 @@ test('correct task should be added to the correct array', () => {
     // prettier-ignore
     'todoListId1': [
         {
-          id: '1', title: 'HTML&CSS', completed: true,
+          id: '1', title: 'HTML&CSS', 
           description: '',
-          status: 0,
+          status: true,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -108,9 +108,9 @@ test('correct task should be added to the correct array', () => {
           addedDate: ''
         },
         {
-          id: '2', title: 'JS', completed: true,
+          id: '2', title: 'JS', 
           description: '',
-          status: 0,
+          status: true,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -119,9 +119,9 @@ test('correct task should be added to the correct array', () => {
           addedDate: ''
         },
         {
-          id: '3', title: 'ReactJs', completed: false,
+          id: '3', title: 'ReactJs',
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -133,9 +133,9 @@ test('correct task should be added to the correct array', () => {
     // prettier-ignore
     'todoListId2': [
         {
-          id: '1', title: 'Book', completed: false,
+          id: '1', title: 'Book', 
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -144,9 +144,9 @@ test('correct task should be added to the correct array', () => {
           addedDate: ''
         },
         {
-          id: '2', title: 'Milk', completed: false,
+          id: '2', title: 'Milk', 
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -155,9 +155,9 @@ test('correct task should be added to the correct array', () => {
           addedDate: ''
         },
         {
-          id: '3', title: 'Tea', completed: false,
+          id: '3', title: 'Tea', 
           description: '',
-          status: 0,
+          status: false,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -171,9 +171,8 @@ test('correct task should be added to the correct array', () => {
   const newTask = {
     id: '4',
     title: 'Coffee',
-    completed: false,
     description: '',
-    status: 0,
+    status: false,
     priority: 0,
     startDate: '',
     deadline: '',
@@ -189,7 +188,7 @@ test('correct task should be added to the correct array', () => {
   expect(endState['todoListId2'].length).toBe(4);
   expect(endState['todoListId2'][0].id).toBeDefined();
   expect(endState['todoListId2'][0].title).toBe(newTask.title);
-  expect(endState['todoListId2'][0].completed).toBe(false);
+  expect(endState['todoListId2'][0].status).toBe(false);
 });
 
 test('status specified task should be changed', () => {
@@ -197,9 +196,9 @@ test('status specified task should be changed', () => {
     // prettier-ignore
     'todoListId1': [
           {
-            id: '1', title: 'HTML&CSS', completed: true,
+            id: '1', title: 'HTML&CSS', 
             description: '',
-            status: 0,
+            status: true,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -208,9 +207,9 @@ test('status specified task should be changed', () => {
             addedDate: ''
           },
           {
-            id: '2', title: 'JS', completed: true,
+            id: '2', title: 'JS', 
             description: '',
-            status: 0,
+            status: true,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -219,9 +218,9 @@ test('status specified task should be changed', () => {
             addedDate: ''
           },
           {
-            id: '3', title: 'ReactJs', completed: false,
+            id: '3', title: 'ReactJs',
             description: '',
-            status: 0,
+            status: false,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -233,9 +232,9 @@ test('status specified task should be changed', () => {
     // prettier-ignore
     'todoListId2': [
           {
-            id: '1', title: 'Book', completed: false,
+            id: '1', title: 'Book', 
             description: '',
-            status: 0,
+            status: false,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -244,9 +243,9 @@ test('status specified task should be changed', () => {
             addedDate: ''
           },
           {
-            id: '2', title: 'Milk', completed: true,
+            id: '2', title: 'Milk', 
             description: '',
-            status: 0,
+            status: true,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -255,9 +254,9 @@ test('status specified task should be changed', () => {
             addedDate: ''
           },
           {
-            id: '3', title: 'Tea', completed: false,
+            id: '3', title: 'Tea', 
             description: '',
-            status: 0,
+            status: false,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -271,8 +270,8 @@ test('status specified task should be changed', () => {
   const action = changeTaskStatusAC('todoListId1', '2', false);
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][1].completed).toBe(false);
-  expect(endState['todoListId2'][1].completed).toBe(true);
+  expect(endState['todoListId1'][2].status).toBe(false);
+  expect(endState['todoListId2'][1].status).toBe(true);
 });
 
 test('correct task from  correct array should change its name', () => {
@@ -280,9 +279,9 @@ test('correct task from  correct array should change its name', () => {
     // prettier-ignore
     'todoListId1': [
             {
-              id: '1', title: 'HTML&CSS', completed: true,
+              id: '1', title: 'HTML&CSS', 
               description: '',
-              status: 0,
+              status: true,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -291,9 +290,9 @@ test('correct task from  correct array should change its name', () => {
               addedDate: ''
             },
             {
-              id: '2', title: 'JS', completed: true,
+              id: '2', title: 'JS',
               description: '',
-              status: 0,
+              status: true,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -302,9 +301,9 @@ test('correct task from  correct array should change its name', () => {
               addedDate: ''
             },
             {
-              id: '3', title: 'ReactJs', completed: false,
+              id: '3', title: 'ReactJs', 
               description: '',
-              status: 0,
+              status: false,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -316,9 +315,9 @@ test('correct task from  correct array should change its name', () => {
     // prettier-ignore
     'todoListId2': [
             {
-              id: '1', title: 'Book', completed: false,
+              id: '1', title: 'Book', 
               description: '',
-              status: 0,
+              status: false,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -327,9 +326,9 @@ test('correct task from  correct array should change its name', () => {
               addedDate: ''
             },
             {
-              id: '2', title: 'Milk', completed: true,
+              id: '2', title: 'Milk', 
               description: '',
-              status: 0,
+              status: true,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -338,9 +337,9 @@ test('correct task from  correct array should change its name', () => {
               addedDate: ''
             },
             {
-              id: '3', title: 'Tea', completed: false,
+              id: '3', title: 'Tea',
               description: '',
-              status: 0,
+              status: false,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -363,9 +362,9 @@ test('new array should be added when todo-list was added', () => {
     // prettier-ignore
     'todoListId1': [
               {
-                id: '1', title: 'HTML&CSS', completed: true,
+                id: '1', title: 'HTML&CSS', 
                 description: '',
-                status: 0,
+                status: true,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -374,9 +373,9 @@ test('new array should be added when todo-list was added', () => {
                 addedDate: ''
               },
               {
-                id: '2', title: 'JS', completed: true,
+                id: '2', title: 'JS', 
                 description: '',
-                status: 0,
+                status: true,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -385,9 +384,9 @@ test('new array should be added when todo-list was added', () => {
                 addedDate: ''
               },
               {
-                id: '3', title: 'ReactJs', completed: false,
+                id: '3', title: 'ReactJs', 
                 description: '',
-                status: 0,
+                status: false,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -399,9 +398,9 @@ test('new array should be added when todo-list was added', () => {
     // prettier-ignore
     'todoListId2': [
               {
-                id: '1', title: 'Book', completed: false,
+                id: '1', title: 'Book', 
                 description: '',
-                status: 0,
+                status: false,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -410,9 +409,9 @@ test('new array should be added when todo-list was added', () => {
                 addedDate: ''
               },
               {
-                id: '2', title: 'Milk', completed: true,
+                id: '2', title: 'Milk', 
                 description: '',
-                status: 0,
+                status: true,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -421,9 +420,9 @@ test('new array should be added when todo-list was added', () => {
                 addedDate: ''
               },
               {
-                id: '3', title: 'Tea', completed: false,
+                id: '3', title: 'Tea', 
                 description: '',
-                status: 0,
+                status: false,
                 priority: 0,
                 startDate: '',
                 deadline: '',

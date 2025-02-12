@@ -28,13 +28,13 @@ export const Task = React.memo((props: TaskPropsType) => {
   };
 
   return (
-    <li className={props.task.completed ? styles.isDone : ''}>
+    <li className={props.task.status ? styles.isDone : ''}>
       <label className={styles.label}>
         <Checkbox
           onChange={(e) =>
             props.changeTaskStatus(props.todoListId, props.task.id, e)
           }
-          checked={props.task.completed}
+          checked={props.task.status}
           color="success"
         />
         <EditableSpan

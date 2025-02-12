@@ -28,7 +28,7 @@ export type ChangeTaskStatusType = {
   type: 'CHANGE-TASK-STATUS';
   todoListId: string;
   taskId: string;
-  completed: boolean;
+  status: boolean;
 };
 
 export type ChangeTaskSTitleType = {
@@ -76,9 +76,7 @@ export const tasksReducer = (
       return {
         ...state,
         [action.todoListId]: state[action.todoListId].map((task) =>
-          task.id === action.taskId
-            ? { ...task, completed: action.completed } // Створюємо новий об'єкт задачі
-            : task
+          task.id === action.taskId ? { ...task, status: action.status } : task
         ),
       };
     }
@@ -130,9 +128,9 @@ export const addTaskAC = (
 export const changeTaskStatusAC = (
   todoListId: string,
   taskId: string,
-  completed: boolean
+  status: boolean
 ): ChangeTaskStatusType => {
-  return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, completed };
+  return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, status };
 };
 
 export const changeTaskTitleAC = (

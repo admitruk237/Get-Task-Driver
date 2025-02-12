@@ -27,9 +27,9 @@ test('property with todoList should be deleted', () => {
     // prettier-ignore
     'todoListId1': [
                   {
-                    id: '1', title: 'HTML&CSS', completed: true,
+                    id: '1', title: 'HTML&CSS',  
                     description: '',
-                    status: 0,
+                    status: true,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -38,9 +38,9 @@ test('property with todoList should be deleted', () => {
                     addedDate: ''
                   },
                   {
-                    id: '2', title: 'JS', completed: true,
+                    id: '2', title: 'JS',  
                     description: '',
-                    status: 0,
+                    status: true,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -49,9 +49,9 @@ test('property with todoList should be deleted', () => {
                     addedDate: ''
                   },
                   {
-                    id: '3', title: 'ReactJs', completed: false,
+                    id: '3', title: 'ReactJs', 
                     description: '',
-                    status: 0,
+                    status: false,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -63,9 +63,9 @@ test('property with todoList should be deleted', () => {
     // prettier-ignore
     'todoListId2': [
                   {
-                    id: '1', title: 'Book', completed: false,
+                    id: '1', title: 'Book',  
                     description: '',
-                    status: 0,
+                    status: false,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -74,9 +74,9 @@ test('property with todoList should be deleted', () => {
                     addedDate: ''
                   },
                   {
-                    id: '2', title: 'Milk', completed: true,
+                    id: '2', title: 'Milk',  
                     description: '',
-                    status: 0,
+                    status: true,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -85,9 +85,9 @@ test('property with todoList should be deleted', () => {
                     addedDate: ''
                   },
                   {
-                    id: '3', title: 'Tea', completed: false,
+                    id: '3', title: 'Tea',  
                     description: '',
-                    status: 0,
+                    status: false,
                     priority: 0,
                     startDate: '',
                     deadline: '',
