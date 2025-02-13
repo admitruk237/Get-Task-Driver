@@ -28,25 +28,27 @@ export const Task = React.memo((props: TaskPropsType) => {
   };
 
   return (
-    <li className={props.task.status ? styles.isDone : ''}>
-      <label className={styles.label}>
-        <Checkbox
-          onChange={(e) =>
-            props.changeTaskStatus(props.todoListId, props.task.id, e)
-          }
-          checked={props.task.status}
-          color="success"
-        />
-        <EditableSpan
-          title={props.task.title}
-          onChange={(value) =>
-            props.changeTaskTitle(props.todoListId, props.task.id, value)
-          }
-        />
-        <IconButton aria-label="delete" onClick={onRemoveHandler}>
-          <Delete />
-        </IconButton>
-      </label>
-    </li>
+    <div>
+      <li className={props.task.status ? styles.isDone : ''}>
+        <label className={styles.label}>
+          <Checkbox
+            onChange={(e) =>
+              props.changeTaskStatus(props.todoListId, props.task.id, e)
+            }
+            checked={!!props.task.status}
+            color="success"
+          />
+          <EditableSpan
+            title={props.task.title}
+            onChange={(value) =>
+              props.changeTaskTitle(props.todoListId, props.task.id, value)
+            }
+          />
+          <IconButton aria-label="delete" onClick={onRemoveHandler}>
+            <Delete />
+          </IconButton>
+        </label>
+      </li>
+    </div>
   );
 });

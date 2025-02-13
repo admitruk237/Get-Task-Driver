@@ -15,7 +15,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '1', title: 'HTML&CSS', 
           description: '',
-          status: true,
+          status: 1,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -26,7 +26,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '2', title: 'JS', 
           description: '',
-          status: true,
+          status: 1,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -37,7 +37,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '3', title: 'ReactJs',
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -51,7 +51,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '1', title: 'Book', 
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -62,7 +62,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '2', title: 'Milk', 
           description: '',
-          status: true,
+          status: 1,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -73,7 +73,7 @@ test('correct task should be deleted from  correct array', () => {
         {
           id: '3', title: 'Tea', 
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -99,7 +99,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '1', title: 'HTML&CSS', 
           description: '',
-          status: true,
+          status: 1,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -110,7 +110,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '2', title: 'JS', 
           description: '',
-          status: true,
+          status: 1,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -121,7 +121,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '3', title: 'ReactJs',
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -135,7 +135,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '1', title: 'Book', 
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -146,7 +146,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '2', title: 'Milk', 
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -157,7 +157,7 @@ test('correct task should be added to the correct array', () => {
         {
           id: '3', title: 'Tea', 
           description: '',
-          status: false,
+          status: 0,
           priority: 0,
           startDate: '',
           deadline: '',
@@ -172,7 +172,7 @@ test('correct task should be added to the correct array', () => {
     id: '4',
     title: 'Coffee',
     description: '',
-    status: false,
+    status: 0,
     priority: 0,
     startDate: '',
     deadline: '',
@@ -188,7 +188,7 @@ test('correct task should be added to the correct array', () => {
   expect(endState['todoListId2'].length).toBe(4);
   expect(endState['todoListId2'][0].id).toBeDefined();
   expect(endState['todoListId2'][0].title).toBe(newTask.title);
-  expect(endState['todoListId2'][0].status).toBe(false);
+  expect(endState['todoListId2'][0].status).toBe(0);
 });
 
 test('status specified task should be changed', () => {
@@ -198,7 +198,7 @@ test('status specified task should be changed', () => {
           {
             id: '1', title: 'HTML&CSS', 
             description: '',
-            status: true,
+            status: 1,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -209,7 +209,7 @@ test('status specified task should be changed', () => {
           {
             id: '2', title: 'JS', 
             description: '',
-            status: true,
+            status: 1,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -220,7 +220,7 @@ test('status specified task should be changed', () => {
           {
             id: '3', title: 'ReactJs',
             description: '',
-            status: false,
+            status: 0,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -234,7 +234,7 @@ test('status specified task should be changed', () => {
           {
             id: '1', title: 'Book', 
             description: '',
-            status: false,
+            status: 0,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -245,7 +245,7 @@ test('status specified task should be changed', () => {
           {
             id: '2', title: 'Milk', 
             description: '',
-            status: true,
+            status: 1,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -256,7 +256,7 @@ test('status specified task should be changed', () => {
           {
             id: '3', title: 'Tea', 
             description: '',
-            status: false,
+            status: 0,
             priority: 0,
             startDate: '',
             deadline: '',
@@ -267,11 +267,11 @@ test('status specified task should be changed', () => {
         ],
   };
 
-  const action = changeTaskStatusAC('todoListId1', '2', false);
+  const action = changeTaskStatusAC('todoListId1', '2', 0);
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][2].status).toBe(false);
-  expect(endState['todoListId2'][1].status).toBe(true);
+  expect(endState['todoListId1'][2].status).toBe(0);
+  expect(endState['todoListId2'][1].status).toBe(1);
 });
 
 test('correct task from  correct array should change its name', () => {
@@ -281,7 +281,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '1', title: 'HTML&CSS', 
               description: '',
-              status: true,
+              status: 1,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -292,7 +292,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '2', title: 'JS',
               description: '',
-              status: true,
+              status: 1,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -303,7 +303,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '3', title: 'ReactJs', 
               description: '',
-              status: false,
+              status: 0,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -317,7 +317,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '1', title: 'Book', 
               description: '',
-              status: false,
+              status: 0,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -328,7 +328,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '2', title: 'Milk', 
               description: '',
-              status: true,
+              status: 1,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -339,7 +339,7 @@ test('correct task from  correct array should change its name', () => {
             {
               id: '3', title: 'Tea',
               description: '',
-              status: false,
+              status: 0,
               priority: 0,
               startDate: '',
               deadline: '',
@@ -364,7 +364,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '1', title: 'HTML&CSS', 
                 description: '',
-                status: true,
+                status: 1,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -375,7 +375,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '2', title: 'JS', 
                 description: '',
-                status: true,
+                status: 1,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -386,7 +386,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '3', title: 'ReactJs', 
                 description: '',
-                status: false,
+                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -400,7 +400,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '1', title: 'Book', 
                 description: '',
-                status: false,
+                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -411,7 +411,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '2', title: 'Milk', 
                 description: '',
-                status: true,
+                status: 1,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -422,7 +422,7 @@ test('new array should be added when todo-list was added', () => {
               {
                 id: '3', title: 'Tea', 
                 description: '',
-                status: false,
+                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',

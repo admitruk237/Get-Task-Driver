@@ -28,7 +28,7 @@ export type ChangeTaskStatusType = {
   type: 'CHANGE-TASK-STATUS';
   todoListId: string;
   taskId: string;
-  status: boolean;
+  status: number;
 };
 
 export type ChangeTaskSTitleType = {
@@ -128,7 +128,7 @@ export const addTaskAC = (
 export const changeTaskStatusAC = (
   todoListId: string,
   taskId: string,
-  status: boolean
+  status: number
 ): ChangeTaskStatusType => {
   return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, status };
 };

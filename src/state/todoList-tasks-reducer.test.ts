@@ -29,7 +29,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '1', title: 'HTML&CSS',  
                     description: '',
-                    status: true,
+                    status: 1,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -40,7 +40,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '2', title: 'JS',  
                     description: '',
-                    status: true,
+                    status: 1,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -51,7 +51,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '3', title: 'ReactJs', 
                     description: '',
-                    status: false,
+                    status: 0,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -65,7 +65,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '1', title: 'Book',  
                     description: '',
-                    status: false,
+                    status: 0,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -76,7 +76,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '2', title: 'Milk',  
                     description: '',
-                    status: true,
+                    status: 1,
                     priority: 0,
                     startDate: '',
                     deadline: '',
@@ -87,7 +87,7 @@ test('property with todoList should be deleted', () => {
                   {
                     id: '3', title: 'Tea',  
                     description: '',
-                    status: false,
+                    status: 0,
                     priority: 0,
                     startDate: '',
                     deadline: '',

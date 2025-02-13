@@ -38,7 +38,7 @@ export const TaskBaseExample = () => {
         task={{
           id: '1',
           title: 'HTML',
-          status: false,
+          status: 0,
           description: '',
           priority: 0,
           startDate: '',
@@ -60,7 +60,7 @@ export const TaskBaseExample = () => {
         task={{
           id: '2',
           title: 'JS',
-          status: false,
+          status: 0,
           description: '',
           priority: 0,
           startDate: '',

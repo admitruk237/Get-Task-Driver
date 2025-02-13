@@ -17,6 +17,7 @@ import {
 } from '../../state/tasks-reducer';
 import { taskListApi, TaskType } from '../../api/taskListApi';
 import { v1 } from 'uuid';
+import { formatDateTime } from '../../utils/dateUtils';
 
 type PropsType = {
   id: string;
@@ -87,7 +88,7 @@ export const TodoList = React.memo((props: PropsType) => {
         title: title,
 
         description: '',
-        status: false,
+        status: 0,
         priority: 0,
         startDate: '',
         deadline: '',
@@ -109,12 +110,14 @@ export const TodoList = React.memo((props: PropsType) => {
 
   let taskForTodoList = tasks;
 
+  const serveDate = props.addedDate;
+
   if (props.filter === 'Completed') {
-    taskForTodoList = taskForTodoList.filter((t) => t.status === true);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === 1);
   }
 
   if (props.filter === 'Active') {
-    taskForTodoList = taskForTodoList.filter((t) => t.status === false);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === 0);
   }
 
   const onRemoveHandler = useCallback(
@@ -141,8 +144,7 @@ export const TodoList = React.memo((props: PropsType) => {
 
         const updateTask = {
           ...currentTask,
-
-          status: e.currentTarget.checked,
+          status: e.currentTarget.checked ? 1 : 0,
         };
 
         await taskListApi.changeTaskStatus(todoListId, taskId, updateTask);
@@ -166,7 +168,7 @@ export const TodoList = React.memo((props: PropsType) => {
     },
     [dispatch, props.id]
   );
-
+  console.log(props.addedDate);
   return (
     <div>
       <h3>
@@ -178,6 +180,10 @@ export const TodoList = React.memo((props: PropsType) => {
           <Delete />
         </IconButton>
       </h3>
+      <p style={{ marginTop: '-20px', fontSize: '12px' }}>
+        {formatDateTime(serveDate)}
+      </p>
+
       <AddItemForm addItem={addTask} />
       <ul className={styles.noDots}>
         {taskForTodoList?.map((task) =>
