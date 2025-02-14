@@ -3,6 +3,7 @@ import './App.css';
 import { TodoList } from './components/TodoList/TodoList';
 import AddItemForm from './components/AddItemForm/AddItemForm';
 import {
+  Alert,
   AppBar,
   Container,
   IconButton,
@@ -134,6 +135,8 @@ function AppWithRedux() {
           </Typography>
         </Toolbar>
       </AppBar>
+
+      <Alert severity="error">{error}</Alert>
       <Container fixed>
         <Grid container style={{ padding: '20px' }}>
           <AddItemForm addItem={addTodoList} />
@@ -144,6 +147,8 @@ function AppWithRedux() {
               <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper style={{ padding: '10px' }}>
                   <TodoList
+                    errorMessage={error}
+                    setErrorMessage={setError}
                     id={tl.id}
                     changeFilter={changeFilter}
                     title={tl.title}

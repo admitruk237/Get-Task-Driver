@@ -1,9 +1,16 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styles from './styles.module.css';
 import { FilteredValuesType } from '../../AppWithRedux';
 import AddItemForm from '../AddItemForm/AddItemForm';
 import EditableSpan from '../EditableSpan/EditableSpan';
-import { Button, IconButton, Checkbox } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Task } from '../Task/Task';
@@ -18,8 +25,11 @@ import {
 import { taskListApi, TaskType } from '../../api/taskListApi';
 import { v1 } from 'uuid';
 import { formatDateTime } from '../../utils/dateUtils';
+import { shallowEqual } from 'react-redux';
 
 type PropsType = {
+  setErrorMessage: Dispatch<SetStateAction<string | null>>;
+  errorMessage: string | null;
   id: string;
   title: string;
   changeTodoListTitle: (id: string, newTitle: string) => void;
@@ -31,7 +41,7 @@ type PropsType = {
 };
 
 export const TodoList = React.memo((props: PropsType) => {
-  const [error, setError] = useState<string | null>(null);
+  const { errorMessage, setErrorMessage } = props;
 
   const dispatch = useDispatch();
 
@@ -41,14 +51,15 @@ export const TodoList = React.memo((props: PropsType) => {
         const response = await taskListApi.getTaskLists(props.id);
         dispatch(setTasksAC(response.data.items, props.id));
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     };
     fetchData();
   }, [dispatch, props.id]);
 
-  const tasks = useSelector<AppRootStateType, Array<TaskType>>(
-    (state) => state.tasks[props.id] || []
+  const tasks = useSelector(
+    (state: AppRootStateType) => state.tasks[props.id] || [],
+    shallowEqual
   );
 
   const onAllClickHandler = useCallback(
@@ -75,7 +86,7 @@ export const TodoList = React.memo((props: PropsType) => {
         await taskListApi.updateTask(props.id, taskId, newTitle); // Виклик API для ToDo List
         props.changeTodoListTitle(props.id, newTitle); // Оновлення в Redux або локальному стані
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     },
     [props.id, props.changeTodoListTitle]
@@ -85,24 +96,25 @@ export const TodoList = React.memo((props: PropsType) => {
     async (title: string) => {
       const newTask = {
         id: v1(),
-        title: title,
-
+        title,
         description: '',
         status: 0,
         priority: 0,
         startDate: '',
         deadline: '',
-        todoListId: '',
+        todoListId: props.id, // ✅ Оновлено
         order: 0,
         addedDate: '',
       };
+
       dispatch(addTaskAC(props.id, newTask));
+
       try {
         const response = await taskListApi.createTask(props.id, title);
 
         dispatch(addTaskAC(props.id, response.data.item));
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     },
     [dispatch, props.id]
@@ -126,7 +138,7 @@ export const TodoList = React.memo((props: PropsType) => {
         await taskListApi.deleteTask(todolistId, taskId);
         dispatch(removeTaskAC(taskId, todolistId));
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     },
     [dispatch]
@@ -151,7 +163,7 @@ export const TodoList = React.memo((props: PropsType) => {
 
         dispatch(changeTaskStatusAC(todoListId, taskId, updateTask.status));
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     },
     [dispatch, tasks]
@@ -163,12 +175,12 @@ export const TodoList = React.memo((props: PropsType) => {
         await taskListApi.updateTask(todoListId, taskId, newValue);
         dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
       } catch (error: any) {
-        setError(error.message);
+        setErrorMessage(error.message);
       }
     },
     [dispatch, props.id]
   );
-  console.log(props.addedDate);
+
   return (
     <div>
       <h3>

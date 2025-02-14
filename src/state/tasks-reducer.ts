@@ -66,10 +66,12 @@ export const tasksReducer = (
       };
     }
     case 'ADD-TASK': {
-      return {
+      const newState = {
         ...state,
-        [action.todoListId]: [action.task, ...state[action.todoListId]],
+        [action.todoListId]: [action.task, ...(state[action.todoListId] || [])],
       };
+
+      return newState;
     }
 
     case 'CHANGE-TASK-STATUS': {
