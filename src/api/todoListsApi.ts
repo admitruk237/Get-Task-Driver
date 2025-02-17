@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { TodoListType } from '../AppWithRedux';
+import { TodoListType } from '../App';
 
 const settings = {
   withCredentials: true,
   headers: {
-    'API-KEY': '649018f5-5484-4c71-abcc-dbbfa2a9bce4',
+    'API-KEY': '1ec1b59d-7183-4362-b849-2f97fdad106a',
   },
 };
 

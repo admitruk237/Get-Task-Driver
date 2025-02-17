@@ -26,6 +26,9 @@ import { AppRootStateType } from './state/store';
 import TestRequest from './components/TestRequest';
 import { todoListsApi } from './api/todoListsApi';
 import { TaskType } from './api/taskListApi';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Registration/Registration';
+import Registration from './components/Registration/Registration';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -119,53 +122,64 @@ function AppWithRedux() {
   );
 
   return (
-    <div className="App">
-      <AppBar position="static" color={'secondary'}>
-        <Toolbar variant="dense">
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
-            Photos
-          </Typography>
-        </Toolbar>
-      </AppBar>
+    <BrowserRouter>
+      <div className="App">
+        <AppBar position="static" color={'secondary'}>
+          <Toolbar variant="dense">
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <Menu />
+            </IconButton>
+            <Typography variant="h6" color="inherit" component="div">
+              Photos
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Alert severity="error">{error}</Alert>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Container fixed>
+                <Grid container style={{ padding: '20px' }}>
+                  <AddItemForm addItem={addTodoList} />
+                </Grid>
+                <Grid container spacing={2}>
+                  {todoLists.map((tl) => {
+                    return (
+                      <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 3 }}>
+                        <Paper style={{ padding: '10px' }}>
+                          <TodoList
+                            errorMessage={error}
+                            setErrorMessage={setError}
+                            id={tl.id}
+                            changeFilter={changeFilter}
+                            title={tl.title}
+                            filter={tl.filter}
+                            removeTodoList={removeTodoList}
+                            changeTodoListTitle={changeTodoListTitle}
+                            addedDate={tl.addedDate}
+                            order={tl.order}
+                          />
+                        </Paper>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Container>
+            }
+          />
+          <Route path="/login" element={<Registration />} />
+          <Route path="*" element={<div>404: PAGE NOT FOUND</div>} />
+        </Routes>
 
-      <Alert severity="error">{error}</Alert>
-      <Container fixed>
-        <Grid container style={{ padding: '20px' }}>
-          <AddItemForm addItem={addTodoList} />
-        </Grid>
-        <Grid container spacing={2}>
-          {todoLists.map((tl) => {
-            return (
-              <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 3 }}>
-                <Paper style={{ padding: '10px' }}>
-                  <TodoList
-                    errorMessage={error}
-                    setErrorMessage={setError}
-                    id={tl.id}
-                    changeFilter={changeFilter}
-                    title={tl.title}
-                    filter={tl.filter}
-                    removeTodoList={removeTodoList}
-                    changeTodoListTitle={changeTodoListTitle}
-                    addedDate={tl.addedDate}
-                    order={tl.order}
-                  />
-                </Paper>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Container>
-      {/*  <TestRequest /> */}
-    </div>
+        {/*  <TestRequest /> */}
+      </div>
+    </BrowserRouter>
   );
 }
 

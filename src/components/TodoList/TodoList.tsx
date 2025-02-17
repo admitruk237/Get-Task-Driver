@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import styles from './styles.module.css';
-import { FilteredValuesType } from '../../AppWithRedux';
+import { FilteredValuesType } from '../../App';
 import AddItemForm from '../AddItemForm/AddItemForm';
 import EditableSpan from '../EditableSpan/EditableSpan';
 import { Button, IconButton } from '@mui/material';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { todoListsApi } from '../api/todoListsApi';
-import { TodoListType } from '../AppWithRedux';
+import { TodoListType } from '../App';
 import { taskListApi } from '../api/taskListApi';
 
 const TestRequest = () => {
