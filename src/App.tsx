@@ -139,7 +139,7 @@ function AppWithRedux() {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Alert severity="error">{error}</Alert>
+        {/*  <Alert severity="error">{error}</Alert> */}
         <Routes>
           <Route
             path="/"
