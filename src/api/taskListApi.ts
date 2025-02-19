@@ -3,8 +3,8 @@ import { ResponseType } from './todoListsApi';
 
 export type TaskType = {
   description: string;
-  title: string;
   status: number;
+  title: string;
   priority: number;
   startDate: string;
   deadline: string;
