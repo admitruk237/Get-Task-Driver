@@ -77,7 +77,7 @@ function SignInUp() {
             ? { maxHeight: 500, opacity: 1 }
             : { maxHeight: 0, opacity: 0 }
         }
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
         style={{
           overflow: 'hidden',
           width: '100%',
@@ -106,6 +106,9 @@ function SignInUp() {
             error={!!signInErrors.password}
             helperText={signInErrors.password?.message?.toString()}
           />
+          <a className={style.forgotPassword} href="">
+            Forgot password?
+          </a>
           <Button
             variant="contained"
             color="primary"
@@ -125,7 +128,7 @@ function SignInUp() {
             ? { maxHeight: 700, opacity: 1 }
             : { maxHeight: 0, opacity: 0 }
         }
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
         style={{
           overflow: 'hidden',
           width: '100%',

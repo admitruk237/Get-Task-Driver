@@ -4,3 +4,33 @@
   flex-direction: column;
   gap: 25px;
 }
+
+a.forgotPassword {
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 auto;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+a.forgotPassword:hover {
+  color: #333;
+}
+
+a.forgotPassword:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  background-color: #333;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+a.forgotPassword:hover:after {
+  transform: scaleX(1);
+}

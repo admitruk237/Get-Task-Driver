@@ -1,19 +1,7 @@
-.registration h1 {
-  text-align: center;
-  font-size: 40px;
-  font-weight: 600;
-  color: #333;
-}
-
 .registration {
-  padding-top: 20px;
   display: flex;
   justify-content: center;
   gap: 50px;
-}
-
-.wrapper {
-  padding-top: 50px;
 }
 
 .container {
