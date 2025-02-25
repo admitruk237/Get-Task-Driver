@@ -29,6 +29,7 @@ import { TaskType } from './api/taskListApi';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Registration from './components/Registration/Registration';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -176,6 +177,7 @@ function AppWithRedux() {
           <Route path="/login" element={<Registration />} />
           <Route path="*" element={<div>404: PAGE NOT FOUND</div>} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
 
         {/*  <TestRequest /> */}

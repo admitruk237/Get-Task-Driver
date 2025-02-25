@@ -47,6 +47,8 @@ export const signInReducer = (
       return { ...state, error: action.error };
     case SET_SIGN_IN_SUCCESS:
       return { ...state, success: action.success };
+    default:
+      return state;
   }
 };
 

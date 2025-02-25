@@ -33,12 +33,10 @@ function SignInUp() {
     setValue(newValue);
   };
 
-  const onSignInSubmit = (data: any) => {
-    console.log('Sign-In Data:', data);
-  };
+  const onSignInSubmit = (data: any) => {};
 
   const onSignUpSubmit = (data: any) => {
-    console.log('Sign-Up Data:', data);
+    setValue('signIn');
   };
 
   return (
@@ -175,6 +173,7 @@ function SignInUp() {
             helperText={signUpErrors.confirmPassword?.message?.toString()}
           />
           <Button
+            onSubmit={onSignUpSubmit}
             variant="contained"
             color="primary"
             sx={{ mt: 2 }}

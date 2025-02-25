@@ -2,9 +2,11 @@ export interface SignUpStateType {
   username: string;
   email: string;
   password: string;
+  error?: string;
+  success?: boolean;
 }
 
-export const initialState: SignUpStateType = {
+const initialState: SignUpStateType = {
   username: '',
   email: '',
   password: '',
@@ -45,6 +47,8 @@ export const signUpReducer = (
       return { ...state, error: action.error };
     case 'SET-SIGN-UP-SUCCESS':
       return { ...state, success: action.success };
+    default:
+      return state;
   }
 };
 
