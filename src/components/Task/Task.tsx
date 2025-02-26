@@ -5,6 +5,9 @@ import { Delete } from '@mui/icons-material';
 
 import EditableSpan from '../EditableSpan/EditableSpan';
 import { TaskType } from '../../api/taskListApi';
+import LongMenu from '../LongMenu/LongMenu';
+import { Dayjs } from 'dayjs';
+import DeadlineIcon from '../DeadlineIcon/DeadlineIcon';
 
 export type TaskPropsType = {
   todoListId: string;
@@ -20,6 +23,7 @@ export type TaskPropsType = {
     newValue: string
   ) => void;
   task: TaskType;
+  deadline?: Dayjs;
 };
 
 export const Task = React.memo((props: TaskPropsType) => {
@@ -47,7 +51,9 @@ export const Task = React.memo((props: TaskPropsType) => {
           <IconButton aria-label="delete" onClick={onRemoveHandler}>
             <Delete />
           </IconButton>
+          <LongMenu />
         </label>
+        {props.deadline && <DeadlineIcon deadline={props.deadline} />}
       </li>
     </div>
   );

@@ -38,6 +38,13 @@ export type ChangeTaskSTitleType = {
   title: string;
 };
 
+export type ChangeTaskDeadlineType = {
+  type: 'CHANGE-TASK-DEADLINE';
+  todoListId: string;
+  taskId: string;
+  deadline: string;
+};
+
 type ActionsType =
   | SetTaskActionType
   | RemoveTaskActionType
@@ -45,7 +52,8 @@ type ActionsType =
   | ChangeTaskStatusType
   | ChangeTaskSTitleType
   | RemoveTodolistActionType
-  | AddTodolistActionType;
+  | AddTodolistActionType
+  | ChangeTaskDeadlineType;
 
 const initialState: TasksStateType = {};
 
@@ -92,6 +100,17 @@ export const tasksReducer = (
       };
     }
 
+    case 'CHANGE-TASK-DEADLINE': {
+      return {
+        ...state,
+        [action.todoListId]: state[action.todoListId].map((task) =>
+          task.id === action.taskId
+            ? { ...task, deadline: action.deadline }
+            : task
+        ),
+      };
+    }
+
     case 'ADD-TODOLIST': {
       let copyState = { ...state };
       copyState[action.id] = [];
@@ -133,6 +152,14 @@ export const changeTaskStatusAC = (
   status: number
 ): ChangeTaskStatusType => {
   return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, status };
+};
+
+export const changeTaskDeadlineAC = (
+  todoListId: string,
+  taskId: string,
+  deadline: string
+): ChangeTaskDeadlineType => {
+  return { type: 'CHANGE-TASK-DEADLINE', todoListId, taskId, deadline };
 };
 
 export const changeTaskTitleAC = (

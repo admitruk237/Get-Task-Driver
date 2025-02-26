@@ -102,7 +102,7 @@ export const TodoList = React.memo((props: PropsType) => {
         priority: 0,
         startDate: '',
         deadline: '',
-        todoListId: props.id, // ✅ Оновлено
+        todoListId: props.id,
         order: 0,
         addedDate: '',
       };

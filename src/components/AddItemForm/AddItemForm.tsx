@@ -5,6 +5,7 @@ import { ControlPoint } from '@mui/icons-material';
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
+  style?: React.CSSProperties;
 };
 const AddItemForm = React.memo((props: AddItemFormPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
@@ -47,6 +48,7 @@ const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         variant="filled"
         error={!!error}
         helperText={error}
+        style={props.style}
       />
       <IconButton onClick={onAddTaskHandler} color={'primary'}>
         <ControlPoint />

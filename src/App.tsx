@@ -30,6 +30,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Registration from './components/Registration/Registration';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import { motion } from 'framer-motion';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -44,7 +45,7 @@ export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
-function AppWithRedux() {
+function App() {
   const dispatch = useDispatch();
   const [error, setError] = useState<string | null>(null);
 
@@ -146,8 +147,29 @@ function AppWithRedux() {
             path="/"
             element={
               <Container fixed>
-                <Grid container style={{ padding: '20px' }}>
-                  <AddItemForm addItem={addTodoList} />
+                <Grid
+                  container
+                  style={{
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '30px',
+                    alignItems: 'center',
+                  }}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 2 }}
+                  >
+                    <Typography variant="h4" component="h1" align="center">
+                      ADD NEW TODO LIST
+                    </Typography>
+                  </motion.div>
+                  <AddItemForm
+                    addItem={addTodoList}
+                    style={{ marginBottom: '30px', width: '300px' }}
+                  />
                 </Grid>
                 <Grid container spacing={2}>
                   {todoLists.map((tl) => {
@@ -186,7 +208,7 @@ function AppWithRedux() {
   );
 }
 
-export default AppWithRedux;
+export default App;
 function setData(arg0: (prevData: any[]) => any[]) {
   throw new Error('Function not implemented.');
 }
