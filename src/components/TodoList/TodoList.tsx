@@ -83,8 +83,8 @@ export const TodoList = React.memo((props: PropsType) => {
   const changeTodoListTitle = useCallback(
     async (taskId: string, newTitle: string) => {
       try {
-        await taskListApi.updateTask(props.id, taskId, newTitle); // Виклик API для ToDo List
-        props.changeTodoListTitle(props.id, newTitle); // Оновлення в Redux або локальному стані
+        await taskListApi.updateTask(props.id, taskId, newTitle);
+        props.changeTodoListTitle(props.id, newTitle);
       } catch (error: any) {
         setErrorMessage(error.message);
       }
@@ -94,21 +94,6 @@ export const TodoList = React.memo((props: PropsType) => {
 
   const addTask = useCallback(
     async (title: string) => {
-      const newTask = {
-        id: v1(),
-        title,
-        description: '',
-        status: 0,
-        priority: 0,
-        startDate: '',
-        deadline: '',
-        todoListId: props.id,
-        order: 0,
-        addedDate: '',
-      };
-
-      dispatch(addTaskAC(props.id, newTask));
-
       try {
         const response = await taskListApi.createTask(props.id, title);
 
@@ -172,13 +157,18 @@ export const TodoList = React.memo((props: PropsType) => {
   const onChangeTitleHandler = useCallback(
     async (todoListId: string, taskId: string, newValue: string) => {
       try {
-        await taskListApi.updateTask(todoListId, taskId, newValue);
-        dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
+        if (newValue.trim() === '') {
+          await taskListApi.deleteTask(todoListId, taskId);
+          dispatch(removeTaskAC(taskId, todoListId));
+        } else {
+          await taskListApi.updateTask(todoListId, taskId, newValue);
+          dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
+        }
       } catch (error: any) {
         setErrorMessage(error.message);
       }
     },
-    [dispatch, props.id]
+    [dispatch, setErrorMessage]
   );
 
   return (
@@ -196,7 +186,7 @@ export const TodoList = React.memo((props: PropsType) => {
         {formatDateTime(serveDate)}
       </p>
 
-      <AddItemForm addItem={addTask} />
+      <AddItemForm style={{ width: '88%' }} addItem={addTask} />
       <ul className={styles.noDots}>
         {taskForTodoList?.map((task) =>
           task && task.id ? (
@@ -207,6 +197,8 @@ export const TodoList = React.memo((props: PropsType) => {
               removeTask={onRemoveHandler}
               changeTaskStatus={onChangeStatusHandler}
               changeTaskTitle={onChangeTitleHandler}
+              deadline={task.deadline}
+              priority={task.priority}
             />
           ) : null
         )}

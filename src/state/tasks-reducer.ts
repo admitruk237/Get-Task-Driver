@@ -38,6 +38,13 @@ export type ChangeTaskSTitleType = {
   title: string;
 };
 
+export type ChangeTaskPriorityType = {
+  type: 'CHANGE-TASK-PRIORITY';
+  todoListId: string;
+  taskId: string;
+  priority: number;
+};
+
 export type ChangeTaskDeadlineType = {
   type: 'CHANGE-TASK-DEADLINE';
   todoListId: string;
@@ -53,7 +60,8 @@ type ActionsType =
   | ChangeTaskSTitleType
   | RemoveTodolistActionType
   | AddTodolistActionType
-  | ChangeTaskDeadlineType;
+  | ChangeTaskDeadlineType
+  | ChangeTaskPriorityType;
 
 const initialState: TasksStateType = {};
 
@@ -106,6 +114,17 @@ export const tasksReducer = (
         [action.todoListId]: state[action.todoListId].map((task) =>
           task.id === action.taskId
             ? { ...task, deadline: action.deadline }
+            : task
+        ),
+      };
+    }
+
+    case 'CHANGE-TASK-PRIORITY': {
+      return {
+        ...state,
+        [action.todoListId]: state[action.todoListId].map((task) =>
+          task.id === action.taskId
+            ? { ...task, priority: action.priority }
             : task
         ),
       };
@@ -168,4 +187,12 @@ export const changeTaskTitleAC = (
   title: string
 ): ChangeTaskSTitleType => {
   return { type: 'CHANGE-TASK-TITLE', todoListId, taskId, title };
+};
+
+export const changeTaskPriorityAC = (
+  todoListId: string,
+  taskId: string,
+  priority: number
+): ChangeTaskPriorityType => {
+  return { type: 'CHANGE-TASK-PRIORITY', todoListId, taskId, priority };
 };

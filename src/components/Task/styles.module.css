@@ -10,5 +10,20 @@
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.taskContainer {
+  position: relative;
+  border-radius: 5px;
+}
+
+.taskContainer,
+.isDone {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }

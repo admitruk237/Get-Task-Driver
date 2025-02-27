@@ -14,13 +14,36 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import {
+  changeTaskDeadlineAC,
+  changeTaskPriorityAC,
+} from '../../state/tasks-reducer';
+import { useDispatch } from 'react-redux';
+import {
+  FormControl,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+} from '@mui/material';
 
-export default function DeadlineMenu() {
+type LongMenuPropsType = {
+  taskId: string;
+  todoListId: string;
+  priority: number;
+};
+
+export default function LongMenu(props: LongMenuPropsType) {
   // Стан для керування відкриттям меню та діалогового вікна
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  // Збереження обраного дедлайну (тип Dayjs або null)
+  const [openPriorityDialog, setOpenPriorityDialog] = useState(false);
+
   const [selectedDeadline, setSelectedDeadline] = useState<Dayjs | null>(null);
+
+  const [selectedPriority, setSelectedPriority] = useState<string>('1');
+
+  const dispatch = useDispatch();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +51,26 @@ export default function DeadlineMenu() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handlePriorityClick = () => {
+    setOpenPriorityDialog(true);
+    handleMenuClose();
+  };
+
+  const handlePriorityClose = () => {
+    setOpenPriorityDialog(false);
+  };
+
+  const handlePriorityConfirm = () => {
+    setOpenPriorityDialog(false);
+    dispatch(
+      changeTaskPriorityAC(
+        props.todoListId,
+        props.taskId,
+        Number(selectedPriority)
+      )
+    );
   };
 
   // При кліку на пункт «Deadline» відкриваємо модальне вікно
@@ -43,6 +86,13 @@ export default function DeadlineMenu() {
   // Підтвердження вибору дати
   const handleDeadlineConfirm = () => {
     setOpenDialog(false);
+    dispatch(
+      changeTaskDeadlineAC(
+        props.todoListId,
+        props.taskId,
+        selectedDeadline?.format('YYYY-MM-DD HH:mm') || ''
+      )
+    );
   };
 
   return (
@@ -57,7 +107,7 @@ export default function DeadlineMenu() {
           onClose={handleMenuClose}
         >
           <MenuItem onClick={handleDeadlineClick}>Deadline</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Priority</MenuItem>
+          <MenuItem onClick={handlePriorityClick}>Priority</MenuItem>
         </Menu>
 
         <Dialog
@@ -87,6 +137,43 @@ export default function DeadlineMenu() {
           <DialogActions>
             <Button onClick={handleDialogClose}>Cancel</Button>
             <Button onClick={handleDeadlineConfirm} variant="contained">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={openPriorityDialog}
+          onClose={handlePriorityClose}
+          sx={{
+            '& .MuiDialog-paper': {
+              position: 'absolute',
+              top: '10%', // Встановлює відступ від верху екрану
+              width: '300px',
+            },
+          }}
+        >
+          <DialogTitle>Change priority</DialogTitle>
+          <DialogContent>
+            <FormControl>
+              <FormLabel>Priority</FormLabel>
+              <RadioGroup
+                value={selectedPriority}
+                onChange={(e) => setSelectedPriority(e.target.value)}
+              >
+                <FormControlLabel value="0" control={<Radio />} label="Low" />
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Medium"
+                />
+                <FormControlLabel value="2" control={<Radio />} label="High" />
+              </RadioGroup>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handlePriorityClose}>Cancel</Button>
+            <Button onClick={handlePriorityConfirm} variant="contained">
               Confirm
             </Button>
           </DialogActions>

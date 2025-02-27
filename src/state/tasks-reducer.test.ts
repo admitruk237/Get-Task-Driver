@@ -1,6 +1,8 @@
 import { TasksStateType } from '../App';
 import {
   addTaskAC,
+  changeTaskDeadlineAC,
+  changeTaskPriorityAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
@@ -443,4 +445,52 @@ test('new array should be added when todo-list was added', () => {
 
   expect(keys.length).toBe(3);
   expect(endState[newKey]).toStrictEqual([]);
+});
+
+test('correct task priority should be changed', () => {
+  const startState: TasksStateType = {
+    // prettier-ignore
+    'todoListId1': [
+      {
+        id: '1', title: 'HTML&CSS', 
+        description: '',
+        status: 1,
+        priority: 0,
+        startDate: '',
+        deadline: '',
+        todoListId: '',
+        order: 0,
+        addedDate: '',
+      },
+    ],
+  };
+
+  const action = changeTaskPriorityAC('todoListId1', '1', 1);
+  const endState = tasksReducer(startState, action);
+
+  expect(endState['todoListId1'][0].priority).toBe(1);
+});
+
+test('correct task deadline should be changed', () => {
+  const startState: TasksStateType = {
+    // prettier-ignore
+    'todoListId1': [
+      {
+        id: '1', title: 'HTML&CSS', 
+        description: '',
+        status: 1,
+        priority: 0,
+        startDate: '',
+        deadline: '',
+        todoListId: '',
+        order: 0,
+        addedDate: '',
+      },
+    ],
+  };
+
+  const action = changeTaskDeadlineAC('todoListId1', '1', '2025-01-01');
+  const endState = tasksReducer(startState, action);
+
+  expect(endState['todoListId1'][0].deadline).toBe('2025-01-01');
 });

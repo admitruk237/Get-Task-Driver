@@ -55,6 +55,7 @@ export const TaskBaseExample = () => {
         changeTaskTitle={(todoListId, taskId, newTitle) =>
           changeTaskTitleCallBack(todoListId, taskId, newTitle)
         }
+        priority={0}
       />
       <Task
         task={{
@@ -77,6 +78,7 @@ export const TaskBaseExample = () => {
         changeTaskTitle={(todoListId, taskId, newTitle) =>
           changeTaskTitleCallBack(todoListId, taskId, newTitle)
         }
+        priority={0}
       />
     </>
   );

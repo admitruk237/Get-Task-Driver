@@ -174,8 +174,13 @@ function App() {
                 <Grid container spacing={2}>
                   {todoLists.map((tl) => {
                     return (
-                      <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 3 }}>
-                        <Paper style={{ padding: '10px' }}>
+                      <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                        <Paper
+                          style={{
+                            padding: '10px',
+                            backgroundColor: '#fbfcfd',
+                          }}
+                        >
                           <TodoList
                             errorMessage={error}
                             setErrorMessage={setError}
