@@ -81,7 +81,7 @@ export const todoListReducer = (
       ];
     }
     case 'SET-TODOLISTS': {
-      return action.todoLists;
+      return action.todoLists.sort((a, b) => a.order - b.order); // Sort by order to maintain the correct order
     }
     default:
       return state;

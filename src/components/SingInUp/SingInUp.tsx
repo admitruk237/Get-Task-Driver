@@ -9,7 +9,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signInSchema, signUpSchema } from '../../validation/validationSchemas';
 
 import style from './styles.module.css';
+import { useDispatch } from 'react-redux';
+import { signUpApi } from '../../api/signUpApi';
 
+// Add this type
+type SignInType = {
+  userName: string;
+  password: string;
+};
+
+type SignUpType = {
+  email: string;
+  userName: string;
+  password: string;
+  confirmPassword: string;
+};
 function SignInUp() {
   const [value, setValue] = React.useState('signUp');
 
@@ -17,7 +31,7 @@ function SignInUp() {
     register: registerSignIn,
     handleSubmit: handleSignInSubmit,
     formState: { errors: signInErrors },
-  } = useForm({
+  } = useForm<SignInType>({
     resolver: yupResolver(signInSchema),
   });
 
@@ -25,7 +39,7 @@ function SignInUp() {
     register: registerSignUp,
     handleSubmit: handleSignUpSubmit,
     formState: { errors: signUpErrors },
-  } = useForm({
+  } = useForm<SignUpType>({
     resolver: yupResolver(signUpSchema),
   });
 
@@ -33,9 +47,18 @@ function SignInUp() {
     setValue(newValue);
   };
 
+  const dispatch = useDispatch();
+
   const onSignInSubmit = (data: any) => {};
 
-  const onSignUpSubmit = (data: any) => {
+  const onSignUpSubmit = async (data: SignUpType) => {
+    console.log('Дані для реєстрації:', data);
+    try {
+      const response = await signUpApi(data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
     setValue('signIn');
   };
 
@@ -91,9 +114,9 @@ function SignInUp() {
             sx={{ width: 300 }}
             label="Username"
             variant="standard"
-            {...registerSignIn('username')}
-            error={!!signInErrors.username}
-            helperText={signInErrors.username?.message?.toString()}
+            {...registerSignIn('userName')}
+            error={!!signInErrors.userName}
+            helperText={signInErrors.userName?.message?.toString()}
           />
           <TextField
             sx={{ width: 300 }}
@@ -150,9 +173,9 @@ function SignInUp() {
             sx={{ width: 300 }}
             label="Username"
             variant="standard"
-            {...registerSignUp('username')}
-            error={!!signUpErrors.username}
-            helperText={signUpErrors.username?.message?.toString()}
+            {...registerSignUp('userName')}
+            error={!!signUpErrors.userName}
+            helperText={signUpErrors.userName?.message?.toString()}
           />
           <TextField
             sx={{ width: 300 }}
@@ -173,7 +196,6 @@ function SignInUp() {
             helperText={signUpErrors.confirmPassword?.message?.toString()}
           />
           <Button
-            onSubmit={onSignUpSubmit}
             variant="contained"
             color="primary"
             sx={{ mt: 2 }}

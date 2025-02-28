@@ -30,7 +30,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Registration from './components/Registration/Registration';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion, Reorder } from 'framer-motion';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -171,33 +171,62 @@ function App() {
                     style={{ marginBottom: '30px', width: '300px' }}
                   />
                 </Grid>
-                <Grid container spacing={2}>
-                  {todoLists.map((tl) => {
-                    return (
-                      <Grid key={tl.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                        <Paper
-                          style={{
-                            padding: '10px',
-                            backgroundColor: '#fbfcfd',
-                          }}
-                        >
-                          <TodoList
-                            errorMessage={error}
-                            setErrorMessage={setError}
-                            id={tl.id}
-                            changeFilter={changeFilter}
-                            title={tl.title}
-                            filter={tl.filter}
-                            removeTodoList={removeTodoList}
-                            changeTodoListTitle={changeTodoListTitle}
-                            addedDate={tl.addedDate}
-                            order={tl.order}
-                          />
-                        </Paper>
-                      </Grid>
+                <Reorder.Group
+                  style={{
+                    display: 'flex',
+                    gap: '20px',
+                    listStyle: 'none',
+                    flexWrap: 'wrap',
+                  }}
+                  axis="x"
+                  values={todoLists}
+                  onReorder={(reorderedTodoLists) => {
+                    // Ensure the reordered items maintain their order in the state
+                    const updatedTodoLists = reorderedTodoLists.map(
+                      (tl, index) => ({
+                        ...tl,
+                        order: index, // Update order based on the new index
+                      })
                     );
-                  })}
-                </Grid>
+                    dispatch(setTodoListsAC(updatedTodoLists)); // Update the state
+                  }}
+                >
+                  <AnimatePresence>
+                    {todoLists.map((tl) => {
+                      return (
+                        <Reorder.Item
+                          key={tl.id}
+                          value={tl}
+                          style={{ flex: '0 0 30%' }}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 1 }}
+                          drag
+                        >
+                          <Paper
+                            style={{
+                              padding: '10px',
+                              backgroundColor: '#fbfcfd',
+                            }}
+                          >
+                            <TodoList
+                              errorMessage={error}
+                              setErrorMessage={setError}
+                              id={tl.id}
+                              changeFilter={changeFilter}
+                              title={tl.title}
+                              filter={tl.filter}
+                              removeTodoList={removeTodoList}
+                              changeTodoListTitle={changeTodoListTitle}
+                              addedDate={tl.addedDate}
+                              order={tl.order}
+                            />
+                          </Paper>
+                        </Reorder.Item>
+                      );
+                    })}
+                  </AnimatePresence>
+                </Reorder.Group>
               </Container>
             }
           />

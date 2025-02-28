@@ -45,9 +45,9 @@ function ForgotPassword() {
           sx={{ width: 300 }}
           label="Username"
           variant="standard"
-          {...registerSignUp('username')}
-          error={!!signUpErrors.username}
-          helperText={signUpErrors.username?.message?.toString()}
+          {...registerSignUp('userName')}
+          error={!!signUpErrors.userName}
+          helperText={signUpErrors.userName?.message?.toString()}
         />
 
         <Button

@@ -7,7 +7,7 @@ const usernameRegex = /^(?=(.*[a-zA-Z]){2,})[a-zA-Z0-9]+$/;
 
 // Validation schema for the Sign-In form
 export const signInSchema = yup.object().shape({
-  username: yup
+  userName: yup
     .string()
     .required('Username is required') // Field is required
     .min(3, 'Username must be at least 3 characters') // Minimum length of 3 characters
@@ -27,7 +27,7 @@ export const signUpSchema = yup.object().shape({
     .string()
     .email('Invalid email') // Ensures a valid email format
     .required('Email is required'), // Field is required
-  username: yup
+  userName: yup
     .string()
     .required('Username is required') // Field is required
     .min(3, 'Username must be at least 3 characters') // Minimum length of 3 characters
