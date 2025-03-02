@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import AppWithRedux from './App';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '@fontsource/roboto';
+import App from './App';
 
 const theme = createTheme({
   typography: {
@@ -20,7 +20,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <AppWithRedux />
+        <App />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>

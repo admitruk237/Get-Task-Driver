@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { TodoList } from './components/TodoList/TodoList';
 import AddItemForm from './components/AddItemForm/AddItemForm';
@@ -27,9 +27,9 @@ import TestRequest from './components/TestRequest';
 import { todoListsApi } from './api/todoListsApi';
 import { TaskType } from './api/taskListApi';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Registration from './components/Registration/Registration';
-import ForgotPassword from './components/ForgotPassword/ForgotPassword';
-import ResetPassword from './components/ResetPassword/ResetPassword';
+import Registration from './pages/Login/Login';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 import { AnimatePresence, motion, Reorder } from 'framer-motion';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';

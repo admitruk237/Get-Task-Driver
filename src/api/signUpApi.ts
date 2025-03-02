@@ -7,15 +7,25 @@ export interface SignUpType {
   confirmPassword?: string;
 }
 
+// Оновлений тип відповіді від API
 export type SignUpResponseType = {
-  messages: string;
-  error: string | null;
-  resultCode: number;
+  id: string;
+  email: string;
+  userName: string;
+  createdAt: string;
 };
 
-export const signUpApi = (data: SignUpType) => {
-  return axios.post<SignUpResponseType>(
-    'https://todo-backend-777.up.railway.app/auth/register',
+// Запит на реєстрацію
+export const signUpApi = async (data: SignUpType) => {
+  const response = await axios.post<SignUpResponseType>(
+    'https://todo-backend-777.up.railway.app/auth/signup',
     data
   );
+
+  // Перевіряємо статус відповіді
+  if (response.status === 201) {
+    return response.data; // ✅ Успішна реєстрація
+  } else {
+    throw new Error('❌ Неочікуваний статус відповіді: ' + response.status);
+  }
 };
