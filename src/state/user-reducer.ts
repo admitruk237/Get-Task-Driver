@@ -4,7 +4,6 @@ export interface userStateType {
   password: string;
   accessToken: string;
   refreshToken: string;
-  authStatus?: boolean;
 }
 
 const initialState: userStateType = {
@@ -13,7 +12,6 @@ const initialState: userStateType = {
   password: '',
   accessToken: '',
   refreshToken: '',
-  authStatus: false,
 };
 
 export enum UserActionTypes {
@@ -21,7 +19,7 @@ export enum UserActionTypes {
   SET_ACCESS = 'SET_ACCESS',
   SET_REFRESH = 'SET_REFRESH',
   SET_RESET_PASSWORD_DATA = 'SET_RESET_PASSWORD_DATA',
-  SET_AUTH_STATUS = 'SET_AUTH_STATUS',
+  SET_LONG_OUT = 'SET_LONG_OUT',
 }
 
 interface SetUserDataActionType {
@@ -44,9 +42,9 @@ interface SetResetPasswordDataActionType {
   payload: userStateType;
 }
 
-interface SetAuthStatusActionType {
-  type: UserActionTypes.SET_AUTH_STATUS;
-  authStatus: boolean;
+interface SetLongOutActionType {
+  type: UserActionTypes.SET_LONG_OUT;
+  payload: userStateType;
 }
 
 type ActionsType =
@@ -54,7 +52,7 @@ type ActionsType =
   | SetAccessActionType
   | SetRefreshActionType
   | SetResetPasswordDataActionType
-  | SetAuthStatusActionType;
+  | SetLongOutActionType;
 
 export const userReducer = (
   state: userStateType = initialState,
@@ -73,8 +71,8 @@ export const userReducer = (
     case UserActionTypes.SET_RESET_PASSWORD_DATA: {
       return { ...state, ...action.payload };
     }
-    case UserActionTypes.SET_AUTH_STATUS: {
-      return { ...state, authStatus: action.authStatus };
+    case UserActionTypes.SET_LONG_OUT: {
+      return { ...state, ...action.payload };
     }
     default:
       return state;
@@ -105,9 +103,7 @@ export const setResetPasswordDataAC = (
   payload,
 });
 
-export const setAuthStatusAC = (
-  authStatus: boolean
-): SetAuthStatusActionType => ({
-  type: UserActionTypes.SET_AUTH_STATUS,
-  authStatus,
+export const SetLongOutAC = (payload: userStateType): SetLongOutActionType => ({
+  type: UserActionTypes.SET_LONG_OUT,
+  payload,
 });

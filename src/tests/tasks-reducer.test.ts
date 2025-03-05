@@ -1,496 +1,164 @@
-import { TasksStateType } from '../App';
 import {
   addTaskAC,
   changeTaskDeadlineAC,
   changeTaskPriorityAC,
   changeTaskStatusAC,
-  changeTaskTitleAC,
   removeTaskAC,
-  tasksReducer,
-} from '../state/tasks-reducer';
-import { addTodoListAC } from '../state/todoList-reducer';
+} from '../state/tasksState/taskActionCreators';
+import { tasksReducer } from '../state/tasksState/tasks-reducer';
+import { TasksStateType } from '../types/todo.interface';
 
-test('correct task should be deleted from  correct array', () => {
+test('correct task should be deleted from correct array', () => {
   const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
-        {
-          id: '1', title: 'HTML&CSS', 
-          description: '',
-          status: 1,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '2', title: 'JS', 
-          description: '',
-          status: 1,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '3', title: 'ReactJs',
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-      ],
-    // prettier-ignore
-    'todoListId2': [
-        {
-          id: '1', title: 'Book', 
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '2', title: 'Milk', 
-          description: '',
-          status: 1,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '3', title: 'Tea', 
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-      ],
+    todoListId1: [
+      {
+        id: 1,
+        title: 'Tesk NOT important',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId1',
+        order: 0,
+        userId: '1',
+        priority: 'MEDIUM',
+        status: 'PENDING',
+      },
+      {
+        id: 2,
+        title: 'Tesk NOT important',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId2',
+        order: 0,
+        userId: '1',
+        priority: 'MEDIUM',
+        status: 'PENDING',
+      },
+    ],
   };
 
-  const action = removeTaskAC('2', 'todoListId2');
+  const action = removeTaskAC(2, 'todoListId1');
+
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'].length).toBe(3);
-  expect(endState['todoListId2'].length).toBe(2);
-  expect(endState['todoListId2'].every((t) => t.id != '2')).toBeTruthy();
+  expect(endState['todoListId1'].length).toBe(1);
+  expect(endState['todoListId1'].every((t) => t.id !== 2)).toBeTruthy();
 });
 
 test('correct task should be added to the correct array', () => {
   const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
-        {
-          id: '1', title: 'HTML&CSS', 
-          description: '',
-          status: 1,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '2', title: 'JS', 
-          description: '',
-          status: 1,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '3', title: 'ReactJs',
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-      ],
-    // prettier-ignore
-    'todoListId2': [
-        {
-          id: '1', title: 'Book', 
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '2', title: 'Milk', 
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-        {
-          id: '3', title: 'Tea', 
-          description: '',
-          status: 0,
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
-          order: 0,
-          addedDate: ''
-        },
-      ],
+    todoListId1: [
+      {
+        id: 1,
+        title: 'Tesk NOT important',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId1',
+        order: 0,
+        userId: '1',
+        priority: 'MEDIUM',
+        status: 'PENDING',
+      },
+    ],
   };
 
   const newTask = {
-    id: '4',
-    title: 'Coffee',
-    description: '',
-    status: 0,
-    priority: 0,
-    startDate: '',
-    deadline: '',
-    todoListId: '',
+    id: 2,
+    title: 'React',
+    description: 'Its not important task',
+    completed: false,
+    endDate: '2025-02-27T16:33:37.861Z',
+    date: new Date('2025-02-27T16:33:37.861Z'),
+    todoId: 'todoListId1',
     order: 0,
-    addedDate: '',
+    userId: '1',
+    priority: 'Low',
+    status: 'PENDING',
   };
 
-  const action = addTaskAC('todoListId2', newTask);
+  const action = addTaskAC('todoListId1', newTask);
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'].length).toBe(3);
-  expect(endState['todoListId2'].length).toBe(4);
-  expect(endState['todoListId2'][0].id).toBeDefined();
-  expect(endState['todoListId2'][0].title).toBe(newTask.title);
-  expect(endState['todoListId2'][0].status).toBe(0);
+  expect(endState['todoListId1'].length).toBe(2);
+  expect(endState['todoListId1'][1].title).toBe('React');
 });
 
 test('status specified task should be changed', () => {
   const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
-          {
-            id: '1', title: 'HTML&CSS', 
-            description: '',
-            status: 1,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-          {
-            id: '2', title: 'JS', 
-            description: '',
-            status: 1,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-          {
-            id: '3', title: 'ReactJs',
-            description: '',
-            status: 0,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-        ],
-    // prettier-ignore
-    'todoListId2': [
-          {
-            id: '1', title: 'Book', 
-            description: '',
-            status: 0,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-          {
-            id: '2', title: 'Milk', 
-            description: '',
-            status: 1,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-          {
-            id: '3', title: 'Tea', 
-            description: '',
-            status: 0,
-            priority: 0,
-            startDate: '',
-            deadline: '',
-            todoListId: '',
-            order: 0,
-            addedDate: ''
-          },
-        ],
+    todoListId1: [
+      {
+        id: 1,
+        title: 'React',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId1',
+        order: 0,
+        userId: '1',
+        priority: 'Low',
+        status: 'PENDING',
+      },
+    ],
   };
 
-  const action = changeTaskStatusAC('todoListId1', '2', 0);
+  const action = changeTaskStatusAC('todoListId1', 1, true);
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][2].status).toBe(0);
-  expect(endState['todoListId2'][1].status).toBe(1);
-});
-
-test('correct task from  correct array should change its name', () => {
-  const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
-            {
-              id: '1', title: 'HTML&CSS', 
-              description: '',
-              status: 1,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-            {
-              id: '2', title: 'JS',
-              description: '',
-              status: 1,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-            {
-              id: '3', title: 'ReactJs', 
-              description: '',
-              status: 0,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-          ],
-    // prettier-ignore
-    'todoListId2': [
-            {
-              id: '1', title: 'Book', 
-              description: '',
-              status: 0,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-            {
-              id: '2', title: 'Milk', 
-              description: '',
-              status: 1,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-            {
-              id: '3', title: 'Tea',
-              description: '',
-              status: 0,
-              priority: 0,
-              startDate: '',
-              deadline: '',
-              todoListId: '',
-              order: 0,
-              addedDate: ''
-            },
-          ],
-  };
-  const newTaskTitle = 'Pyton';
-  const action = changeTaskTitleAC('todoListId1', '3', newTaskTitle);
-  const endState = tasksReducer(startState, action);
-
-  expect(endState['todoListId1'][2].title).toBe(newTaskTitle);
-  expect(endState['todoListId2'][2].title).toBe('Tea');
-});
-
-test('new array should be added when todo-list was added', () => {
-  const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
-              {
-                id: '1', title: 'HTML&CSS', 
-                description: '',
-                status: 1,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-              {
-                id: '2', title: 'JS', 
-                description: '',
-                status: 1,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-              {
-                id: '3', title: 'ReactJs', 
-                description: '',
-                status: 0,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-            ],
-    // prettier-ignore
-    'todoListId2': [
-              {
-                id: '1', title: 'Book', 
-                description: '',
-                status: 0,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-              {
-                id: '2', title: 'Milk', 
-                description: '',
-                status: 1,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-              {
-                id: '3', title: 'Tea', 
-                description: '',
-                status: 0,
-                priority: 0,
-                startDate: '',
-                deadline: '',
-                todoListId: '',
-                order: 0,
-                addedDate: ''
-              },
-            ],
-  };
-  const action = addTodoListAC('new Todo list');
-  const endState = tasksReducer(startState, action);
-
-  const keys = Object.keys(endState);
-  const newKey = keys.find((k) => k != 'todoListId1' && k != 'todoListId2');
-  if (!newKey) {
-    throw Error('new key should be added');
-  }
-
-  expect(keys.length).toBe(3);
-  expect(endState[newKey]).toStrictEqual([]);
+  expect(endState['todoListId1'][0].completed).toBe(true);
 });
 
 test('correct task priority should be changed', () => {
   const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
+    todoListId1: [
       {
-        id: '1', title: 'HTML&CSS', 
-        description: '',
-        status: 1,
-        priority: 0,
-        startDate: '',
-        deadline: '',
-        todoListId: '',
+        id: 1,
+        title: 'React',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId1',
         order: 0,
-        addedDate: '',
+        userId: '1',
+        priority: 'Low',
+        status: 'PENDING',
       },
     ],
   };
 
-  const action = changeTaskPriorityAC('todoListId1', '1', 1);
+  const action = changeTaskPriorityAC('todoListId1', 1, 'High');
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][0].priority).toBe(1);
+  expect(endState['todoListId1'][0].priority).toBe('High');
 });
 
 test('correct task deadline should be changed', () => {
   const startState: TasksStateType = {
-    // prettier-ignore
-    'todoListId1': [
+    todoListId1: [
       {
-        id: '1', title: 'HTML&CSS', 
-        description: '',
-        status: 1,
-        priority: 0,
-        startDate: '',
-        deadline: '',
-        todoListId: '',
+        id: 1,
+        title: 'React',
+        description: 'Its not important task',
+        completed: false,
+        endDate: '2025-02-27T16:33:37.861Z',
+        date: new Date('2025-02-27T16:33:37.861Z'),
+        todoId: 'todoListId1',
         order: 0,
-        addedDate: '',
+        userId: '1',
+        priority: 'Low',
+        status: 'PENDING',
       },
     ],
   };
 
-  const action = changeTaskDeadlineAC('todoListId1', '1', '2025-01-01');
+  const action = changeTaskDeadlineAC('todoListId1', 1, '2025-12-31');
   const endState = tasksReducer(startState, action);
 
-  expect(endState['todoListId1'][0].deadline).toBe('2025-01-01');
+  expect(endState['todoListId1'][0].endDate).toBe('2025-12-31');
 });

@@ -1,173 +1,33 @@
-import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { TodoList } from './components/TodoList/TodoList';
 import AddItemForm from './components/AddItemForm/AddItemForm';
-import {
-  Alert,
-  AppBar,
-  Container,
-  IconButton,
-  Paper,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import { Alert, Container, Paper, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import {
-  addTodoListAC,
-  changeTodolistFilterAC,
-  changeTodolistTitleAC,
-  removeTodoListAC,
-  setTodoListsAC,
-} from './state/todoList-reducer';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppRootStateType } from './state/store';
-import TestRequest from './components/TestRequest';
-import { todoListsApi } from './api/todoListsApi';
-import { TaskType } from './api/taskListApi';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 import Registration from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import { AnimatePresence, motion, Reorder } from 'framer-motion';
-import { setErrorAC, setErrorMessageDeleteAC } from './state/error-reducer';
 import ProtectedRoute from './components/ProtectedRoute';
-import { setAuthStatusAC } from './state/user-reducer';
+import Header from './components/Header/Header';
+import { useTodoList } from './hooks/useTodoLists';
 
-export type FilteredValuesType = 'All' | 'Active' | 'Completed';
-export type TodoListType = {
-  id: string;
-  title: string;
-  filter: FilteredValuesType;
-  addedDate: string;
-  order: number;
-};
+export function App() {
+  console.log('App component rendered'); // Додайте цей рядок
 
-export type TasksStateType = {
-  [key: string]: Array<TaskType>;
-};
-
-function App() {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const error = useSelector<AppRootStateType, string | null>(
-    (state) => state.error.error
-  );
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      dispatch(setAuthStatusAC(true));
-    } else {
-      dispatch(setAuthStatusAC(false));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await todoListsApi.getTodoLists();
-        dispatch(setTodoListsAC(response.data));
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(
-    (state) => state.todoList || []
-  );
-
-  const changeFilter = useCallback(
-    (value: FilteredValuesType, todoListId: string) => {
-      dispatch(changeTodolistFilterAC(todoListId, value));
-    },
-    [dispatch]
-  );
-
-  const removeTodoList = useCallback(
-    async (todoListId: string) => {
-      try {
-        await todoListsApi.deleteTodoList(todoListId);
-        setData((prevData: any[]) => {
-          return prevData.filter((todo) => todo.id !== todoListId);
-        });
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-        console.log(error);
-      }
-      const action = removeTodoListAC(todoListId);
-      dispatch(action);
-    },
-    [dispatch]
-  );
-
-  const changeTodoListTitle = useCallback(
-    async (todoListId: string, newTitle: string) => {
-      try {
-        await todoListsApi.updateTodoListTitle(todoListId, newTitle);
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-      }
-      dispatch(changeTodolistTitleAC(todoListId, newTitle));
-    },
-    [dispatch]
-  );
-
-  const addTodoList = useCallback(
-    async (title: string) => {
-      try {
-        const response = await todoListsApi.createTodoList(title);
-        const newTodo = response.data;
-        setData((prevData: any[]) => {
-          const exists = prevData.some(
-            (todo) => todo.id === newTodo.data.item.id
-          );
-          return exists ? prevData : [...prevData, newTodo];
-        });
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-        console.log(error);
-      }
-      const action = addTodoListAC(title);
-      dispatch(action);
-    },
-    [dispatch]
-  );
+  const {
+    todolists,
+    error,
+    addTodo,
+    changeTodolistFilter,
+    removeTodoList,
+    changeTodolistTitle,
+  } = useTodoList();
 
   return (
-    <BrowserRouter>
+    <div>
       <div className="App">
-        <AppBar position="static" color={'secondary'}>
-          <Toolbar variant="dense">
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <Menu />
-            </IconButton>
-            <Typography variant="h6" color="inherit" component="div">
-              Photos
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <Header />
         {error && (
           <motion.div
             initial={{ opacity: 0, right: '-300px', top: 60 }}
@@ -206,7 +66,7 @@ function App() {
                       </Typography>
                     </motion.div>
                     <AddItemForm
-                      addItem={addTodoList}
+                      addItem={addTodo}
                       style={{ marginBottom: '30px', width: '300px' }}
                     />
                   </Grid>
@@ -218,20 +78,11 @@ function App() {
                       flexWrap: 'wrap',
                     }}
                     axis="x"
-                    values={todoLists}
-                    onReorder={(reorderedTodoLists) => {
-                      // Ensure the reordered items maintain their order in the state
-                      const updatedTodoLists = reorderedTodoLists.map(
-                        (tl, index) => ({
-                          ...tl,
-                          order: index, // Update order based on the new index
-                        })
-                      );
-                      dispatch(setTodoListsAC(updatedTodoLists)); // Update the state
-                    }}
+                    values={todolists}
+                    onReorder={(reorderedTodoLists) => {}}
                   >
                     <AnimatePresence>
-                      {todoLists.map((tl) => {
+                      {todolists.map((tl) => {
                         return (
                           <Reorder.Item
                             key={tl.id}
@@ -250,13 +101,12 @@ function App() {
                             >
                               <TodoList
                                 id={tl.id}
-                                changeFilter={changeFilter}
+                                changeFilter={changeTodolistFilter}
                                 title={tl.title}
                                 filter={tl.filter}
                                 removeTodoList={removeTodoList}
-                                changeTodoListTitle={changeTodoListTitle}
-                                addedDate={tl.addedDate}
-                                order={tl.order}
+                                changeTodoListTitle={changeTodolistTitle}
+                                addedDate={tl.createdAt}
                               />
                             </Paper>
                           </Reorder.Item>
@@ -273,14 +123,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
-
-        {/*  <TestRequest /> */}
       </div>
-    </BrowserRouter>
+    </div>
   );
-}
-
-export default App;
-function setData(arg0: (prevData: any[]) => any[]) {
-  throw new Error('Function not implemented.');
 }

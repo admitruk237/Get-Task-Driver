@@ -1,13 +1,6 @@
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import styles from './styles.module.css';
-import { FilteredValuesType } from '../../App';
+import { FilteredValuesType } from '../../types/todo.interface';
 import AddItemForm from '../AddItemForm/AddItemForm';
 import EditableSpan from '../EditableSpan/EditableSpan';
 import { Button, IconButton } from '@mui/material';
@@ -21,13 +14,17 @@ import {
   changeTaskTitleAC,
   removeTaskAC,
   setTasksAC,
-} from '../../state/tasks-reducer';
-import { taskListApi } from '../../api/taskListApi';
+} from '../../state/tasksState/taskActionCreators';
+import { taskApi } from '../../api/taskApi';
 
 import { formatDateTime } from '../../utils/dateUtils';
-import { shallowEqual } from 'react-redux';
 
 import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
+import {
+  changeTodolistTitleAC,
+  setTodoListsAC,
+} from '../../state/todoList-reducer';
+import { fetchTodoList } from '../../servies/todoListService';
 
 type PropsType = {
   id: string;
@@ -37,31 +34,12 @@ type PropsType = {
   filter: FilteredValuesType;
   removeTodoList: (todoListId: string) => void;
   addedDate: string;
-  order: number;
 };
 
 export const TodoList = React.memo((props: PropsType) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await taskListApi.getTaskLists(props.id);
-        dispatch(setTasksAC(response.data.items, props.id));
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-      }
-    };
-    fetchData();
-  }, [dispatch, props.id]);
-
-  const tasks = useSelector(
-    (state: AppRootStateType) => state.tasks[props.id] || [],
-    shallowEqual
-  );
+  const tasks = useSelector((state: AppRootStateType) => state.tasks[props.id]);
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter('All', props.id),
@@ -82,16 +60,8 @@ export const TodoList = React.memo((props: PropsType) => {
   };
 
   const changeTodoListTitle = useCallback(
-    async (taskId: string, newTitle: string) => {
-      try {
-        await taskListApi.updateTask(props.id, taskId, newTitle);
-        props.changeTodoListTitle(props.id, newTitle);
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-      }
+    (todoId: string, newTitle: string) => {
+      dispatch(changeTodolistTitleAC(todoId, newTitle));
     },
     [props.id, props.changeTodoListTitle]
   );
@@ -99,7 +69,19 @@ export const TodoList = React.memo((props: PropsType) => {
   const addTask = useCallback(
     async (title: string) => {
       try {
-        const response = await taskListApi.createTask(props.id, title);
+        const response = await taskApi.createTask({
+          date: new Date('2025-03-12T13:21:55.344Z'),
+          id: 0,
+          title: title,
+          description: '',
+          endDate: new Date().toISOString(),
+          completed: false,
+          priority: 'Medium',
+          todoId: props.id,
+          order: 0,
+          status: '',
+          userId: '',
+        });
 
         dispatch(addTaskAC(props.id, response.data.item));
       } catch (error: any) {
@@ -117,18 +99,18 @@ export const TodoList = React.memo((props: PropsType) => {
   const serveDate = props.addedDate;
 
   if (props.filter === 'Completed') {
-    taskForTodoList = taskForTodoList.filter((t) => t.status === 1);
+    taskForTodoList = taskForTodoList.filter((t) => t.status);
   }
 
   if (props.filter === 'Active') {
-    taskForTodoList = taskForTodoList.filter((t) => t.status === 0);
+    taskForTodoList = taskForTodoList.filter((t) => t.status);
   }
 
   const onRemoveHandler = useCallback(
-    async (taskId: string, todolistId: string) => {
+    async (taskId: number, todoListId: string) => {
       try {
-        await taskListApi.deleteTask(todolistId, taskId);
-        dispatch(removeTaskAC(taskId, todolistId));
+        await taskApi.deleteTask(taskId);
+        dispatch(removeTaskAC(taskId, todoListId));
       } catch (error: any) {
         dispatch(setErrorAC(error.message));
         setTimeout(() => {
@@ -140,41 +122,27 @@ export const TodoList = React.memo((props: PropsType) => {
   );
 
   const onChangeStatusHandler = useCallback(
-    async (
-      todoListId: string,
-      taskId: string,
-      e: ChangeEvent<HTMLInputElement>
-    ) => {
-      try {
-        const currentTask = tasks.find((task) => task.id === taskId);
-        if (!currentTask) return;
+    (todoListId: string, taskId: number, e: ChangeEvent<HTMLInputElement>) => {
+      const currentTask = tasks.find((task) => task.id === taskId);
+      if (!currentTask) return;
 
-        const updateTask = {
-          ...currentTask,
-          status: e.currentTarget.checked ? 1 : 0,
-        };
+      const updateTask = {
+        ...currentTask,
+        status: e.currentTarget.checked ? true : false,
+      };
 
-        await taskListApi.changeTaskStatus(todoListId, taskId, updateTask);
-
-        dispatch(changeTaskStatusAC(todoListId, taskId, updateTask.status));
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
-          dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
-      }
+      dispatch(changeTaskStatusAC(todoListId, taskId, updateTask.status));
     },
     [dispatch, tasks]
   );
 
   const onChangeTitleHandler = useCallback(
-    async (todoListId: string, taskId: string, newValue: string) => {
+    async (todoListId: string, taskId: number, newValue: string) => {
       try {
         if (newValue.trim() === '') {
-          await taskListApi.deleteTask(todoListId, taskId);
+          await taskApi.deleteTask(taskId);
           dispatch(removeTaskAC(taskId, todoListId));
         } else {
-          await taskListApi.updateTask(todoListId, taskId, newValue);
           dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
         }
       } catch (error: any) {
@@ -199,7 +167,7 @@ export const TodoList = React.memo((props: PropsType) => {
         </IconButton>
       </h3>
       <p style={{ marginTop: '-20px', fontSize: '12px' }}>
-        {formatDateTime(serveDate)}
+        {serveDate ? formatDateTime(serveDate.toString()) : ''}
       </p>
 
       <AddItemForm style={{ width: '88%' }} addItem={addTask} />
@@ -213,7 +181,7 @@ export const TodoList = React.memo((props: PropsType) => {
               removeTask={onRemoveHandler}
               changeTaskStatus={onChangeStatusHandler}
               changeTaskTitle={onChangeTitleHandler}
-              deadline={task.deadline}
+              deadline={task.endDate ? new Date(task.endDate) : null}
               priority={task.priority}
             />
           ) : null

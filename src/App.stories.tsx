@@ -1,10 +1,16 @@
-import App from './App';
-import { ReduxStoreProviderDecorator } from './stories/ReduxStoreProviderDecorator';
+import { MemoryRouter } from 'react-router-dom';
+import { App } from './App';
 
 export default {
   title: 'App Component',
   component: App,
-  decorators: [ReduxStoreProviderDecorator],
+  decorators: [
+    (Story: any) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 };
 
 export const AppBaseExample = () => {

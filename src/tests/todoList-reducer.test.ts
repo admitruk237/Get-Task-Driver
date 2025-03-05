@@ -1,3 +1,4 @@
+import { v1 } from 'uuid';
 import {
   addTodoListAC,
   changeTodolistFilterAC,
@@ -5,63 +6,71 @@ import {
   removeTodoListAC,
   todoListReducer,
 } from '../state/todoList-reducer';
-import { v1 } from 'uuid';
-import { FilteredValuesType, TodoListType } from '../App';
+import { FilteredValuesType, ResponseTypeTodo } from '../types/todo.interface';
 
-test('correct todo-list should be removed', () => {
-  let todoListId1 = v1();
-  let todoListId2 = v1();
-
-  const startState: Array<TodoListType> = [
+test('corrrect todo-list should be removed', () => {
+  const startState: Array<ResponseTypeTodo> = [
     {
-      id: todoListId1,
-      title: 'What to learn',
+      id: '1',
       filter: 'All',
-      addedDate: '12.05.24',
-      order: 0,
+      title: 'Todo title',
+      createdAt: '2025-02-27T16:28:23.417Z',
+      userId: '',
+      tasks: [],
     },
     {
-      id: todoListId2,
-      title: 'What to buy',
+      id: '2',
       filter: 'All',
-      addedDate: '11.9.24',
-      order: 1,
+      title: 'Todo title 2',
+      createdAt: '2025-02-27T16:28:23.417Z',
+      userId: '',
+      tasks: [],
     },
   ];
 
-  const endState = todoListReducer(startState, removeTodoListAC(todoListId1));
+  const action = removeTodoListAC('1');
+  const endState = todoListReducer(startState, action);
 
   expect(endState.length).toBe(1);
-  expect(endState[0].id).toBe(todoListId2);
+  expect(endState[0].id).toBe('2');
 });
 
 test('correct todo-list should be added', () => {
   let todoListId1 = v1();
   let todoListId2 = v1();
 
-  let newTodoListTitle = 'New Todo List';
+  let newTodoListTitle: ResponseTypeTodo = {
+    id: '1',
+    filter: 'All',
+    title: 'New TodoList Title',
+    createdAt: '',
+    userId: '',
+    tasks: [],
+  };
 
-  const startState: Array<TodoListType> = [
+  const startState: Array<ResponseTypeTodo> = [
     {
       id: todoListId1,
-      title: 'What to learn',
       filter: 'All',
-      addedDate: '23.12.24',
-      order: 0,
+      title: 'Todo title 1',
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
     {
       id: todoListId2,
-      title: 'What to buy',
       filter: 'All',
-      addedDate: '23.12.26',
-      order: 1,
+      title: 'Todo title 2',
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
   ];
 
   const endState = todoListReducer(startState, addTodoListAC(newTodoListTitle));
 
   expect(endState.length).toBe(3);
-  expect(endState[0].title).toBe(newTodoListTitle);
+  expect(endState[0].title).toBe(newTodoListTitle.title);
   expect(endState[0].filter).toBe('All');
 });
 
@@ -71,20 +80,22 @@ test('correct todo-list should change its name', () => {
 
   let newTodoListTitle = 'New Todo List';
 
-  const startState: Array<TodoListType> = [
+  const startState: Array<ResponseTypeTodo> = [
     {
       id: todoListId1,
       title: 'What to learn',
       filter: 'All',
-      addedDate: '23.12.24',
-      order: 0,
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
     {
       id: todoListId2,
       title: 'What to buy',
       filter: 'All',
-      addedDate: '23.12.27',
-      order: 1,
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
   ];
 
@@ -103,20 +114,22 @@ test('correct filter of todoList should changed', () => {
 
   let newFilter: FilteredValuesType = 'Completed';
 
-  const startState: Array<TodoListType> = [
+  const startState: Array<ResponseTypeTodo> = [
     {
       id: todoListId1,
       title: 'What to learn',
       filter: 'All',
-      addedDate: '23.12.24',
-      order: 0,
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
     {
       id: todoListId2,
       title: 'What to buy',
       filter: 'All',
-      addedDate: '23.12.27',
-      order: 1,
+      createdAt: '',
+      userId: '',
+      tasks: [],
     },
   ];
 

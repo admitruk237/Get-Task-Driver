@@ -3,29 +3,30 @@ import styles from './styles.module.css';
 import { Checkbox, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import EditableSpan from '../EditableSpan/EditableSpan';
-import { TaskType } from '../../api/taskListApi';
+
 import LongMenu from '../LongMenu/LongMenu';
 import DeadlineIcon from '../DeadlineIcon/DeadlineIcon';
+import { TaskType } from '../../types/todo.interface';
 
 export type TaskPropsType = {
   todoListId: string;
-  removeTask: (taskId: string, todoListId: string) => void;
+  removeTask: (taskId: number, todoListId: string) => void;
   changeTaskStatus: (
     todoListId: string,
-    taskId: string,
+    taskId: number,
     value: ChangeEvent<HTMLInputElement>
   ) => void;
   changeTaskTitle: (
     todoListId: string,
-    taskId: string,
+    taskId: number,
     newValue: string
   ) => void;
   task: TaskType;
-  deadline?: string;
-  priority: number;
+  deadline: Date | null;
+  priority: string;
 };
 
-export type FilteredPriorityType = 0 | 1 | 2;
+export type FilteredPriorityType = 'Low' | 'Medium' | 'Hight';
 
 export const Task = React.memo((props: TaskPropsType) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -42,7 +43,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     <div>
       <li
         style={{
-          boxShadow: `0 0 5px 0 ${props.priority === 0 || props.priority === undefined ? 'green' : props.priority === 1 ? 'yellow' : 'red'}`,
+          boxShadow: `0 0 5px 0 ${props.priority === 'Low' || props.priority === undefined ? 'green' : props.priority === 'Medium' ? 'yellow' : 'red'}`,
         }}
         className={props.task.status ? styles.isDone : styles.taskContainer}
       >
@@ -65,7 +66,9 @@ export const Task = React.memo((props: TaskPropsType) => {
         </label>
 
         <div style={{ display: isEditMode ? 'none' : 'flex' }}>
-          {props.deadline && <DeadlineIcon deadline={props.deadline} />}
+          {props.deadline && (
+            <DeadlineIcon deadline={props.deadline.toISOString()} />
+          )}
 
           <IconButton aria-label="delete" onClick={onRemoveHandler}>
             <Delete />

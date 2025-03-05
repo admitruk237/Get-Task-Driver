@@ -15,9 +15,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import {
-  changeTaskDeadlineAC,
-  changeTaskPriorityAC,
-} from '../../state/tasks-reducer';
+  ChangeTaskDeadlineType,
+  ChangeTaskPriorityType,
+} from '../../state/tasksState/tasks-reducer';
 import { useDispatch } from 'react-redux';
 import {
   FormControl,
@@ -26,11 +26,15 @@ import {
   RadioGroup,
   FormControlLabel,
 } from '@mui/material';
+import {
+  changeTaskDeadlineAC,
+  changeTaskPriorityAC,
+} from '../../state/tasksState/taskActionCreators';
 
 type LongMenuPropsType = {
-  taskId: string;
+  taskId: number;
   todoListId: string;
-  priority: number;
+  priority: string;
 };
 
 export default function LongMenu(props: LongMenuPropsType) {
@@ -41,7 +45,7 @@ export default function LongMenu(props: LongMenuPropsType) {
 
   const [selectedDeadline, setSelectedDeadline] = useState<Dayjs | null>(null);
 
-  const [selectedPriority, setSelectedPriority] = useState<string>('1');
+  const [selectedPriority, setSelectedPriority] = useState<string>('Mediun');
 
   const dispatch = useDispatch();
 
@@ -65,11 +69,7 @@ export default function LongMenu(props: LongMenuPropsType) {
   const handlePriorityConfirm = () => {
     setOpenPriorityDialog(false);
     dispatch(
-      changeTaskPriorityAC(
-        props.todoListId,
-        props.taskId,
-        Number(selectedPriority)
-      )
+      changeTaskPriorityAC(props.todoListId, props.taskId, selectedPriority)
     );
   };
 
@@ -161,13 +161,17 @@ export default function LongMenu(props: LongMenuPropsType) {
                 value={selectedPriority}
                 onChange={(e) => setSelectedPriority(e.target.value)}
               >
-                <FormControlLabel value="0" control={<Radio />} label="Low" />
+                <FormControlLabel value="Low" control={<Radio />} label="Low" />
                 <FormControlLabel
-                  value="1"
+                  value="Medium"
                   control={<Radio />}
                   label="Medium"
                 />
-                <FormControlLabel value="2" control={<Radio />} label="High" />
+                <FormControlLabel
+                  value="High"
+                  control={<Radio />}
+                  label="High"
+                />
               </RadioGroup>
             </FormControl>
           </DialogContent>

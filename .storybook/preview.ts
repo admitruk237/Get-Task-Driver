@@ -1,6 +1,9 @@
-import type { Preview } from "@storybook/react";
+import { Preview } from '@storybook/react';
+import { ReduxStoreProviderDecorator } from '../src/stories/ReduxStoreProviderDecorator';
 
-const preview: Preview = {
+export const decorators = [ReduxStoreProviderDecorator];
+
+export const preview: Preview = {
   parameters: {
     controls: {
       matchers: {
@@ -10,5 +13,3 @@ const preview: Preview = {
     },
   },
 };
-
-export default preview;

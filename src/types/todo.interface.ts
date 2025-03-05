@@ -1,20 +1,33 @@
-export interface Task {
+export interface TaskType {
   date: Date;
   id: number;
   title: string;
   description: string;
-  endDate: Date | null;
+  endDate: string;
   completed: boolean;
   priority: string;
   todoId: string;
   order: number;
   status: string;
+  userId: string;
 }
 
-export interface Todo {
+export type FilteredValuesType = 'All' | 'Active' | 'Completed';
+export interface ResponseTypeTodo {
   id: string;
-  filter: string;
+  userId: string;
+  filter: FilteredValuesType;
   title: string;
-  date: Date | null;
-  tasks: Task[];
+  createdAt: string;
+  tasks: TaskType[];
 }
+
+export interface ResponseType<D = {}> {
+  resultCode: number;
+  messages: Array<string>;
+  data: D;
+}
+
+export type TasksStateType = {
+  [key: string]: Array<TaskType>;
+};

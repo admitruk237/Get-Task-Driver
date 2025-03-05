@@ -9,7 +9,7 @@ export default {
 
 const changeTaskStatusCallBack = (
   todoListId: string,
-  taskId: string,
+  taskId: number,
   e: ChangeEvent<HTMLInputElement>
 ) => {
   action('Status changed inside Task')([
@@ -21,13 +21,13 @@ const changeTaskStatusCallBack = (
 
 const changeTaskTitleCallBack = (
   todoListId: string,
-  taskId: string,
+  taskId: number,
   newTitle: string
 ) => {
   action('Title changed inside Task')([todoListId, taskId, newTitle]);
 };
 
-const removeTaskCallBack = (taskId: string, todoListId: string) => {
+const removeTaskCallBack = (taskId: number, todoListId: string) => {
   action('Remove Button inside Task clicked')([taskId, todoListId]);
 };
 
@@ -36,16 +36,17 @@ export const TaskBaseExample = () => {
     <>
       <Task
         task={{
-          id: '1',
-          title: 'HTML',
-          status: 0,
-          description: '',
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
+          id: 1,
+          title: 'React',
+          description: 'Its not important task',
+          completed: false,
+          endDate: '2025-02-27T16:33:37.861Z',
+          date: new Date('2025-02-27T16:33:37.861Z'),
+          todoId: 'todoListId1',
           order: 0,
-          addedDate: '',
+          userId: '1',
+          priority: 'Low',
+          status: 'PENDING',
         }}
         todoListId={'todolistId1'}
         removeTask={removeTaskCallBack}
@@ -55,20 +56,22 @@ export const TaskBaseExample = () => {
         changeTaskTitle={(todoListId, taskId, newTitle) =>
           changeTaskTitleCallBack(todoListId, taskId, newTitle)
         }
-        priority={0}
+        priority={'Medium'}
+        deadline={null}
       />
       <Task
         task={{
-          id: '2',
+          id: 2,
           title: 'JS',
-          status: 0,
-          description: '',
-          priority: 0,
-          startDate: '',
-          deadline: '',
-          todoListId: '',
+          description: 'Its not important task',
+          completed: false,
+          endDate: '2025-02-27T16:33:37.861Z',
+          date: new Date('2025-02-27T16:33:37.861Z'),
+          todoId: 'todoListId1',
           order: 0,
-          addedDate: '',
+          userId: '1',
+          priority: 'Low',
+          status: 'PENDING',
         }}
         todoListId={'todolistId2'}
         removeTask={removeTaskCallBack}
@@ -78,7 +81,8 @@ export const TaskBaseExample = () => {
         changeTaskTitle={(todoListId, taskId, newTitle) =>
           changeTaskTitleCallBack(todoListId, taskId, newTitle)
         }
-        priority={0}
+        priority={'Low'}
+        deadline={null}
       />
     </>
   );

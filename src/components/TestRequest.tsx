@@ -1,163 +1,83 @@
-import { useEffect, useState } from 'react';
-import { todoListsApi } from '../api/todoListsApi';
-import { TodoListType } from '../App';
-import { taskListApi } from '../api/taskListApi';
+/* import { useEffect, useState } from 'react';
+import { ResponseTypeTodo, Task } from '../types/todo.interface';
+import { todoApi } from '../api/todoApi';
+import { taskApi } from '../api/taskApi';
 
-const TestRequest = () => {
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-  /* 
+export const TestRequest = () => {
+  const [todo, setTodo] = useState<ResponseTypeTodo | null>(null);
+  const [task, setTask] = useState<Task | null>(null);
+
   useEffect(() => {
-    const fetchData = async () => {
+    const getTodo = async () => {
       try {
-        const response = await todoListsApi.getTodoLists();
-        setData(response.data); // Оновлюємо стан отриманими тудолістами
-      } catch (error: any) {
-        setError(error.message);
+        const response = await todoApi.getTodos();
+
+        console.log('getTodos response:', response); // 🔍 Перевіряємо відповідь сервера
+
+        // 🛠️ Якщо сервер повертає масив, беремо перший елемент
+        if (Array.isArray(response) && response.length > 0) {
+          setTodo(response[0]);
+        } else {
+          setTodo(response);
+        }
+      } catch (error) {
+        console.error('Error fetching todos:', error);
       }
     };
 
-    fetchData();
+    getTodo();
   }, []);
 
-  const createTodoList = async () => {
+  const createTodo = async () => {
     try {
-      const response = await todoListsApi.createTodoList('New Todo List');
-      const newTodo = response.data;
+      const response = await todoApi.createTodo('New todo');
 
-      setData((prevData: any[]) => {
-        const exists = prevData.some(
-          (todo) => todo.id === newTodo.data.item.id
-        );
-        return exists ? prevData : [...prevData, newTodo]; // Додаємо, якщо ще немає
-      });
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+      console.log('createTodo response:', response); // 🔍 Лог відповіді
 
-  const deleteTodoList = async (todoListId: string) => {
-    try {
-      await todoListsApi.deleteTodoList(todoListId);
-
-      setData((prevData: any[]) => {
-        return prevData.filter((todo) => todo.id !== todoListId); // Видаляємо
-      });
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-
-  return (
-    <>
-      <div className="get-todo-lists">
-        <h3>Test API Request</h3>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-        <ul>
-          {data.map((todo) => (
-            <li key={todo.id}>
-              {todo.title}
-              <button onClick={() => deleteTodoList(todo.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="create-todo-list">
-        <h3>Create Todo</h3>
-        <button onClick={createTodoList}>Add New Todo</button>
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      </div>
-    </>
-  ); */
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await taskListApi.getTaskLists(
-          '13e76ced-3826-40a6-9f0f-98c6199b362f'
-        );
-        setData(response.data); // Оновлюємо стан отриманими тудолістами
-      } catch (error: any) {
-        setError(error.message);
+      // 🛠️ Якщо сервер загортає todo в data, беремо response.data
+      if (response?.data) {
+        setTodo(response.data);
+      } else {
+        setTodo(response);
       }
-    };
-
-    fetchData();
-  }, []);
+    } catch (error) {
+      console.error('Error creating todo:', error);
+    }
+  };
 
   const createTask = async () => {
     try {
-      const response = await taskListApi.createTask(
-        '13e76ced-3826-40a6-9f0f-98c6199b362f',
-        'New Todo List'
-      );
-      const newTask = response.data.item;
-      setData((prevData: any[]) => {
-        const exists = prevData.some((task) => task.id === newTask.id);
-        return exists ? prevData : [...prevData, newTask]; // Додаємо, якщо ще немає
+      const response = await taskApi.createTask({
+        date: new Date('2025-03-12T13:21:55.344Z'),
+        id: 0,
+        title: 'string',
+        description: 'string',
+        endDate: new Date().toISOString(),
+        completed: true,
+        priority: 'string',
+        todoId: todo?.id || 'id',
+        order: 0,
+        status: 'string',
       });
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-  const deleteTask = async (todolistId: string, taskId: string) => {
-    try {
-      await taskListApi.deleteTask(todolistId, taskId);
 
-      setData((prevData: any[]) => {
-        return prevData.filter((task) => task.id !== taskId); //
-      });
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+      console.log('createTask response:', response);
 
-  const changeTaskTitle = async (
-    todolistId: string,
-    taskId: string,
-    title: string
-  ) => {
-    try {
-      await taskListApi.updateTask(todolistId, taskId, title);
-    } catch (error: any) {
-      setError(error.message);
+      if (response?.data) {
+        setTask(response.data);
+      }
+    } catch (error) {
+      console.error('Error creating task:', error);
     }
   };
 
   return (
     <div>
-      <div className="get">
-        <h1>{JSON.stringify(data)}</h1>
-        <h2>{error !== null ? error : null}</h2>
-      </div>
-      <div className="create">
-        <button onClick={createTask}>Create Task</button>
-      </div>
-      <div className="delete">
-        <button
-          onClick={() =>
-            deleteTask(
-              '13e76ced-3826-40a6-9f0f-98c6199b362f',
-              'e4855fc7-b62d-46d1-8a60-a256cd8915ba'
-            )
-          }
-        >
-          Delete Task
-        </button>
-        <button
-          onClick={() =>
-            changeTaskTitle(
-              '13e76ced-3826-40a6-9f0f-98c6199b362f',
-              '9b1933e5-185b-4cbe-a29e-32584ccc79e6',
-              'dddddddddddddddd'
-            )
-          }
-        >
-          Change Task Title
-        </button>
-      </div>
+      <button onClick={createTodo}>Create todo</button>
+      <button onClick={createTask}>Create task</button>
+      <h1>{todo?.title || 'No todo'}</h1>
+      <h2>{task?.title || 'No task'}</h2>
     </div>
   );
 };
-export default TestRequest;
+ */
+export {};

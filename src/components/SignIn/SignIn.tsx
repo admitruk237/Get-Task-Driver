@@ -14,6 +14,8 @@ import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../state/store';
 import { useNavigate } from 'react-router-dom';
 import { setAccessAC, setRefreshAC } from '../../state/user-reducer';
+import { fetchTodoList } from '../../servies/todoListService';
+import { setTodoListsAC } from '../../state/todoList-reducer';
 
 type SignInType = {
   userName: string;
@@ -36,16 +38,20 @@ function SignIn(props: SignInPropsType) {
     resolver: yupResolver(signInSchema),
   });
 
-  const navigate = useNavigate(); // Для редіректу після авторизації
+  const navigate = useNavigate();
 
   const onSignInSubmit = async (data: SignInType) => {
     setIsLoading(true);
     try {
       const response = await userApi.signInApi(data);
-
-      console.log('Успішний вхід:', response);
-
-      navigate('/'); // Перенаправлення на головну сторінку
+      localStorage.setItem('accessToken', response.accessToken);
+      console.log(
+        'accessToken after setItem:',
+        localStorage.getItem('accessToken')
+      ); // Додайте цей рядок
+      navigate('/');
+      const todoLists = await fetchTodoList();
+      dispatch(setTodoListsAC(todoLists));
     } catch (error: any) {
       dispatch(setErrorAC(error.response.data.error));
       setTimeout(() => {

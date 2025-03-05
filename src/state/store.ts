@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { todoListReducer } from './todoList-reducer';
-import { tasksReducer } from './tasks-reducer';
+import { tasksReducer } from './tasksState/tasks-reducer';
 import { errorReducer } from './error-reducer';
 import { userReducer } from './user-reducer';
 

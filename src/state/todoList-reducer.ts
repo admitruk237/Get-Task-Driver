@@ -1,5 +1,5 @@
-import { v1 } from 'uuid';
-import { FilteredValuesType, TodoListType } from '../App';
+import { FilteredValuesType, TaskType } from '../types/todo.interface';
+import { ResponseTypeTodo } from '../types/todo.interface';
 
 export type RemoveTodolistActionType = {
   type: 'REMOVE-TODOLIST';
@@ -8,8 +8,7 @@ export type RemoveTodolistActionType = {
 
 export type AddTodolistActionType = {
   type: 'ADD-TODOLIST';
-  title: string;
-  id: string;
+  todoList: ResponseTypeTodo;
 };
 
 export type ChangeTodolistTitleActionType = {
@@ -26,7 +25,7 @@ export type ChangeTodolistFilterActionType = {
 
 export type SetTodoListsActionType = {
   type: 'SET-TODOLISTS';
-  todoLists: Array<TodoListType>;
+  todoLists: Array<ResponseTypeTodo>;
 };
 
 type ActionsType =
@@ -36,52 +35,42 @@ type ActionsType =
   | ChangeTodolistFilterActionType
   | SetTodoListsActionType;
 
-const initialState: Array<TodoListType> = [];
+const initialState: Array<ResponseTypeTodo> = [];
 
 export const todoListReducer = (
-  state: Array<TodoListType> = initialState,
+  state: Array<ResponseTypeTodo> = initialState,
   action: ActionsType
-): Array<TodoListType> => {
+): Array<ResponseTypeTodo> => {
   switch (action.type) {
     case 'REMOVE-TODOLIST': {
       return [...state.filter((tl) => tl.id !== action.id)];
     }
     case 'ADD-TODOLIST': {
-      return [
-        {
-          id: action.id,
-          filter: 'All',
-          title: action.title,
-          addedDate: new Date().toISOString(),
-          order: 0,
-        },
-        ...state,
-      ];
+      return [action.todoList, ...state];
     }
     case 'CHANGE-TODOLIST-TITLE': {
-      return [
-        ...state.map((tl) => {
-          if (tl.id === action.id) {
-            return { ...tl, title: action.title };
-          } else {
-            return tl;
-          }
-        }),
-      ];
+      return state.map((tl) => {
+        if (tl.id === action.id) {
+          return { ...tl, title: action.title };
+        } else {
+          return tl;
+        }
+      });
     }
     case 'CHANGE-TODOLIST-FILTER': {
-      return [
-        ...state.map((tl) => {
-          if (tl.id === action.id) {
-            return { ...tl, filter: action.filter };
-          } else {
-            return tl;
-          }
-        }),
-      ];
+      return state.map((tl) => {
+        if (tl.id === action.id) {
+          return { ...tl, filter: action.filter };
+        } else {
+          return tl;
+        }
+      });
     }
     case 'SET-TODOLISTS': {
-      return action.todoLists.sort((a, b) => a.order - b.order); // Sort by order to maintain the correct order
+      return action.todoLists.map((todo) => ({
+        ...todo,
+        tasks: todo.tasks || [],
+      }));
     }
     default:
       return state;
@@ -94,8 +83,10 @@ export const removeTodoListAC = (
   return { type: 'REMOVE-TODOLIST', id: todoListId };
 };
 
-export const addTodoListAC = (title: string): AddTodolistActionType => {
-  return { type: 'ADD-TODOLIST', title, id: v1() };
+export const addTodoListAC = (
+  todoList: ResponseTypeTodo
+): AddTodolistActionType => {
+  return { type: 'ADD-TODOLIST', todoList };
 };
 
 export const changeTodolistTitleAC = (
@@ -121,7 +112,7 @@ export const changeTodolistFilterAC = (
 };
 
 export const setTodoListsAC = (
-  todoLists: TodoListType[]
+  todoLists: ResponseTypeTodo[]
 ): SetTodoListsActionType => {
   return { type: 'SET-TODOLISTS', todoLists };
 };
