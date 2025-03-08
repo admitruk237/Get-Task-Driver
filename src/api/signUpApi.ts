@@ -4,7 +4,6 @@ export interface SignUpType {
   email: string;
   userName: string;
   password: string;
-  confirmPassword?: string;
 }
 
 // Оновлений тип відповіді від API

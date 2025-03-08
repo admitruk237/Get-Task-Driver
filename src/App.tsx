@@ -31,6 +31,7 @@ import Registration from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import { AnimatePresence, motion, Reorder } from 'framer-motion';
+import { setErrorAC, setErrorMessageDeleteAC } from './state/error-reducer';
 
 export type FilteredValuesType = 'All' | 'Active' | 'Completed';
 export type TodoListType = {
@@ -47,7 +48,10 @@ export type TasksStateType = {
 
 function App() {
   const dispatch = useDispatch();
-  const [error, setError] = useState<string | null>(null);
+
+  const error = useSelector<AppRootStateType, string | null>(
+    (state) => state.error.error
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +59,10 @@ function App() {
         const response = await todoListsApi.getTodoLists();
         dispatch(setTodoListsAC(response.data));
       } catch (error: any) {
-        setError(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     };
 
@@ -81,7 +88,10 @@ function App() {
           return prevData.filter((todo) => todo.id !== todoListId);
         });
       } catch (error: any) {
-        setError(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
         console.log(error);
       }
       const action = removeTodoListAC(todoListId);
@@ -95,7 +105,10 @@ function App() {
       try {
         await todoListsApi.updateTodoListTitle(todoListId, newTitle);
       } catch (error: any) {
-        setError(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
       dispatch(changeTodolistTitleAC(todoListId, newTitle));
     },
@@ -114,7 +127,10 @@ function App() {
           return exists ? prevData : [...prevData, newTodo];
         });
       } catch (error: any) {
-        setError(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
         console.log(error);
       }
       const action = addTodoListAC(title);
@@ -141,7 +157,18 @@ function App() {
             </Typography>
           </Toolbar>
         </AppBar>
-        {/*  <Alert severity="error">{error}</Alert> */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, right: '-300px', top: 60 }}
+            animate={{ opacity: 1, right: '10px' }}
+            transition={{ duration: 1 }}
+            style={{ position: 'absolute', width: 300 }}
+          >
+            <Alert variant="outlined" severity="error">
+              {error}
+            </Alert>
+          </motion.div>
+        )}
         <Routes>
           <Route
             path="/"
@@ -210,8 +237,6 @@ function App() {
                             }}
                           >
                             <TodoList
-                              errorMessage={error}
-                              setErrorMessage={setError}
                               id={tl.id}
                               changeFilter={changeFilter}
                               title={tl.title}

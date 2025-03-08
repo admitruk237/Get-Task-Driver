@@ -22,14 +22,14 @@ import {
   removeTaskAC,
   setTasksAC,
 } from '../../state/tasks-reducer';
-import { taskListApi, TaskType } from '../../api/taskListApi';
-import { v1 } from 'uuid';
+import { taskListApi } from '../../api/taskListApi';
+
 import { formatDateTime } from '../../utils/dateUtils';
 import { shallowEqual } from 'react-redux';
 
+import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
+
 type PropsType = {
-  setErrorMessage: Dispatch<SetStateAction<string | null>>;
-  errorMessage: string | null;
   id: string;
   title: string;
   changeTodoListTitle: (id: string, newTitle: string) => void;
@@ -41,8 +41,6 @@ type PropsType = {
 };
 
 export const TodoList = React.memo((props: PropsType) => {
-  const { errorMessage, setErrorMessage } = props;
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,7 +49,10 @@ export const TodoList = React.memo((props: PropsType) => {
         const response = await taskListApi.getTaskLists(props.id);
         dispatch(setTasksAC(response.data.items, props.id));
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     };
     fetchData();
@@ -86,7 +87,10 @@ export const TodoList = React.memo((props: PropsType) => {
         await taskListApi.updateTask(props.id, taskId, newTitle);
         props.changeTodoListTitle(props.id, newTitle);
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     },
     [props.id, props.changeTodoListTitle]
@@ -99,7 +103,10 @@ export const TodoList = React.memo((props: PropsType) => {
 
         dispatch(addTaskAC(props.id, response.data.item));
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     },
     [dispatch, props.id]
@@ -123,7 +130,10 @@ export const TodoList = React.memo((props: PropsType) => {
         await taskListApi.deleteTask(todolistId, taskId);
         dispatch(removeTaskAC(taskId, todolistId));
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     },
     [dispatch]
@@ -148,7 +158,10 @@ export const TodoList = React.memo((props: PropsType) => {
 
         dispatch(changeTaskStatusAC(todoListId, taskId, updateTask.status));
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     },
     [dispatch, tasks]
@@ -165,10 +178,13 @@ export const TodoList = React.memo((props: PropsType) => {
           dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
         }
       } catch (error: any) {
-        setErrorMessage(error.message);
+        dispatch(setErrorAC(error.message));
+        setTimeout(() => {
+          dispatch(setErrorMessageDeleteAC(''));
+        }, 3000);
       }
     },
-    [dispatch, setErrorMessage]
+    [dispatch]
   );
 
   return (

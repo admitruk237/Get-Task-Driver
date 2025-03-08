@@ -5,6 +5,7 @@ import { tasksReducer } from './tasks-reducer';
 import { signUpReducer } from './signUp-reducer';
 import { resetPasswordReducer } from './resetPassword-reducer';
 import { signInReducer } from './signIn-reducer';
+import { errorReducer } from './error-reducer';
 
 const rootReducer = combineReducers({
   todoList: todoListReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   signUp: signUpReducer,
   resetPassword: resetPasswordReducer,
   signIn: signInReducer,
+  error: errorReducer,
 });
 
 export type AppRootStateType = ReturnType<typeof rootReducer>;

@@ -1,60 +1,25 @@
-import {
-  setSignInDataAC,
-  setSignInErrorAC,
-  setSignInSuccessAC,
-  signInReducer,
-  SignInStateType,
-} from './signIn-reducer';
+import { set } from 'react-hook-form';
+import { setAccessAC, setRefreshAC, signInReducer } from './signIn-reducer';
+import { setRef } from '@mui/material';
 
-test('correct sign in data should be set', () => {
-  const startState: SignInStateType = {
-    username: '',
-    password: '',
-    error: '',
-    success: false,
+test('access token should be set', () => {
+  const initialState = {
+    accessToken: '',
+    refreshToken: '',
   };
+  const action = setAccessAC('testToken');
+  const endState = signInReducer(initialState, action);
 
-  const action = setSignInDataAC({
-    username: 'testName',
-    password: 'testPassword',
-    error: 'test error',
-    success: true,
-  });
-
-  const endState = signInReducer(startState, action);
-
-  expect(endState.username).toBe('testName');
-  expect(endState.password).toBe('testPassword');
-  expect(endState.error).toBe('test error');
-  expect(endState.success).toBe(true);
+  expect(endState.accessToken).toBe('testToken');
 });
 
-test('correct sign in error should be set', () => {
-  const startState: SignInStateType = {
-    username: '',
-    password: '',
-    error: '',
-    success: false,
+test('refresh token should be set', () => {
+  const initialState = {
+    accessToken: '',
+    refreshToken: '',
   };
+  const action = setRefreshAC('RefreshToken');
+  const endState = signInReducer(initialState, action);
 
-  const action = setSignInErrorAC('test error');
-
-  const endState = signInReducer(startState, action);
-
-  expect(endState.error).toBe('test error');
-});
-
-test('correct sign in success should be set', () => {
-  const startState: SignInStateType = {
-    username: '',
-    password: '',
-    error: '',
-    success: false,
-  };
-
-  const action = setSignInSuccessAC(true);
-
-  const endState = signInReducer(startState, action);
-
-  expect(endState.success).toBe(true);
+  expect(endState.refreshToken).toBe('RefreshToken');
 });

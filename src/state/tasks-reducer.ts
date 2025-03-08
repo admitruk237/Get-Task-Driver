@@ -6,47 +6,58 @@ import {
 } from './todoList-reducer';
 import { TaskType } from '../api/taskListApi';
 
+export enum TaskActionType {
+  SET_TASKS = 'SET-TASKS',
+  REMOVE_TASK = 'REMOVE-TASK',
+  ADD_TASK = 'ADD-TASK',
+  CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS',
+  CHANGE_TASK_TITLE = 'CHANGE-TASK-TITLE',
+  CHANGE_TASK_PRIORITY = 'CHANGE-TASK-PRIORITY',
+  CHANGE_TASK_DEADLINE = 'CHANGE-TASK-DEADLINE',
+  ADD_TODOLIST = 'ADD-TODOLIST',
+}
+
 export type SetTaskActionType = {
-  type: 'SET-TASKS';
+  type: TaskActionType.SET_TASKS;
   tasks: TaskType[];
   todoListId: string;
 };
 
 export type RemoveTaskActionType = {
-  type: 'REMOVE-TASK';
+  type: TaskActionType.REMOVE_TASK;
   todoListId: string;
   taskId: string;
 };
 
 export type AddTaksActionType = {
-  type: 'ADD-TASK';
+  type: TaskActionType.ADD_TASK;
   task: TaskType;
   todoListId: string;
 };
 
 export type ChangeTaskStatusType = {
-  type: 'CHANGE-TASK-STATUS';
+  type: TaskActionType.CHANGE_TASK_STATUS;
   todoListId: string;
   taskId: string;
   status: number;
 };
 
 export type ChangeTaskSTitleType = {
-  type: 'CHANGE-TASK-TITLE';
+  type: TaskActionType.CHANGE_TASK_TITLE;
   todoListId: string;
   taskId: string;
   title: string;
 };
 
 export type ChangeTaskPriorityType = {
-  type: 'CHANGE-TASK-PRIORITY';
+  type: TaskActionType.CHANGE_TASK_PRIORITY;
   todoListId: string;
   taskId: string;
   priority: number;
 };
 
 export type ChangeTaskDeadlineType = {
-  type: 'CHANGE-TASK-DEADLINE';
+  type: TaskActionType.CHANGE_TASK_DEADLINE;
   todoListId: string;
   taskId: string;
   deadline: string;
@@ -149,20 +160,20 @@ export const setTasksAC = (
   tasks: TaskType[],
   todoListId: string
 ): SetTaskActionType => {
-  return { type: 'SET-TASKS', tasks, todoListId } as const;
+  return { type: TaskActionType.SET_TASKS, tasks, todoListId } as const;
 };
 
 export const removeTaskAC = (
   taskId: string,
   todoListId: string
 ): RemoveTaskActionType => {
-  return { type: 'REMOVE-TASK', todoListId, taskId };
+  return { type: TaskActionType.REMOVE_TASK, todoListId, taskId };
 };
 export const addTaskAC = (
   todoListId: string,
   task: TaskType
 ): AddTaksActionType => {
-  return { type: 'ADD-TASK', task, todoListId: todoListId };
+  return { type: TaskActionType.ADD_TASK, task, todoListId: todoListId };
 };
 
 export const changeTaskStatusAC = (
@@ -170,7 +181,12 @@ export const changeTaskStatusAC = (
   taskId: string,
   status: number
 ): ChangeTaskStatusType => {
-  return { type: 'CHANGE-TASK-STATUS', todoListId, taskId, status };
+  return {
+    type: TaskActionType.CHANGE_TASK_STATUS,
+    todoListId,
+    taskId,
+    status,
+  };
 };
 
 export const changeTaskDeadlineAC = (
@@ -178,7 +194,12 @@ export const changeTaskDeadlineAC = (
   taskId: string,
   deadline: string
 ): ChangeTaskDeadlineType => {
-  return { type: 'CHANGE-TASK-DEADLINE', todoListId, taskId, deadline };
+  return {
+    type: TaskActionType.CHANGE_TASK_DEADLINE,
+    todoListId,
+    taskId,
+    deadline,
+  };
 };
 
 export const changeTaskTitleAC = (
@@ -186,7 +207,7 @@ export const changeTaskTitleAC = (
   taskId: string,
   title: string
 ): ChangeTaskSTitleType => {
-  return { type: 'CHANGE-TASK-TITLE', todoListId, taskId, title };
+  return { type: TaskActionType.CHANGE_TASK_TITLE, todoListId, taskId, title };
 };
 
 export const changeTaskPriorityAC = (
@@ -194,5 +215,10 @@ export const changeTaskPriorityAC = (
   taskId: string,
   priority: number
 ): ChangeTaskPriorityType => {
-  return { type: 'CHANGE-TASK-PRIORITY', todoListId, taskId, priority };
+  return {
+    type: TaskActionType.CHANGE_TASK_PRIORITY,
+    todoListId,
+    taskId,
+    priority,
+  };
 };

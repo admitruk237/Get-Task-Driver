@@ -5,7 +5,10 @@ import { motion } from 'framer-motion';
 import { Button, TextField } from '@mui/material';
 import { signInApi } from '../../api/signInApi/signInApi';
 import style from './styles.module.css';
-import { Dispatch, SetStateAction } from 'react';
+import { FaSpinner } from 'react-icons/fa';
+import { useState } from 'react';
+import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
+import { useDispatch } from 'react-redux';
 
 type SignInType = {
   userName: string;
@@ -17,6 +20,9 @@ type SignInPropsType = {
 };
 
 function SignIn(props: SignInPropsType) {
+  const [isloading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
   const {
     register: registerSignIn,
     handleSubmit: handleSignInSubmit,
@@ -26,13 +32,20 @@ function SignIn(props: SignInPropsType) {
   });
 
   const onSignInSubmit = async (data: any) => {
+    setIsLoading(true);
     try {
       const response = await signInApi(data.email, data.password);
       console.log('Успішний вхід:', response);
-    } catch (error) {
-      console.error('Помилка входу:', error);
+    } catch (error: any) {
+      dispatch(setErrorAC(error.response.data.message || 'Error'));
+      setTimeout(() => {
+        dispatch(setErrorMessageDeleteAC(''));
+      }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   };
+  const Spinner = FaSpinner as React.ElementType;
 
   return (
     <motion.div
@@ -80,7 +93,14 @@ function SignIn(props: SignInPropsType) {
           sx={{ mt: 3 }}
           type="submit"
         >
-          Sign-In
+          {isloading ? (
+            <>
+              <span>Loading...</span>
+              <Spinner className="spiner" />
+            </>
+          ) : (
+            'Sign-In'
+          )}
         </Button>
       </form>
     </motion.div>

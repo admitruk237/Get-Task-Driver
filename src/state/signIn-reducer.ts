@@ -1,68 +1,51 @@
 export interface SignInStateType {
-  username: string;
-  password: string;
-  error: string;
-  success: boolean;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const initialState: SignInStateType = {
-  username: '',
-  password: '',
-  error: '',
-  success: false,
+  accessToken: '',
+  refreshToken: '',
 };
 
-export const SET_SIGN_IN_DATA = 'SET-SIGN-IN-DATA' as const;
-export const SET_SIGN_IN_ERROR = 'SET-SIGN-IN-ERROR' as const;
-export const SET_SIGN_IN_SUCCESS = 'SET-SIGN-IN-SUCCESS' as const;
-
-interface SetSignInDataActionType {
-  type: typeof SET_SIGN_IN_DATA;
-  payload: SignInStateType;
+export enum SignInActionTypes {
+  SET_ACCESS = 'SET_ACCESS',
+  SET_REFRESH = 'SET_REFRESH',
 }
 
-interface SetSignInErrorActionType {
-  type: typeof SET_SIGN_IN_ERROR;
-  error: string;
+interface SetAccessActionType {
+  type: SignInActionTypes.SET_ACCESS;
+  accessToken: string;
 }
 
-interface SetSignInSuccessActionType {
-  type: typeof SET_SIGN_IN_SUCCESS;
-  success: boolean;
+interface SetRefreshActionType {
+  type: SignInActionTypes.SET_REFRESH;
+  refreshToken: string;
 }
 
-type ActionsType =
-  | SetSignInDataActionType
-  | SetSignInErrorActionType
-  | SetSignInSuccessActionType;
+type ActionsType = SetAccessActionType | SetRefreshActionType;
 
 export const signInReducer = (
-  state: SignInStateType = initialState,
+  state: SignInStateType | undefined,
   action: ActionsType
-) => {
+): SignInStateType => {
+  if (!state) {
+    return initialState;
+  }
   switch (action.type) {
-    case SET_SIGN_IN_DATA:
-      return { ...state, ...action.payload };
-    case SET_SIGN_IN_ERROR:
-      return { ...state, error: action.error };
-    case SET_SIGN_IN_SUCCESS:
-      return { ...state, success: action.success };
+    case SignInActionTypes.SET_ACCESS:
+      return { ...state, accessToken: action.accessToken };
+    case SignInActionTypes.SET_REFRESH:
+      return { ...state, refreshToken: action.refreshToken };
     default:
       return state;
   }
 };
 
-export const setSignInDataAC = (payload: SignInStateType) => ({
-  type: SET_SIGN_IN_DATA,
-  payload,
-});
+export const setAccessAC = (accessToken: string): SetAccessActionType => {
+  return { type: SignInActionTypes.SET_ACCESS, accessToken };
+};
 
-export const setSignInErrorAC = (error: string) => ({
-  type: SET_SIGN_IN_ERROR,
-  error,
-});
-
-export const setSignInSuccessAC = (success: boolean) => ({
-  type: SET_SIGN_IN_SUCCESS,
-  success,
-});
+export const setRefreshAC = (refreshToken: string): SetRefreshActionType => {
+  return { type: SignInActionTypes.SET_REFRESH, refreshToken };
+};

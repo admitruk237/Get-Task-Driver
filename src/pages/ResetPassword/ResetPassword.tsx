@@ -33,7 +33,7 @@ function ResetPassword() {
           variant="body1"
           align="center"
         >
-          Please enter new password and confirm it.
+          Please enter new password.
         </Typography>
       </motion.div>
       <form
@@ -47,14 +47,6 @@ function ResetPassword() {
           {...registerSignUp('password')}
           error={!!signUpErrors.password}
           helperText={signUpErrors.password?.message?.toString()}
-        />
-        <TextField
-          sx={{ width: 300 }}
-          label="Confirm Password"
-          variant="standard"
-          {...registerSignUp('confirmPassword')}
-          error={!!signUpErrors.confirmPassword}
-          helperText={signUpErrors.confirmPassword?.message?.toString()}
         />
         <Button
           variant="contained"

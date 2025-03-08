@@ -1,18 +1,28 @@
 import style from './styles.module.css';
 import { motion } from 'framer-motion';
-import { Box, Button, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import MyAnimation from '../../components/MyAnimation/MyAnimation';
 import SingInUp from '../../components/SingUp/SingUp';
 import { useState } from 'react';
 import SingUp from '../../components/SingUp/SingUp';
 import SignIn from '../../components/SignIn/SignIn';
+import { useSelector } from 'react-redux';
 
 function Login() {
   const [value, setValue] = useState('signUp');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
   return (
     <div className={style.wrapper}>
       <motion.div
