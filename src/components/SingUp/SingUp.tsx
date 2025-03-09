@@ -5,7 +5,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpSchema } from '../../validation/validationSchemas';
 import { useDispatch } from 'react-redux';
-import { signUpApi } from '../../api/signUpApi';
+import { userApi } from '../../api/userApi';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
 
@@ -36,7 +36,7 @@ function SignUp(props: SignUpPropsType) {
   const onSignUpSubmit = async (data: SignUpType) => {
     setIsLoading(true);
     try {
-      const response = await signUpApi(data);
+      const response = await userApi.signUp(data);
       props.setTab('signIn');
     } catch (error: any) {
       dispatch(setErrorAC(error.response.data.message || 'Error'));

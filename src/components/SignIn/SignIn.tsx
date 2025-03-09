@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 import { signInSchema } from '../../validation/validationSchemas';
 import { motion } from 'framer-motion';
 import { Button, TextField } from '@mui/material';
-import { signInApi } from '../../api/signInApi/signInApi';
+
 import style from './styles.module.css';
 import { FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
 import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
 import { useDispatch } from 'react-redux';
+import { userApi } from '../../api/userApi';
 
 type SignInType = {
   userName: string;
@@ -31,10 +32,10 @@ function SignIn(props: SignInPropsType) {
     resolver: yupResolver(signInSchema),
   });
 
-  const onSignInSubmit = async (data: any) => {
+  const onSignInSubmit = async (data: SignInType) => {
     setIsLoading(true);
     try {
-      const response = await signInApi(data.email, data.password);
+      const response = await userApi.signInApi(data);
       console.log('Успішний вхід:', response);
     } catch (error: any) {
       dispatch(setErrorAC(error.response.data.message || 'Error'));
