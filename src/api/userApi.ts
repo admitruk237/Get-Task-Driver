@@ -11,7 +11,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Оновлення токена при 401
+/* // Оновлення токена при 401
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -26,7 +26,7 @@ api.interceptors.response.use(
       return Promise.reject(refreshError);
     }
   }
-);
+); */
 
 const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
@@ -50,16 +50,14 @@ export const userApi = {
       '/auth/login',
       data
     );
+    if (!response.accessToken || !response.refreshToken)
+      throw new Error('Немає токенів');
 
     localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('refreshToken', response.refreshToken);
 
     return {
       ...response,
-      logoutApi: () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-      },
     };
   },
 };

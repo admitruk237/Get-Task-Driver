@@ -1,18 +1,14 @@
 import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../state/store';
 
 interface ProtectedRouteProps {
-  redirectTo: string; // Маршрут, на який користувач буде редіректитися, якщо не авторизований
+  redirectTo: string;
 }
 
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ redirectTo }) => {
-  const AauthStatus = useSelector<AppRootStateType, boolean | undefined>(
-    (state) => state.user.authStatus
-  );
+  const accessToken = localStorage.getItem('accessToken');
 
-  if (AauthStatus === false) {
+  if (!accessToken) {
     return <Navigate to={redirectTo} />;
   }
 
