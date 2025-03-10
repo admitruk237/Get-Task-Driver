@@ -4,7 +4,7 @@ import {
   changeTodolistTitleAC,
   removeTodoListAC,
   todoListReducer,
-} from './todoList-reducer';
+} from '../state/todoList-reducer';
 import { v1 } from 'uuid';
 import { FilteredValuesType, TodoListType } from '../App';
 

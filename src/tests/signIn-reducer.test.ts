@@ -1,5 +1,9 @@
 import { set } from 'react-hook-form';
-import { setAccessAC, setRefreshAC, signInReducer } from './signIn-reducer';
+import {
+  setAccessAC,
+  setRefreshAC,
+  signInReducer,
+} from '../state/signIn-reducer';
 import { setRef } from '@mui/material';
 
 test('access token should be set', () => {

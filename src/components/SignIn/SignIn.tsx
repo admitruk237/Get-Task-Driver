@@ -10,6 +10,10 @@ import { useState } from 'react';
 import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
 import { useDispatch } from 'react-redux';
 import { userApi } from '../../api/userApi';
+import { useSelector } from 'react-redux';
+import { AppDispatch } from '../../state/store';
+import { useNavigate } from 'react-router-dom';
+import { setAccessAC, setRefreshAC } from '../../state/user-reducer';
 
 type SignInType = {
   userName: string;
@@ -22,7 +26,7 @@ type SignInPropsType = {
 
 function SignIn(props: SignInPropsType) {
   const [isloading, setIsLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const {
     register: registerSignIn,
@@ -32,13 +36,18 @@ function SignIn(props: SignInPropsType) {
     resolver: yupResolver(signInSchema),
   });
 
+  const navigate = useNavigate(); // Для редіректу після авторизації
+
   const onSignInSubmit = async (data: SignInType) => {
     setIsLoading(true);
     try {
       const response = await userApi.signInApi(data);
+
       console.log('Успішний вхід:', response);
+
+      navigate('/'); // Перенаправлення на головну сторінку
     } catch (error: any) {
-      dispatch(setErrorAC(error.response.data.message || 'Error'));
+      dispatch(setErrorAC(error.response.data.error));
       setTimeout(() => {
         dispatch(setErrorMessageDeleteAC(''));
       }, 3000);
