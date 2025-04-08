@@ -3,7 +3,7 @@ import { TodoList } from './components/TodoList/TodoList';
 import AddItemForm from './components/AddItemForm/AddItemForm';
 import { Alert, Container, Paper, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Registration from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
@@ -11,10 +11,9 @@ import { AnimatePresence, motion, Reorder } from 'framer-motion';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header/Header';
 import { useTodoList } from './hooks/useTodoLists';
+import NotFound from './pages/NotFound/NotFound';
 
 export function App() {
-  console.log('App component rendered'); // Додайте цей рядок
-
   const {
     todolists,
     error,
@@ -119,7 +118,7 @@ export function App() {
             />
           </Route>
           <Route path="/login" element={<Registration />} />
-          <Route path="*" element={<div>404: PAGE NOT FOUND</div>} />
+          <Route path="*" element={<NotFound />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
