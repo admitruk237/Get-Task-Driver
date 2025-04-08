@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { Checkbox, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import EditableSpan from '../EditableSpan/EditableSpan';
-
 import LongMenu from '../LongMenu/LongMenu';
 import DeadlineIcon from '../DeadlineIcon/DeadlineIcon';
 import { TaskType } from '../../types/todo.interface';
@@ -28,7 +27,7 @@ export type TaskPropsType = {
 
 export type FilteredPriorityType = 'Low' | 'Medium' | 'Hight';
 
-export const Task = React.memo((props: TaskPropsType) => {
+export const Task = (props: TaskPropsType) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   const onEditModeChange = (EditMode: boolean) => {
@@ -82,4 +81,4 @@ export const Task = React.memo((props: TaskPropsType) => {
       </li>
     </div>
   );
-});
+};

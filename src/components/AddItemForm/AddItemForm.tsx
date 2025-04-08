@@ -7,7 +7,7 @@ type AddItemFormPropsType = {
   addItem: (title: string) => void;
   style?: React.CSSProperties;
 };
-const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+const AddItemForm = (props: AddItemFormPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [error, setError] = useState<string | null>(null);
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +55,6 @@ const AddItemForm = React.memo((props: AddItemFormPropsType) => {
       </IconButton>
     </div>
   );
-});
+};
 
 export default AddItemForm;

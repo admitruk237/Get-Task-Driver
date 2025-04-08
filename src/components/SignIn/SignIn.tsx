@@ -3,17 +3,14 @@ import { useForm } from 'react-hook-form';
 import { signInSchema } from '../../validation/validationSchemas';
 import { motion } from 'framer-motion';
 import { Button, TextField } from '@mui/material';
-
 import style from './styles.module.css';
 import { FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
 import { setErrorAC, setErrorMessageDeleteAC } from '../../state/error-reducer';
 import { useDispatch } from 'react-redux';
 import { userApi } from '../../api/userApi';
-import { useSelector } from 'react-redux';
 import { AppDispatch } from '../../state/store';
 import { useNavigate } from 'react-router-dom';
-import { setAccessAC, setRefreshAC } from '../../state/user-reducer';
 import { fetchTodoList } from '../../servies/todoListService';
 import { setTodoListsAC } from '../../state/todoList-reducer';
 
@@ -48,7 +45,7 @@ function SignIn(props: SignInPropsType) {
       console.log(
         'accessToken after setItem:',
         localStorage.getItem('accessToken')
-      ); // Додайте цей рядок
+      );
       navigate('/');
       const todoLists = await fetchTodoList();
       dispatch(setTodoListsAC(todoLists));

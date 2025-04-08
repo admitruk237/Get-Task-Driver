@@ -1,21 +1,10 @@
 import style from './styles.module.css';
-import { motion } from 'framer-motion';
-import {
-  Alert,
-  Box,
-  Button,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from '@mui/material';
-
+import { Box, Tab, Tabs } from '@mui/material';
 import MyAnimation from '../../components/MyAnimation/MyAnimation';
-import SingInUp from '../../components/SingUp/SingUp';
 import { useState } from 'react';
 import SingUp from '../../components/SingUp/SingUp';
 import SignIn from '../../components/SignIn/SignIn';
-import { useSelector } from 'react-redux';
+import PageTitle from '../../components/PageTitle/PageTitle';
 
 function Login() {
   const [value, setValue] = useState('signUp');
@@ -25,23 +14,11 @@ function Login() {
 
   return (
     <div className={style.wrapper}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 2 }}
-      >
-        <Typography variant="h4" component="h1" align="center">
-          GET TASKS DRIVER
-        </Typography>
-        <Typography
-          style={{ paddingTop: '20px' }}
-          variant="body1"
-          align="center"
-        >
-          Welcome! Please log in to your account or sign up to access all the
-          features of our service.
-        </Typography>
-      </motion.div>
+      <PageTitle
+        title="GET TASK DRIVER"
+        subTitle="Welcome! Please log in to your account or sign up to access all the
+        features of our service."
+      />
       <div className={style.registration}>
         <div className={style.container}>
           <Box
@@ -70,7 +47,6 @@ function Login() {
                 label="Sign In"
               />
             </Tabs>
-
             <SingUp value={value} setTab={setValue} />
             <SignIn value={value} />
           </Box>
