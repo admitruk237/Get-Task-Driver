@@ -1,7 +1,7 @@
 .longOut {
-  position: absolute;
+  /* position: absolute;
   top: 15px;
-  right: 15px;
+  right: 15px; */
   transition: all 0.3s;
 }
 .longOut:hover {

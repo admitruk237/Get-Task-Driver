@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { signInSchema } from '../../validation/validationSchemas';
 import { motion } from 'framer-motion';
-import { Button, TextField } from '@mui/material';
+import { Button, Link, TextField } from '@mui/material';
 import style from './styles.module.css';
 import { FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
@@ -97,9 +97,9 @@ function SignIn(props: SignInPropsType) {
           error={!!signInErrors.password}
           helperText={signInErrors.password?.message?.toString()}
         />
-        <a className={style.forgotPassword} href="">
+        <Link className={style.forgotPassword} href="">
           Forgot password?
-        </a>
+        </Link>
         <Button
           variant="contained"
           color="primary"

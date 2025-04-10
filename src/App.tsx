@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header/Header';
 import { useTodoList } from './hooks/useTodoLists';
 import NotFound from './pages/NotFound/NotFound';
+import { useColorMode } from './components/ColorModeContext/ColorModeContext';
 
 export function App() {
   const {
@@ -23,8 +24,15 @@ export function App() {
     changeTodolistTitle,
   } = useTodoList();
 
+  const { mode } = useColorMode();
+
+  const appStyle = {
+    backgroundColor: mode === 'dark' ? '#303030' : '#f0f0f0',
+    minHeight: '100vh',
+  };
+
   return (
-    <div>
+    <div style={appStyle}>
       <div className="App">
         <Header />
         {error && (

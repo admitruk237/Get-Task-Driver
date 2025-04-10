@@ -16,7 +16,7 @@ export const ColorModeContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -41,16 +41,15 @@ export const ColorModeContextProvider = ({
           },
         },
         typography: {
-          h3: {
-            fontFamily: 'CeraPro-Bold',
-          },
           h4: {
             fontFamily: 'CeraPro-Bold',
-            color: '#484848',
+            color: mode === 'light' ? colors.grey[800] : colors.grey[200],
+            fontSize: '1.5rem',
           },
-          h5: {
-            color: '#484848',
+          body1: {
+            color: mode === 'light' ? colors.grey[800] : colors.grey[200],
           },
+
           fontFamily: 'CeraPro-Regular',
         },
         components: {
@@ -69,6 +68,14 @@ export const ColorModeContextProvider = ({
               },
               contained: {
                 boxShadow: 'none',
+              },
+            },
+          },
+          MuiLink: {
+            styleOverrides: {
+              root: {
+                fontFamily: 'CeraPro-Bold',
+                color: mode === 'dark' ? colors.grey[50] : colors.grey[900],
               },
             },
           },

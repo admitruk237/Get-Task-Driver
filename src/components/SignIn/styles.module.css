@@ -1,5 +1,4 @@
 a.forgotPassword {
-  color: #000;
   text-decoration: none;
   display: inline-block;
   margin: 0 auto;
@@ -8,7 +7,7 @@ a.forgotPassword {
 }
 
 a.forgotPassword:hover {
-  color: #333;
+  color: #2196f3;
 }
 
 a.forgotPassword:after {
@@ -18,7 +17,7 @@ a.forgotPassword:after {
   bottom: -2px;
   height: 2px;
   width: 100%;
-  background-color: #333;
+  background-color: #2196f3;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
