@@ -11,7 +11,7 @@ import {
 } from '../state/todoList-reducer';
 import { setErrorAC, setErrorMessageDeleteAC } from '../state/error-reducer';
 import { setTasksAC } from '../state/tasksState/taskActionCreators';
-import { FilteredValuesType } from '../types/todo.interface';
+import { FilteredValuesType, ResponseTypeTodo } from '../types/todo.interface';
 
 export const useTodoList = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export const useTodoList = () => {
     fetchData();
   }, [dispatch]);
 
-  const addTodo = async (title: string) => {
+  /*   const addTodo = async (title: string) => {
     try {
       const newTodoList = await createTodo(title);
       const formattedTodo = {
@@ -62,6 +62,18 @@ export const useTodoList = () => {
         dispatch(setErrorMessageDeleteAC(''));
       }, 3000);
     }
+  }; */
+
+  const addTodo = (title: string) => {
+    const formattedTodo: ResponseTypeTodo = {
+      id: Math.random().toString(36).substring(2, 9),
+      title: title,
+      filter: 'All' as FilteredValuesType,
+      createdAt: new Date().toISOString(),
+      userId: 'userId',
+      tasks: [],
+    };
+    dispatch(addTodoListAC(formattedTodo));
   };
 
   const changeTodolistFilter = (

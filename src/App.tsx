@@ -48,7 +48,7 @@ export function App() {
           </motion.div>
         )}
         <Routes>
-          <Route element={<ProtectedRoute redirectTo="/login" />}>
+          <Route /* element={<ProtectedRoute redirectTo="/login" />} */>
             <Route
               path="/"
               element={
@@ -103,7 +103,8 @@ export function App() {
                             <Paper
                               style={{
                                 padding: '10px',
-                                backgroundColor: '#fbfcfd',
+                                backgroundColor:
+                                  mode === 'dark' ? '#303030' : '#f0f0f0',
                               }}
                             >
                               <TodoList

@@ -53,13 +53,6 @@ export const ColorModeContextProvider = ({
           fontFamily: 'CeraPro-Regular',
         },
         components: {
-          MuiPaper: {
-            styleOverrides: {
-              elevation1: {
-                boxShadow: 'none',
-              },
-            },
-          },
           MuiButton: {
             styleOverrides: {
               root: {

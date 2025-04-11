@@ -2,20 +2,20 @@ import { styled, Switch } from '@mui/material';
 import { useColorMode } from '../../components/ColorModeContext/ColorModeContext';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-  width: 56, // Зменшено з 62
-  height: 30, // Зменшено з 34
-  padding: 6, // Зменшено з 7, щоб зберегти пропорції
+  width: 52,
+  height: 30,
+  padding: 6,
   '& .MuiSwitch-switchBase': {
     margin: 1,
     padding: 0,
-    transform: 'translateX(6px)',
+    transform: 'translateX(4px)',
     '&.Mui-checked': {
       color: '#fff',
-      transform: 'translateX(20px)', // Зменшено з 22, щоб відповідати меншій ширині
+      transform: 'translateX(20px)',
       '& .MuiSwitch-thumb:before': {
         backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
           '#fff'
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`, // Трохи зменшено height та width
+        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
@@ -28,8 +28,8 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
   '& .MuiSwitch-thumb': {
     backgroundColor: '#001e3c',
-    width: 28, // Зменшено з 32
-    height: 28, // Зменшено з 32
+    width: 28,
+    height: 28,
     '&::before': {
       content: "''",
       position: 'absolute',
@@ -50,7 +50,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-track': {
     opacity: 1,
     backgroundColor: '#aab4be',
-    borderRadius: 15, // Зменшено borderRadius, щоб відповідати меншій висоті
+    borderRadius: 15,
     ...theme.applyStyles('dark', {
       backgroundColor: '#8796A5',
     }),

@@ -97,7 +97,7 @@ function SignIn(props: SignInPropsType) {
           error={!!signInErrors.password}
           helperText={signInErrors.password?.message?.toString()}
         />
-        <Link className={style.forgotPassword} href="">
+        <Link className={style.forgotPassword} href="/forgot-password">
           Forgot password?
         </Link>
         <Button

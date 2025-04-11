@@ -28,24 +28,35 @@ function Header() {
     <div>
       <AppBar
         position="static"
-        color={'secondary'}
         sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
+          backgroundColor: '#24292e',
+          height: 60,
+          boxShadow: 'none',
         }}
       >
-        <Toolbar variant="dense" sx={{ position: 'relative' }}>
-          <IconButton
-            edge="start"
+        <Toolbar
+          variant="dense"
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            variant="h4"
             color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <Typography variant="h3" color="inherit" component="div">
+            component="div"
+            sx={{ marginLeft: '20px' }}
+          >
             GTD
           </Typography>
-          <div>
+          <div
+            style={{
+              width: '150px',
+              position: 'relative',
+            }}
+          >
             <ThemeSwitch />
             <SignOut onClick={longOutHandler} className={styles.longOut} />
           </div>

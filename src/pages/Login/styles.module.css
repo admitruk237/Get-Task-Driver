@@ -8,3 +8,7 @@
 .container {
   padding-top: 30px;
 }
+
+.wrapper {
+  padding: 0 15px;
+}

@@ -7,6 +7,7 @@ import { Delete } from '@mui/icons-material';
 import { Task } from '../Task/Task';
 import { formatDateTime } from '../../utils/dateUtils';
 import { useTodoListHandler } from '../../hooks/useTodoListHandler';
+import { useColorMode } from '../ColorModeContext/ColorModeContext';
 
 type PropsType = {
   id: string;
@@ -38,6 +39,15 @@ export const TodoList = (props: PropsType) => {
     props.addedDate,
     props.filter
   );
+
+  const mode = useColorMode();
+  const todoListStyle = {
+    backgroundColor: mode.mode === 'dark' ? '#424242' : '#fff',
+    borderRadius: '10px',
+    padding: '20px',
+    marginBottom: '20px',
+    boxShadow: mode.mode === 'dark' ? '0 0 10px #000' : '0 0 10px #ccc',
+  };
 
   return (
     <div>
@@ -73,7 +83,7 @@ export const TodoList = (props: PropsType) => {
       </ul>
       <div>
         <Button
-          color={'inherit'}
+          color={'primary'}
           variant={props.filter === 'All' ? 'contained' : 'text'}
           onClick={onAllClickHandler}
         >
