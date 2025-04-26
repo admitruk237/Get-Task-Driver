@@ -7,6 +7,7 @@ import { AppDispatch } from '../../state/store';
 import ThemeSwitch from '../ThemeSwich/ThemeSwich';
 
 const SignOut = FaSignOutAlt as React.ElementType;
+
 function Header() {
   const dispatch: AppDispatch = useDispatch();
 
@@ -27,7 +28,7 @@ function Header() {
   return (
     <div>
       <AppBar
-        position="static"
+        position="absolute"
         sx={{
           backgroundColor: '#24292e',
           height: 60,

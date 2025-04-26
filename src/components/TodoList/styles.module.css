@@ -6,13 +6,18 @@
   color: red;
 }
 
-.noDots {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  padding-bottom: 15px;
-}
-
 .todoList {
   background-color: #fbfcfd;
 }
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* 
+@media (min-width: 350px) {
+  .todolistContainer {
+    padding: 0 10px;
+  }
+} */

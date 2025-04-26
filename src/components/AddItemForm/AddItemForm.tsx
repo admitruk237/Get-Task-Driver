@@ -38,7 +38,15 @@ const AddItemForm = (props: AddItemFormPropsType) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        ...props.style,
+      }}
+    >
+      {' '}
       <TextField
         className={error ? styles.error : ''}
         value={newTaskTitle}
@@ -48,11 +56,15 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         variant="filled"
         error={!!error}
         helperText={error}
-        style={props.style}
-      />
-      <IconButton onClick={onAddTaskHandler} color={'primary'}>
-        <ControlPoint />
-      </IconButton>
+        sx={{ flexGrow: 1, marginRight: '12px' }}
+      />{' '}
+      <IconButton
+        sx={{ padding: '0 20px 0 0' }}
+        onClick={onAddTaskHandler}
+        color={'primary'}
+      >
+        <ControlPoint />{' '}
+      </IconButton>{' '}
     </div>
   );
 };

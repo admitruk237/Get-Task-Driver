@@ -8,22 +8,36 @@
 
 .label {
   display: flex;
-  align-items: center;
   justify-content: start;
   overflow: hidden;
-  width: 100%;
+  max-width: 234px;
+  word-break: break-all;
 }
 
 .taskContainer {
   position: relative;
-  border-radius: 5px;
 }
 
 .taskContainer,
 .isDone {
   margin-top: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  padding: 5px;
+  transition: all 0.3s;
+}
+
+.taskContainer,
+.isDone :hover {
+  cursor: pointer;
+}
+.checkbox {
+  transition: all 0.5s;
+  max-height: 20px;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

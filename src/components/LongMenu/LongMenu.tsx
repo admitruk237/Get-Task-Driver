@@ -24,6 +24,7 @@ type LongMenuPropsType = {
   taskId: number;
   todoListId: string;
   priority: string;
+  className?: string;
 };
 
 export default function LongMenu(props: LongMenuPropsType) {
@@ -47,7 +48,7 @@ export default function LongMenu(props: LongMenuPropsType) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div>
+      <div style={{ position: 'absolute', top: '-2px', right: '-8px' }}>
         <IconButton onClick={handleMenuOpen}>
           <MoreVertIcon />
         </IconButton>

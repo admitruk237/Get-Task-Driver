@@ -46,7 +46,9 @@ const EditableSpan = (props: EditableSpanPropsType) => {
       style={props.style}
     />
   ) : (
-    <span onDoubleClick={activatedEditMode}>{props.title}</span>
+    <span className="Task-span" onDoubleClick={activatedEditMode}>
+      {props.title}
+    </span>
   );
 };
 export default EditableSpan;

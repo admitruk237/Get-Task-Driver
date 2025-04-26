@@ -20,7 +20,7 @@ export const useTodoListHandler = (
   filter: FilteredValuesType
 ) => {
   const dispatch = useDispatch();
-  const tasks = useSelector<AppRootStateType, TaskType[] | undefined>(
+  const tasks = useSelector<AppRootStateType, TaskType[]>(
     (state) => state.tasks[id] || []
   );
 
@@ -35,7 +35,7 @@ export const useTodoListHandler = (
   const changeTodoListTitle = (todoId: string, newTitle: string) => {
     dispatch(changeTodolistTitleAC(todoId, newTitle));
   };
-
+  /* 
   const addTask = async (title: string) => {
     try {
       const response = await taskApi.createTask({
@@ -59,6 +59,24 @@ export const useTodoListHandler = (
         dispatch(setErrorMessageDeleteAC(''));
       }, 3000);
     }
+  }; */
+
+  const addTask = (title: string) => {
+    const now = new Date();
+    const newTask = {
+      date: '',
+      id: 0,
+      title: title,
+      description: '',
+      endDate: '',
+      completed: true,
+      priority: 'Medium',
+      todoId: id,
+      order: 0,
+      status: 'All',
+      userId: '',
+    };
+    dispatch(addTaskAC(id, newTask));
   };
 
   let taskForTodoList = tasks || [];

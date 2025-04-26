@@ -7,7 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import Registration from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
-import { AnimatePresence, motion, Reorder } from 'framer-motion';
+import { AnimatePresence, m, motion, Reorder } from 'framer-motion';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header/Header';
 import { useTodoList } from './hooks/useTodoLists';
@@ -28,7 +28,6 @@ export function App() {
 
   const appStyle = {
     backgroundColor: mode === 'dark' ? '#303030' : '#f0f0f0',
-    minHeight: '100vh',
   };
 
   return (
@@ -52,14 +51,20 @@ export function App() {
             <Route
               path="/"
               element={
-                <Container fixed>
+                <Container
+                  maxWidth={false}
+                  sx={{
+                    paddingTop: '80px',
+                    height: '100vh',
+                  }}
+                >
                   <Grid
                     container
                     style={{
-                      padding: '20px',
+                      padding: '0, 16px',
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '30px',
+                      gap: '15px',
                       alignItems: 'center',
                     }}
                   >
@@ -68,21 +73,26 @@ export function App() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 2 }}
                     >
-                      <Typography variant="h4" component="h1" align="center">
+                      <Typography
+                        sx={{ padding: '5px 45px 0 0' }}
+                        variant="h4"
+                        component="h1"
+                        align="center"
+                      >
                         ADD NEW TODO LIST
                       </Typography>
                     </motion.div>
-                    <AddItemForm
-                      addItem={addTodo}
-                      style={{ marginBottom: '30px', width: '300px' }}
-                    />
+                    <AddItemForm addItem={addTodo} style={{ width: '300px' }} />
                   </Grid>
                   <Reorder.Group
                     style={{
                       display: 'flex',
-                      gap: '20px',
-                      listStyle: 'none',
                       flexWrap: 'wrap',
+                      gap: '35px',
+                      listStyle: 'none',
+                      margin: 0,
+                      height: '100vh',
+                      paddingTop: '30px',
                     }}
                     axis="x"
                     values={todolists}
@@ -92,9 +102,13 @@ export function App() {
                       {todolists.map((tl) => {
                         return (
                           <Reorder.Item
+                            style={{
+                              height: '100%',
+                              display: 'flex',
+                              flexDirection: 'column',
+                            }}
                             key={tl.id}
                             value={tl}
-                            style={{ flex: '0 0 30%' }}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1 }}
@@ -102,9 +116,12 @@ export function App() {
                           >
                             <Paper
                               style={{
-                                padding: '10px',
                                 backgroundColor:
                                   mode === 'dark' ? '#303030' : '#f0f0f0',
+                                width: '300px',
+                                maxHeight: '450px',
+                                overflow: 'hidden',
+                                wordBreak: 'break-word',
                               }}
                             >
                               <TodoList

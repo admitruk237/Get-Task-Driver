@@ -8,6 +8,7 @@ import { Task } from '../Task/Task';
 import { formatDateTime } from '../../utils/dateUtils';
 import { useTodoListHandler } from '../../hooks/useTodoListHandler';
 import { useColorMode } from '../ColorModeContext/ColorModeContext';
+import { useEffect, useRef, useState } from 'react';
 
 type PropsType = {
   id: string;
@@ -20,6 +21,9 @@ type PropsType = {
 };
 
 export const TodoList = (props: PropsType) => {
+  const ulRef = useRef<HTMLUListElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
   const {
     tasks,
     onAllClickHandler,
@@ -40,18 +44,27 @@ export const TodoList = (props: PropsType) => {
     props.filter
   );
 
-  const mode = useColorMode();
-  const todoListStyle = {
-    backgroundColor: mode.mode === 'dark' ? '#424242' : '#fff',
-    borderRadius: '10px',
-    padding: '20px',
-    marginBottom: '20px',
-    boxShadow: mode.mode === 'dark' ? '0 0 10px #000' : '0 0 10px #ccc',
-  };
+  useEffect(() => {
+    const ulElement = ulRef.current;
+    if (!ulElement) return;
+
+    const observer = new ResizeObserver(() => {
+      const height = ulElement.scrollHeight;
+      setIsOverflowing(height > 219);
+    });
+
+    observer.observe(ulElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const { mode } = useColorMode();
 
   return (
-    <div>
-      <h3>
+    <div className={styles.todolistContainer}>
+      <h3 style={{ padding: '0 10px' }}>
         <EditableSpan
           title={props.title}
           onChange={(newTitle) => changeTodoListTitle(props.id, newTitle)}
@@ -60,28 +73,46 @@ export const TodoList = (props: PropsType) => {
           <Delete />
         </IconButton>
       </h3>
-      <p style={{ marginTop: '-20px', fontSize: '12px' }}>
+      <p style={{ marginTop: '-20px', fontSize: '12px', padding: '0 10px' }}>
         {serveDate ? formatDateTime(serveDate.toString()) : ''}
       </p>
 
-      <AddItemForm style={{ width: '88%' }} addItem={addTask} />
-      <ul className={styles.noDots}>
-        {tasks?.map((task: TaskType) =>
-          task && task.id ? (
-            <Task
-              task={task}
-              key={task.id}
-              todoListId={props.id}
-              removeTask={onRemoveHandler}
-              changeTaskStatus={onChangeStatusHandler}
-              changeTaskTitle={onChangeTitleHandler}
-              deadline={task.endDate ? new Date(task.endDate) : null}
-              priority={task.priority}
-            />
-          ) : null
-        )}
-      </ul>
-      <div>
+      <AddItemForm
+        style={{
+          padding: '0 10px 15px 10px',
+          width: '100%',
+        }}
+        addItem={addTask}
+      />
+
+      <div
+        style={{
+          padding: '0 10px 20px 10px',
+          listStyle: 'none',
+          overflowY: isOverflowing ? 'auto' : 'hidden',
+          maxHeight: '220px',
+          scrollbarWidth: 'thin',
+        }}
+      >
+        <ul className={styles.list} ref={ulRef}>
+          {tasks.map(
+            (task: TaskType) =>
+              task && (
+                <Task
+                  task={task}
+                  key={task.id}
+                  todoListId={props.id}
+                  removeTask={onRemoveHandler}
+                  changeTaskStatus={onChangeStatusHandler}
+                  changeTaskTitle={onChangeTitleHandler}
+                  deadline={task.endDate ? new Date(task.endDate) : null}
+                  priority={task.priority}
+                />
+              )
+          )}
+        </ul>
+      </div>
+      <div style={{ padding: '10px' }}>
         <Button
           color={'primary'}
           variant={props.filter === 'All' ? 'contained' : 'text'}
