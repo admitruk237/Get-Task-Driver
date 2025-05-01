@@ -66,6 +66,7 @@ export function App() {
                       flexDirection: 'column',
                       gap: '15px',
                       alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     <motion.div
@@ -84,61 +85,53 @@ export function App() {
                     </motion.div>
                     <AddItemForm addItem={addTodo} style={{ width: '300px' }} />
                   </Grid>
-                  <Reorder.Group
+                  <div
+                    className="columnsWraper"
                     style={{
                       display: 'flex',
                       flexWrap: 'wrap',
                       gap: '35px',
                       listStyle: 'none',
                       margin: 0,
-                      height: '100vh',
-                      paddingTop: '30px',
+                      padding: '30px 0 0 0',
                     }}
-                    axis="x"
-                    values={todolists}
-                    onReorder={(reorderedTodoLists) => {}}
                   >
-                    <AnimatePresence>
-                      {todolists.map((tl) => {
-                        return (
-                          <Reorder.Item
+                    {todolists.map((tl) => {
+                      return (
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 1 }}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            maxHeight: '100%',
+                          }}
+                          key={tl.id}
+                        >
+                          <Paper
                             style={{
-                              height: '100%',
-                              display: 'flex',
-                              flexDirection: 'column',
+                              backgroundColor:
+                                mode === 'dark' ? '#303030' : '#f0f0f0',
+                              width: '300px',
+                              overflow: 'hidden',
+                              wordBreak: 'break-word',
                             }}
-                            key={tl.id}
-                            value={tl}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1 }}
-                            drag
                           >
-                            <Paper
-                              style={{
-                                backgroundColor:
-                                  mode === 'dark' ? '#303030' : '#f0f0f0',
-                                width: '300px',
-                                maxHeight: '450px',
-                                overflow: 'hidden',
-                                wordBreak: 'break-word',
-                              }}
-                            >
-                              <TodoList
-                                id={tl.id}
-                                changeFilter={changeTodolistFilter}
-                                title={tl.title}
-                                filter={tl.filter}
-                                removeTodoList={removeTodoList}
-                                changeTodoListTitle={changeTodolistTitle}
-                                addedDate={tl.createdAt}
-                              />
-                            </Paper>
-                          </Reorder.Item>
-                        );
-                      })}
-                    </AnimatePresence>
-                  </Reorder.Group>
+                            <TodoList
+                              id={tl.id}
+                              changeFilter={changeTodolistFilter}
+                              title={tl.title}
+                              filter={tl.filter}
+                              removeTodoList={removeTodoList}
+                              changeTodoListTitle={changeTodolistTitle}
+                              addedDate={tl.createdAt}
+                            />
+                          </Paper>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </Container>
               }
             />

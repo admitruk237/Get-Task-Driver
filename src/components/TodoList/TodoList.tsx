@@ -86,12 +86,11 @@ export const TodoList = (props: PropsType) => {
       />
 
       <div
+        className={styles.darkScrollbar}
         style={{
           padding: '0 10px 20px 10px',
           listStyle: 'none',
           overflowY: isOverflowing ? 'auto' : 'hidden',
-          maxHeight: '220px',
-          scrollbarWidth: 'thin',
         }}
       >
         <ul className={styles.list} ref={ulRef}>

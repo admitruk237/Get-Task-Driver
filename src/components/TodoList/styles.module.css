@@ -21,3 +21,30 @@
     padding: 0 10px;
   }
 } */
+
+/* styles.module.css або глобально */
+.darkScrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.darkScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.darkScrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.6); /* темно-сірий */
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.darkScrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(150, 150, 150, 0.8); /* світліше при наведенні */
+}
+
+/* Firefox */
+.darkScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.6) transparent;
+}

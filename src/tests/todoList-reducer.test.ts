@@ -70,7 +70,7 @@ test('correct todo-list should be added', () => {
   const endState = todoListReducer(startState, addTodoListAC(newTodoListTitle));
 
   expect(endState.length).toBe(3);
-  expect(endState[0].title).toBe(newTodoListTitle.title);
+  expect(endState[endState.length - 1].title).toBe(newTodoListTitle.title);
   expect(endState[0].filter).toBe('All');
 });
 
