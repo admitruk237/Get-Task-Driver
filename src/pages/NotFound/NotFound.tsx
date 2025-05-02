@@ -4,11 +4,10 @@ import PageTitle from '../../components/PageTitle/PageTitle';
 function NotFound() {
   return (
     <div
+      className="pageStyle"
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         gap: '50px',
       }}
     >

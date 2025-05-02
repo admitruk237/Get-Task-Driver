@@ -19,7 +19,7 @@ function ForgotPassword() {
   };
 
   return (
-    <div>
+    <div className="pageStyle">
       <PageTitle
         title="Password recovery"
         subTitle="Please enter your user name and we will send you a password recovery

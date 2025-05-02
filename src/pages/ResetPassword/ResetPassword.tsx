@@ -19,7 +19,7 @@ function ResetPassword() {
   };
 
   return (
-    <div>
+    <div className="pageStyle">
       <PageTitle title="Reset password" subTitle="Please enter new password." />
       <form
         className={style.container}

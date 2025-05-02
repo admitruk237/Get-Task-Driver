@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from '../state/store';
-import { createTodo, fetchTodoList } from '../servies/todoListService';
+import { fetchTodoList } from '../servies/todoListService';
 import {
   setTodoListsAC,
   addTodoListAC,
@@ -27,11 +27,9 @@ export const useTodoList = () => {
       try {
         const todolists = await fetchTodoList();
         dispatch(setTodoListsAC(todolists));
-        console.log(dispatch(setTodoListsAC(todolists)));
 
         todolists.forEach((todo) => {
           dispatch(setTasksAC(todo.tasks, todo.id));
-          console.log(dispatch(setTasksAC(todo.tasks, todo.id)));
         });
       } catch (error: any) {
         dispatch(setErrorAC(error.message));

@@ -33,6 +33,8 @@ function Header() {
           backgroundColor: '#24292e',
           height: 60,
           boxShadow: 'none',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         <Toolbar

@@ -20,7 +20,7 @@ function Login() {
   };
 
   return (
-    <div className={style.wrapper}>
+    <div className="pageStyle">
       <PageTitle
         title="GET TASK DRIVER"
         subTitle="Welcome! Please log in to your account or sign up to access all the
