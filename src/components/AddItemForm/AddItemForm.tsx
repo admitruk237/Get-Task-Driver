@@ -2,38 +2,39 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { IconButton, TextField } from '@mui/material';
 import { ControlPoint } from '@mui/icons-material';
+import { VALIDATION_MESSAGES } from '../../utils/constants';
 
-type AddItemFormPropsType = {
+type Props = {
   addItem: (title: string) => void;
   style?: React.CSSProperties;
 };
-const AddItemForm = (props: AddItemFormPropsType) => {
+
+const AddItemForm = (props: Props) => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
+  const handleNewTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value);
   };
 
-  const onKeyDownHendler = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleAddItem = () => {
+    const trimmedTitle = newTaskTitle.trim();
+
+    if (trimmedTitle !== '') {
+      props.addItem(trimmedTitle);
+      setNewTaskTitle('');
+      setError(null);
+    } else {
+      setError(VALIDATION_MESSAGES.FIELD_REQUIRED);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null);
     }
     if (e.key === 'Enter') {
-      if (newTaskTitle.trim() !== '') {
-        props.addItem(newTaskTitle);
-        setNewTaskTitle('');
-      } else {
-        setError('Field is required');
-      }
-    }
-  };
-
-  const onAddTaskHandler = () => {
-    if (newTaskTitle.trim() !== '') {
-      props.addItem(newTaskTitle);
-      setNewTaskTitle('');
-    } else {
-      setError('Field is required');
+      handleAddItem();
     }
   };
 
@@ -46,25 +47,33 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         ...props.style,
       }}
     >
-      {' '}
       <TextField
         className={error ? styles.error : ''}
         value={newTaskTitle}
-        onChange={onNewTitleChangeHandler}
-        onKeyDown={onKeyDownHendler}
-        label={'Title'}
+        onChange={handleNewTitleChange}
+        onKeyDown={handleKeyDown}
+        label="Title"
         variant="filled"
         error={!!error}
         helperText={error}
+        aria-label="Add new item title"
+        aria-invalid={!!error}
         sx={{ flexGrow: 1, marginRight: '12px' }}
-      />{' '}
+      />
       <IconButton
-        sx={{ padding: '0 20px 0 0' }}
-        onClick={onAddTaskHandler}
-        color={'primary'}
+        sx={{
+          padding: '0 20px 0 0',
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
+        }}
+        onClick={handleAddItem}
+        color="primary"
+        aria-label="Add item"
+        disableRipple
       >
-        <ControlPoint />{' '}
-      </IconButton>{' '}
+        <ControlPoint />
+      </IconButton>
     </div>
   );
 };

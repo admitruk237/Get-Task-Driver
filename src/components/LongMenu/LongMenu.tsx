@@ -1,33 +1,20 @@
-import * as React from 'react';
-import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import {
-  FormControl,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-} from '@mui/material';
-import { useLondMenu } from '../../hooks/useLongMeny';
-type LongMenuPropsType = {
+import { useLongMenu } from '../../hooks/useLongMenu';
+import { DeadlineDialog, PriorityDialog } from './components';
+
+type Props = {
   taskId: number;
   todoListId: string;
   priority: string;
   className?: string;
 };
 
-export default function LongMenu(props: LongMenuPropsType) {
+const LongMenu = ({ todoListId, taskId }: Props) => {
   const {
     anchorEl,
     openDialog,
@@ -44,14 +31,15 @@ export default function LongMenu(props: LongMenuPropsType) {
     handleDeadlineClick,
     handleDialogClose,
     handleDeadlineConfirm,
-  } = useLondMenu(props.todoListId, props.taskId);
+  } = useLongMenu(todoListId, taskId);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ position: 'absolute', top: '-2px', right: '-8px' }}>
-        <IconButton onClick={handleMenuOpen}>
+        <IconButton onClick={handleMenuOpen} aria-label="More options">
           <MoreVertIcon />
         </IconButton>
+
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -61,79 +49,24 @@ export default function LongMenu(props: LongMenuPropsType) {
           <MenuItem onClick={handlePriorityClick}>Priority</MenuItem>
         </Menu>
 
-        <Dialog
+        <DeadlineDialog
           open={openDialog}
+          selectedDeadline={selectedDeadline}
           onClose={handleDialogClose}
-          sx={{
-            '& .MuiDialog-paper': {
-              position: 'absolute',
-              top: '10%',
-            },
-          }}
-        >
-          <DialogTitle>Change date</DialogTitle>
-          <DialogContent>
-            <DateTimePicker
-              label="Deadline"
-              value={selectedDeadline}
-              onChange={(newValue) => setSelectedDeadline(newValue)}
-              slotProps={{
-                textField: {
-                  margin: 'normal',
-                  fullWidth: true,
-                },
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose}>Cancel</Button>
-            <Button onClick={handleDeadlineConfirm} variant="contained">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+          onConfirm={handleDeadlineConfirm}
+          onDeadlineChange={setSelectedDeadline}
+        />
 
-        <Dialog
+        <PriorityDialog
           open={openPriorityDialog}
+          selectedPriority={selectedPriority}
           onClose={handlePriorityClose}
-          sx={{
-            '& .MuiDialog-paper': {
-              position: 'absolute',
-              top: '10%',
-              width: '300px',
-            },
-          }}
-        >
-          <DialogTitle>Change priority</DialogTitle>
-          <DialogContent>
-            <FormControl>
-              <FormLabel>Priority</FormLabel>
-              <RadioGroup
-                value={selectedPriority}
-                onChange={(e) => setSelectedPriority(e.target.value)}
-              >
-                <FormControlLabel value="Low" control={<Radio />} label="Low" />
-                <FormControlLabel
-                  value="Medium"
-                  control={<Radio />}
-                  label="Medium"
-                />
-                <FormControlLabel
-                  value="High"
-                  control={<Radio />}
-                  label="High"
-                />
-              </RadioGroup>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handlePriorityClose}>Cancel</Button>
-            <Button onClick={handlePriorityConfirm} variant="contained">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+          onConfirm={handlePriorityConfirm}
+          onPriorityChange={setSelectedPriority}
+        />
       </div>
     </LocalizationProvider>
   );
-}
+};
+
+export default LongMenu;

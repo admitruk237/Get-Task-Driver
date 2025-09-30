@@ -1,54 +1,59 @@
+import React, { ChangeEvent, useState } from 'react';
 import { TextField } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
 
-export type EditableSpanPropsType = {
+type Props = {
   title: string;
   onChange: (value: string) => void;
   onEditModeChange?: (EditMode: boolean) => void;
   style?: React.CSSProperties;
 };
 
-const EditableSpan = (props: EditableSpanPropsType) => {
-  let [editMode, setEditMode] = useState<boolean>(false);
-  let [title, setTitle] = useState('');
+const EditableSpan = ({
+  title: initialTitle,
+  onChange,
+  onEditModeChange,
+  style,
+}: Props) => {
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [title, setTitle] = useState('');
 
-  const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
+  };
 
-  const activatedEditMode = () => {
+  const handleActivateEditMode = () => {
     setEditMode(true);
-    props.onEditModeChange?.(true);
-    setTitle(props.title);
+    onEditModeChange?.(true);
+    setTitle(initialTitle);
   };
 
-  const activateViewMode = () => {
+  const handleActivateViewMode = () => {
     setEditMode(false);
-    props.onEditModeChange?.(false);
-    props.onChange(title);
+    onEditModeChange?.(false);
+    onChange(title);
   };
 
-  const onKeyDownHendler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setEditMode(false);
-      props.onEditModeChange?.(false);
-      props.onChange(title);
+      handleActivateViewMode();
     }
   };
 
   return editMode ? (
     <TextField
-      variant={'standard'}
+      variant="standard"
       value={title}
-      onChange={onChangeTitleHandler}
-      onBlur={activateViewMode}
+      onChange={handleTitleChange}
+      onBlur={handleActivateViewMode}
       autoFocus
-      onKeyDown={onKeyDownHendler}
-      style={props.style}
+      onKeyDown={handleKeyDown}
+      style={style}
     />
   ) : (
-    <span className="Task-span" onDoubleClick={activatedEditMode}>
-      {props.title}
+    <span className="Task-span" onDoubleClick={handleActivateEditMode}>
+      {initialTitle}
     </span>
   );
 };
+
 export default EditableSpan;

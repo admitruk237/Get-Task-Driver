@@ -1,32 +1,33 @@
 import { Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
-type PageTitlePropsType = {
+type Props = {
   title: string;
   subTitle?: string;
 };
 
-function PageTitle(props: PageTitlePropsType) {
+const PageTitle = ({ title, subTitle }: Props) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 5 }}
     >
-      <Typography variant="h4" component="h1" align="center">
-        {props.title}
+      <Typography
+        sx={{ padding: '30px 0 20px 0' }}
+        variant="h4"
+        component="h1"
+        align="center"
+      >
+        {title}
       </Typography>
-      {props.subTitle && (
-        <Typography
-          style={{ paddingTop: '20px' }}
-          variant="body1"
-          align="center"
-        >
-          {props.subTitle}
+      {subTitle && (
+        <Typography sx={{ paddingTop: '20px' }} variant="body1" align="center">
+          {subTitle}
         </Typography>
       )}
     </motion.div>
   );
-}
+};
 
 export default PageTitle;

@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from '../state/store';
 import { taskApi } from '../api/taskApi';
-import { setErrorAC, setErrorMessageDeleteAC } from '../state/error-reducer';
 import {
   addTaskAC,
   changeTaskStatusAC,
@@ -11,6 +10,7 @@ import {
 } from '../state/tasksState/taskActionCreators';
 import { changeTodolistTitleAC } from '../state/todoList-reducer';
 import { FilteredValuesType, TaskType } from '../types/todo.interface';
+import { handleError } from '../utils/errorHandler';
 
 export const useTodoListHandler = (
   id: string,
@@ -35,31 +35,6 @@ export const useTodoListHandler = (
   const changeTodoListTitle = (todoId: string, newTitle: string) => {
     dispatch(changeTodolistTitleAC(todoId, newTitle));
   };
-  /* 
-  const addTask = async (title: string) => {
-    try {
-      const response = await taskApi.createTask({
-        date: new Date('2025-03-12T13:21:55.344Z'),
-        id: 0,
-        title: title,
-        description: '',
-        endDate: new Date().toISOString(),
-        completed: false,
-        priority: 'Medium',
-        todoId: id,
-        order: 0,
-        status: '',
-        userId: '',
-      });
-
-      dispatch(addTaskAC(id, response.data.item));
-    } catch (error: any) {
-      dispatch(setErrorAC(error.message));
-      setTimeout(() => {
-        dispatch(setErrorMessageDeleteAC(''));
-      }, 3000);
-    }
-  }; */
 
   const addTask = (title: string) => {
     const now = new Date();
@@ -94,11 +69,8 @@ export const useTodoListHandler = (
     try {
       await taskApi.deleteTask(taskId);
       dispatch(removeTaskAC(taskId, todoListId));
-    } catch (error: any) {
-      dispatch(setErrorAC(error.message));
-      setTimeout(() => {
-        dispatch(setErrorMessageDeleteAC(''));
-      }, 3000);
+    } catch (error) {
+      handleError(dispatch, error);
     }
   };
 
@@ -130,11 +102,8 @@ export const useTodoListHandler = (
       } else {
         dispatch(changeTaskTitleAC(todoListId, taskId, newValue));
       }
-    } catch (error: any) {
-      dispatch(setErrorAC(error.message));
-      setTimeout(() => {
-        dispatch(setErrorMessageDeleteAC(''));
-      }, 3000);
+    } catch (error) {
+      handleError(dispatch, error);
     }
   };
 

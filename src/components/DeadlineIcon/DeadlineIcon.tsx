@@ -1,21 +1,20 @@
-// DeadlineIcon.tsx
-import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import dayjs from 'dayjs';
 
-interface DeadlineIconProps {
+type Props = {
   deadline: string | null;
-}
+};
 
-const DeadlineIcon: React.FC<DeadlineIconProps> = ({ deadline }) => {
+const DeadlineIcon = ({ deadline }: Props) => {
   if (!deadline) return null;
 
   const date = dayjs(deadline);
 
-  const getDeadlineColor = () => {
+  const getDeadlineColor = (): string => {
     const now = dayjs();
     const diffHours = date.diff(now, 'hour');
+
     if (diffHours >= 24) return 'green';
     if (diffHours >= 5) return 'orange';
     return 'red';
@@ -25,7 +24,7 @@ const DeadlineIcon: React.FC<DeadlineIconProps> = ({ deadline }) => {
     <Tooltip title={`Deadline: ${date.format('YYYY-MM-DD HH:mm')}`}>
       <IconButton size="small">
         <AccessTimeIcon
-          style={{
+          sx={{
             color: getDeadlineColor(),
             fontSize: '16px',
             paddingLeft: '10px',

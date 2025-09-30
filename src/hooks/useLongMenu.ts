@@ -6,14 +6,12 @@ import {
 } from '../state/tasksState/taskActionCreators';
 import { Dayjs } from 'dayjs';
 
-export const useLondMenu = (todoListId: string, taskId: number) => {
+export const useLongMenu = (todoListId: string, taskId: number) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openPriorityDialog, setOpenPriorityDialog] = useState(false);
-
   const [selectedDeadline, setSelectedDeadline] = useState<Dayjs | null>(null);
-
-  const [selectedPriority, setSelectedPriority] = useState<string>('Mediun');
+  const [selectedPriority, setSelectedPriority] = useState<string>('Medium');
 
   const dispatch = useDispatch();
 
@@ -58,6 +56,7 @@ export const useLondMenu = (todoListId: string, taskId: number) => {
       )
     );
   };
+
   return {
     anchorEl,
     openDialog,

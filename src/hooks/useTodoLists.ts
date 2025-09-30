@@ -12,10 +12,11 @@ import {
 import { setErrorAC, setErrorMessageDeleteAC } from '../state/error-reducer';
 import { setTasksAC } from '../state/tasksState/taskActionCreators';
 import { FilteredValuesType, ResponseTypeTodo } from '../types/todo.interface';
+import { ERROR_DISPLAY_DURATION } from '../utils/constants';
 
 export const useTodoList = () => {
   const dispatch = useDispatch();
-  const todolists = useSelector<AppRootStateType, Array<any>>(
+  const todolists = useSelector<AppRootStateType, ResponseTypeTodo[]>(
     (state) => state.todoList || []
   );
   const error = useSelector<AppRootStateType, string | null>(
@@ -23,6 +24,8 @@ export const useTodoList = () => {
   );
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
     const fetchData = async () => {
       try {
         const todolists = await fetchTodoList();
@@ -31,41 +34,30 @@ export const useTodoList = () => {
         todolists.forEach((todo) => {
           dispatch(setTasksAC(todo.tasks, todo.id));
         });
-      } catch (error: any) {
-        dispatch(setErrorAC(error.message));
-        setTimeout(() => {
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown error occurred';
+        dispatch(setErrorAC(errorMessage));
+
+        timeoutId = setTimeout(() => {
           dispatch(setErrorMessageDeleteAC(''));
-        }, 3000);
+        }, ERROR_DISPLAY_DURATION);
       }
     };
 
     fetchData();
-  }, [dispatch]);
 
-  /*   const addTodo = async (title: string) => {
-    try {
-      const newTodoList = await createTodo(title);
-      const formattedTodo = {
-        id: newTodoList.id,
-        title: newTodoList.title,
-        filter: newTodoList.filter,
-        createdAt: newTodoList.createdAt,
-        userId: newTodoList.userId,
-        tasks: [],
-      };
-      dispatch(addTodoListAC(formattedTodo));
-    } catch (error: any) {
-      dispatch(setErrorAC(error.message));
-      setTimeout(() => {
-        dispatch(setErrorMessageDeleteAC(''));
-      }, 3000);
-    }
-  }; */
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [dispatch]);
 
   const addTodo = (title: string) => {
     const formattedTodo: ResponseTypeTodo = {
-      id: Math.random().toString(36).substring(2, 9),
-      title: title,
+      id: crypto.randomUUID(),
+      title,
       filter: 'All' as FilteredValuesType,
       createdAt: new Date().toISOString(),
       userId: 'userId',

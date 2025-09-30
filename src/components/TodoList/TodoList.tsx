@@ -2,13 +2,14 @@ import styles from './styles.module.css';
 import { FilteredValuesType, TaskType } from '../../types/todo.interface';
 import AddItemForm from '../AddItemForm/AddItemForm';
 import EditableSpan from '../EditableSpan/EditableSpan';
-import { Button, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { Task } from '../Task/Task';
 import { formatDateTime } from '../../utils/dateUtils';
 import { useTodoListHandler } from '../../hooks/useTodoListHandler';
-import { useColorMode } from '../ColorModeContext/ColorModeContext';
 import { useEffect, useRef, useState } from 'react';
+import { FilterButtons } from '../UI';
+import { useColorMode } from '../ColorModeContext';
 
 type PropsType = {
   id: string;
@@ -111,29 +112,12 @@ export const TodoList = (props: PropsType) => {
           )}
         </ul>
       </div>
-      <div style={{ padding: '10px' }}>
-        <Button
-          color={'primary'}
-          variant={props.filter === 'All' ? 'contained' : 'text'}
-          onClick={onAllClickHandler}
-        >
-          All
-        </Button>
-        <Button
-          color={'primary'}
-          variant={props.filter === 'Active' ? 'contained' : 'text'}
-          onClick={onActiveClickHandler}
-        >
-          Active
-        </Button>
-        <Button
-          color={'secondary'}
-          variant={props.filter === 'Completed' ? 'contained' : 'text'}
-          onClick={onCompletedClickHandler}
-        >
-          Completed
-        </Button>
-      </div>
+      <FilterButtons
+        currentFilter={props.filter}
+        onAllClick={onAllClickHandler}
+        onActiveClick={onActiveClickHandler}
+        onCompletedClick={onCompletedClickHandler}
+      />
     </div>
   );
 };
